@@ -1,0 +1,195 @@
+*  DPS5020 virtalähdekotelo
+:PROPERTIES:
+:TOC:      :include all
+:END:
+
+DPS5020 virtalähteen akryylikotelon suunnitelma.  
+#+caption: Kotelo edestä
+[[file:pics/virtalahde-kotelo-etu.jpg]]
+
+#+caption: Kotelo takaa
+[[file:pics/virtalahde-kotelo-taka.jpg]]
+
+
+Kotelon ominaisuudet:
+
+- Mitat: 
+  - [ ] L 11 cm
+  - [ ] K 10 cm
+  - [ ] S 17 cm
+- Kotelon etuseinä
+  - [ ] 2 kpl aukkoja lähtöjännitteen (8mm) banaaniliittimien asentamiseksi
+  - [ ] aukko sulakepesän (phi 12mm, korvakkeet phi 13mm) asentamiseksi
+  - [ ] aukko USB liittimen kytkemiseksi
+  - [ ] Aukko DPS ohjauskonsolin (LxK : 72 mm x 40 mm) asentamiseksi
+- Kotelon takaseinä
+  - [ ] 2 kpl aukkoja tulojännitteen (8mm) banaaniliittimien asentamiseksi
+  - [ ] aukko virtakytkimen (13mmx19mm) asentamiseksi
+  - [ ] tuuletus aukot ja kiinnitysruuvien M3 paikat tuulettiminen asentamiseksi
+    - [ ] tuulettimen koko phi 32 mm/40mm/50 mm
+- Kotelon oikea seinä
+  - [ ] 2 kpl M3 reikiä USB liitäntäkortin asentamiseksi
+- Kotelon pohja
+  - [ ] 4 kpl M3 reikiä piirikortin asentamiseksi
+  - [ ] 4 kpl M3 reikiä tassujen asentamiseksi
+  - [ ] tuuletusritilät
+- Kotelon katto ja kiinnitys
+  - [ ] 4 kpl kotelokorvakkeita, joissa aukot 3.9 peltimutterille
+  - [ ] 4 kpl 4 mm reikiä katon kiinnitystä varten
+
+
+Optiot:
+- puhaltimen asennusta/ohjausta ei ole suunniteltu
+
+* Linkkejä
+
+** Dokumentaatio
+
+Dokumenttikansio [[http://www.mediafire.com/folder/g21va7a0v2c15/power-2]], jossa löytyy
+dokumentit
+- Operation and PC and APP instruction for Digital Control Constant Voltage Constant Current power supply With power part.pdf
+- DPS5020 CNC Power Communication Protocol V1.2
+- Factory technical support and conctact way .docx, jossa ohjattu linkki "official store" https://rdtech.aliexpress.com/store/923042
+
+
+** Muuta
+
+- Joskus toiminut linkki aliexpress kaupan DPS5020 tuotteeseen
+  https://www.aliexpress.com/item/32821185351.html
+- Raspberry Pi keskustelupastan viesti, jossa koodi ~dps_modbus.py~,
+  jolla on onnistuneesti ohjattu DSP5020 USB väylän kautta
+https://forum-raspberrypi.de/forum/thread/46324-ansteuerung-programmierbarer-stepdown-regler-dps/
+- DSP5020 USB liitäntä pohjautuu MODBUS speksiin:
+  https://modbus.org/docs/PI_MBUS_300.pdf
+
+
+
+* Materiaalit
+
+Kotelon rakentamisessa käytettävät materiaalit:
+
+- Akryyli: paksuus 3mm
+- Kotelon liimaus: Acrfix 116
+- Kytkentäjohto: 2.5 mm^2
+
+Laskelma akryylin kulutuksesta
+#+BEGIN_SRC python :eval no-export :results output :noweb no  :exports both
+syvyys = 0.17
+korkeus = 0.1
+leveys = 0.11
+nurkkapala = 0.05
+leikkausvara = 10
+ala = 2*(syvyys * leveys) + \
+      2*(leveys * syvyys ) + \
+      2* (syvyys * korkeus) + \
+      2* ( nurkkapala * nurkkapala )
+print( "Akryylin kulutus: Kotelo n. {:.2f}m^2 * leikkausvara {}% = n. {:.2f}m^2".
+    format(ala, leikkausvara+100, ala*(100+leikkausvara)/100) )
+#+END_SRC
+
+#+RESULTS:
+: Akryylin kulutus: Kotelo n. 0.11m^2 * leikkausvara 110% = n. 0.13m^2
+
+
+* Osaluettelo
+
+| Kohde                   | Kpl | Tyyppi                            | Hankinta/tuotekoodi |
+|-------------------------+-----+-----------------------------------+---------------------|
+| Kannen kiinnitys        |   4 | Peltim,1-3x3.9,16x11,phi6mm       | [[https://www.fixusnet.fi/fin/client/search_results?s=670-05000060][Fixus/670-05000060]]  |
+| Kannen kiinnitys        |   4 | Ruuvi,3.9x16,musta                |                     |
+| Tassut                  |   4 | Tassu, 12x7mm                     | [[https://www.partco.fi/fi/mekaniikka/kotelointi/kotelotarvikkeet/21893-kot-g030.html%20][Partco/KOT G030]]     |
+| Tassut                  |   4 | Ruuvi M3x8                        |                     |
+| Tassut                  |   4 | Mutteri M3                        |                     |
+| Piirikorttien kiinnitys |   4 | Pultti,M3x6mm,musta,muovi         |                     |
+| USB-kortin kiinnitys    |   2 | Korotushylsy, M3x6mm              |                     |
+| USB-kortin kiinnitys    |   2 | Ruuvi,M3x6,musta,muovi            |                     |
+| USB-kortin kiinnitys    |   2 | Ruuvi,M3x6,musta,muovi(katk 4mm)  |                     |
+| Naparuuvi,plus          |   2 | Naparuuvi,pun                     |                     |
+| Naparuuvi,miinus        |   2 | Naparuuvi,must                    |                     |
+| Naparuuvien liitos      |   4 | Abiko, haarukka 4.3mm,sin         |                     |
+| Piirilevyn littittimet  |   4 | Haarukkaliitin                    | DSP5020 paketissa   |
+| Sulakepesä              |   1 |                                   |                     |
+| Virtakytkin             |   4 | Abiko,latta, eristetty, 6.3mm,sin |                     |
+| Virtakytkin             |   1 |                                   | [[http://www.c-components.com.tw/prodDetail.asp?id=72][PS5-210-PL-BR-SW]]    |
+
+
+* Ohjeet
+
+** Materiaalivalinnat
+
+Kotelo on suunniteltu 3 mm paksulle akryylille, joka laserleikataan.
+
+Kiiltäväpintaisessa akryylissä voi näkyä laserleikkauksen jälkeen
+värimuutoksia (tai nokea?). Samoin siinä näkyy helposti
+sormenjäljet. Mattapintainen materiaali saattaa olla näiden suhteen
+anteeksiantavampi.
+
+
+** Kotelon laserointi
+
+Kotelon osat ovat kahdessa dxf-tiedostossa
+
+- kotelo.dxf
+- kansi.dxf
+
+
+** Kotelon liimaus
+
+Kotelon liimaukseen sopii *Acrfix 116* liima, joka sulattaa (solvent)
+liimattavat pinnat yhteen ja tekee rakenteesta lujan.  Acrfix 116 ei
+täytä rakoja ja vaatii, että liimattavat pinnat sopivat tarkasti
+yhteen. Liima on juoksevaa ja tunkeutuu hyvin liitosten rakoihin ja
+toki samalla liiallisesti annostelutuna pursuaa helposti kotelon
+raoista näkyviin. Liima on väritön, joten mahdolliset liimaroiskeet
+ovat huomaamattomia ja tahrojen pyyhkiminen voi vain pahentaa
+tilannetta.
+
+Muutama käytännön vinkki:
+- Acrifix 116 hyvin juoksevaa ja sen annostelua varten pitäisi olla
+  erillinen annostelupipetti, jolla liiman määrää voi
+  säännöstellä. 100g myyntipakkauksen suuttimesta liimaa valuu norona,
+  kun putkilon kääntää suu alaspäin. Parhaiten liimaus onnistuu
+  pitämällä liimaputkiloa ensin pystyasennossa ja asetamalla
+  liimattava kohta liimaputkilon suun päälle ja kääntämällä koko
+  asetelma niin, että liimaa alkaa valua tuubista haluuttuun
+  saumakohtaan, jonka jälkeen tuubin suuta siirretään pitkin
+  liimattavaa saumaa. Lopuksi nostetaan tuubin suu ylös samalla
+  varoen, että liimaa ei tipu (ainakaan näkyville pinnoille).
+- Liimattu kotelo kannattaa asetaa korotuksen päälle, jotta
+  mahdollinen saumoista valuva liima ei liimaa koteloa alustaan
+  kiinni. Korotuksen on hyvä viettää hienoisesti kohti kotelon
+  takareunaa, jolloin mahdolliset liimavalumat eivät ainakaan ohjaudu
+  kotelon etupuolelle näkyviin.
+- Käyttäturvallisuustiedotteen mukaan pitää huolehtia ilmastoinnista
+  ja välttää ihokosketusta ja tietekin välttää liiman pääsyä silmiin.
+- Liima kovettuu nopeasti mutta saavuttaa lopullisen kovuutensa
+  n. vuorokauden kuluttua.
+
+Muita vaihtoehtoja liimaukseen:
+- Marketeista saatava pikaliimat ovat usein syanoakrylaatti pohjaisia,
+  jotka tuppaavat jättämään kuivuessaan pinnalle valkoisia kiteitä.
+  Juoksevat syanoakrylaattiliimat saattavat valua kotelon raoista
+  ulos, jolloin kuivumisjäljet tekeävät kotelosta töhryisen
+  näköisen. Geelimäiset liimat puolestaan eivät tunkeudu kotelon
+  saumoihin ja kotelon rungosta ei tule tukeva.
+- Akryylin liimaukseen suositellaan myös Acrifix 192 liimaa, mutta sen
+  toimivuutta ei tässä yhteydessä testattu
+
+
+* Kommentit
+
+** Versio i:
+
+- naparuuvien läpivienti nyt 7.5 mm, pitää olla > 8mm (--> 8.5mm)                    
+- USB aukko 8.5x11.5, vasen sisäreuna lisää +2.5mm, korotus = siirto
+  sisäänpäin 1mm
+- kansi 0.2 mm kapeammaksi, n. 0.3 mm syvemmälle
+
+
+* Muutokset  
+
+
+|       Pvm | Muutos             | Suunnitelman versio |
+|-----------+--------------------+---------------------|
+| 26.8.2021 | Ensimmäinen versio | i                   |
+
