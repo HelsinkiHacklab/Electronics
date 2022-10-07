@@ -1,3 +1,4 @@
-Resources for admintering E-room pc
+Resources for administering E-room pc
 
-- 
+- [[file:hack310g8-admin.org]]: Admin ~hack310g8~ PC
+- [[file:emacs.org]]: Manage emacs configuration
