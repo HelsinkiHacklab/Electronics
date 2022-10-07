@@ -9,7 +9,6 @@ hostname
 #+RESULTS:
 : hack310g8
 
-
 ** Check os version in linux
 
 #+BEGIN_SRC bash :eval no-export :results output
@@ -61,7 +60,8 @@ echo PATH=$PATH
 : fi
 : # ADMIN_README-end
 
-#+BEGIN_SRC bash :eval no-export :results output
+Bashrc
+#+BEGIN_SRC bash :eval no-export :results output :exports results
 cat  ~/.bashrc
 #+END_SRC
 
@@ -196,14 +196,14 @@ fi
 #+end_example
 
 
-#+BEGIN_SRC bash :eval no-export :results output
+Check PATH variable
+#+BEGIN_SRC bash :eval no-export :results output :exports both
 . ~/.bashrc
 echo PATH=$PATH
 #+END_SRC
 
 #+RESULTS:
 : PATH=/home/hacklab/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-
 
 ** Create some directories
 
@@ -1356,26 +1356,7 @@ lxi screenshot -a $(lxi discover | grep 'DS1104Z' | grep -oE '192\.[0-9]+\.[0-9]
 
 *** Käyttöohje (in Finnish)
 
-Ohjeet LAB:in E-huonessa olevan Rigol DS1104Z skoopin screenshotin ottamiseksi.
-
-- Syorita E-huoneen PC:ssä komento 'lxi discover'
-  - --> Pitäisi tulla teksti 'Found "RIGOL TECHNOLOGIES,DS1104Z,DS1ZB192000144,00.04.04.SP3" on address 192.168.120.56'
-- One liner screen shotin ottamiseen 'lxi screenshot -a $(lxi discover | grep 'DS1104Z' | grep -oE '192\.[0-9]+\.[0-9]+\.[0-9]+')'
-
-Onnistuu omassakin Linux koneessa, jos 
-- asennettu 'apt-get install -y lxi-tools' TAI 'sudo snap install lxi-tools'
-- PC kytketty samaan verkkosegmenttiin kun toi skooppi (=varmimmin
-  kaapelilla samaan kytkimeen kuin skooppi)
-
-Trouble shoot:
-- Tarkista, että skooppi kytketty LAN:iin
-- Tarkista että skooppi saa IP:n DHCP:n kautta
-  - Paina 'Utility' näppäintä
-  - --> Näytön oikeanpuoleisessa reunassa olevasta valikosta 'IO-config'
-  - --> Näkyy IP configuraation jos EI ole DHCP niin
-    - --> Näytön oikeanpuoleisessa reunassa olevasta valikosta 'LAN-config' 
-    - --> Näytön oikeanpuoleisessa reunassa olevasta valikosta 'Config'
-    - --> 'Intensity' -rullasta siirrä kursori DHCP kohtaan ja paina 'Intensity'
+User instructions: https://wiki.helsinki.hacklab.fi/E-huoneen_mittalaitteiden_k%C3%A4ytt%C3%B6vinkkej%C3%A4
 
 
 ** ~sigrok~: signal analysis software suite
@@ -1499,8 +1480,8 @@ Processing triggers for desktop-file-utils (0.24+linuxmint1) ...
 #+end_example
 
 
-  sigrok-cli version
-  #+BEGIN_SRC bash :eval no-export :results output
+  Show ~sigrok-cli~ version
+  #+BEGIN_SRC bash :eval no-export :results output :exports both
   sigrok-cli --version
   #+END_SRC
 
@@ -1527,8 +1508,8 @@ Processing triggers for desktop-file-utils (0.24+linuxmint1) ...
     - Host: x86_64-pc-linux-gnu, little-endian.
   #+end_example
 
-  ~pulseview~ version
-  #+BEGIN_SRC bash :eval no-export :results output
+  Show ~pulseview~ version
+  #+BEGIN_SRC bash :eval no-export :results output :exports both
   pulseview --version
   #+END_SRC
 
@@ -1875,327 +1856,13 @@ Processing triggers for desktop-file-utils (0.24+linuxmint1) ...
   #+end_example
 
 
-** ~etool~ -  Docker  mapping Gerber files to gcode with simulator support
-
- Ref: https://github.com/jarjuk/etool
-
-*** Clone repo
-
- Just for information
-
- #+BEGIN_SRC bash :eval no-export :results output :dir ~/Documents/jj
- git clone    https://github.com/jarjuk/etool
- #+END_SRC
-
- #+RESULTS:
-
-
-
-*** Pull docker ~marcus2002/etool:TAG~
-    :PROPERTIES:
-    :header-args+: :var  ETOOL_TAG="6"
-    :END:
-
- Show docker hub
-
- #+BEGIN_SRC bash :eval no-export :results output
- docker search marcus2002/etool
- #+END_SRC
-
- #+RESULTS:
- : NAME               DESCRIPTION   STARS     OFFICIAL   AUTOMATED
- : marcus2002/etool                 0                    
-
- List tages for ~marcus2002/etool~
- #+BEGIN_SRC bash :eval no-export :results output
- wget -q https://registry.hub.docker.com/v1/repositories/marcus2002/etool/tags -O -  | sed -e 's/[][]//g' -e 's/"//g' -e 's/ //g' | tr '}' '\n'  | awk -F: '{print $3}'
- #+END_SRC
-
- #+RESULTS:
- : 1
- : 2
- : 3
- : 4
- : 5
- : 6
-
-
- #+BEGIN_SRC bash :eval no-export :results output
- docker pull marcus2002/etool:$ETOOL_TAG
- #+END_SRC
-
- #+RESULTS:
- #+begin_example
- 6: Pulling from marcus2002/etool
- 23884877105a: Pulling fs layer
- bc38caa0f5b9: Pulling fs layer
- 2910811b6c42: Pulling fs layer
- 36505266dcc6: Pulling fs layer
- 09078f1dbd1f: Pulling fs layer
- c68e897da802: Pulling fs layer
- 932914a4bdba: Pulling fs layer
- da9dbf43052b: Pulling fs layer
- f2e70a02ad10: Pulling fs layer
- 4870e1fccbd6: Pulling fs layer
- 522925788138: Pulling fs layer
- 5c6020548a8e: Pulling fs layer
- b25b389cb0eb: Pulling fs layer
- 77e2ba063739: Pulling fs layer
- 71d92a46b2c8: Pulling fs layer
- b87ecf8d998f: Pulling fs layer
- 843160f00df3: Pulling fs layer
- b198f1be9911: Pulling fs layer
- dcb77c92f7c6: Pulling fs layer
- 7baf73607699: Pulling fs layer
- 52c9580ffe1b: Pulling fs layer
- fafb0e3a9c5d: Pulling fs layer
- dc2fe207eb06: Pulling fs layer
- c2891b21e76a: Pulling fs layer
- 6e17e30f8a11: Pulling fs layer
- 4870e1fccbd6: Waiting
- 522925788138: Waiting
- 5c6020548a8e: Waiting
- b25b389cb0eb: Waiting
- 77e2ba063739: Waiting
- 71d92a46b2c8: Waiting
- b87ecf8d998f: Waiting
- 843160f00df3: Waiting
- b198f1be9911: Waiting
- dcb77c92f7c6: Waiting
- 7baf73607699: Waiting
- c68e897da802: Waiting
- da9dbf43052b: Waiting
- f2e70a02ad10: Waiting
- 932914a4bdba: Waiting
- 52c9580ffe1b: Waiting
- dc2fe207eb06: Waiting
- fafb0e3a9c5d: Waiting
- 36505266dcc6: Waiting
- c2891b21e76a: Waiting
- 09078f1dbd1f: Waiting
- bc38caa0f5b9: Download complete
- 2910811b6c42: Verifying Checksum
- 2910811b6c42: Download complete
- 36505266dcc6: Download complete
- 23884877105a: Download complete
- 23884877105a: Pull complete
- bc38caa0f5b9: Pull complete
- 932914a4bdba: Verifying Checksum
- 932914a4bdba: Download complete
- 2910811b6c42: Pull complete
- 36505266dcc6: Pull complete
- da9dbf43052b: Verifying Checksum
- da9dbf43052b: Download complete
- c68e897da802: Verifying Checksum
- c68e897da802: Download complete
- f2e70a02ad10: Verifying Checksum
- f2e70a02ad10: Download complete
- 09078f1dbd1f: Verifying Checksum
- 09078f1dbd1f: Download complete
- 5c6020548a8e: Verifying Checksum
- 5c6020548a8e: Download complete
- 09078f1dbd1f: Pull complete
- c68e897da802: Pull complete
- b25b389cb0eb: Verifying Checksum
- b25b389cb0eb: Download complete
- 932914a4bdba: Pull complete
- da9dbf43052b: Pull complete
- f2e70a02ad10: Pull complete
- 77e2ba063739: Verifying Checksum
- 77e2ba063739: Download complete
- 71d92a46b2c8: Verifying Checksum
- 71d92a46b2c8: Download complete
- b87ecf8d998f: Verifying Checksum
- b87ecf8d998f: Download complete
- 843160f00df3: Download complete
- 522925788138: Verifying Checksum
- 522925788138: Download complete
- dcb77c92f7c6: Verifying Checksum
- dcb77c92f7c6: Download complete
- 7baf73607699: Verifying Checksum
- 7baf73607699: Download complete
- 52c9580ffe1b: Download complete
- fafb0e3a9c5d: Verifying Checksum
- fafb0e3a9c5d: Download complete
- dc2fe207eb06: Verifying Checksum
- dc2fe207eb06: Download complete
- c2891b21e76a: Download complete
- b198f1be9911: Verifying Checksum
- b198f1be9911: Download complete
- 6e17e30f8a11: Verifying Checksum
- 6e17e30f8a11: Download complete
- 4870e1fccbd6: Verifying Checksum
- 4870e1fccbd6: Download complete
- 4870e1fccbd6: Pull complete
- 522925788138: Pull complete
- 5c6020548a8e: Pull complete
- b25b389cb0eb: Pull complete
- 77e2ba063739: Pull complete
- 71d92a46b2c8: Pull complete
- b87ecf8d998f: Pull complete
- 843160f00df3: Pull complete
- b198f1be9911: Pull complete
- dcb77c92f7c6: Pull complete
- 7baf73607699: Pull complete
- 52c9580ffe1b: Pull complete
- fafb0e3a9c5d: Pull complete
- dc2fe207eb06: Pull complete
- c2891b21e76a: Pull complete
- 6e17e30f8a11: Pull complete
- Digest: sha256:9a2d1da46b6176008ccc02a6604f962c6112e3df00ec884cd4c51a078f3cbf3c
- Status: Downloaded newer image for marcus2002/etool:6
- docker.io/marcus2002/etool:6
- #+end_example
-
-
-
-
-
-*** Create ~/bin/etools.sh
-
- #+BEGIN_SRC bash :eval no-export :results output
- cat ~/bin/etool.sh
- #+END_SRC
-
- #+RESULTS:
- #+begin_example
- #!/bin/bash
-
- TAG=6
- # Changes this to choose correct version
- # ETOOL_DIR=$HOME/.etool
- ETOOL_DIR=$HOME/Documents/etool
-
-
- [ -d  $ETOOL_DIR ] || ( mkdir $ETOOL_DIR && echo Created ETOOL_DIR=$ETOOL_DIR )
-
- ETOOL="docker run --rm --user $(id -u):$(id -g) -e DISPLAY=unix:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v $ETOOL_DIR:/etool marcus2002/etool:$TAG"
-
- if [ $# -lt 1 ]; then
-
-     exec mate-terminal
- fi
-
-
- set -x
- $ETOOL $*
- #+end_example
-
-
-*** demo etool.sh  Usage
-
- #+BEGIN_SRC bash :eval no-export :results output
- which etool.sh
- #+END_SRC
-
- #+RESULTS:
- : /home/hacklab/bin/etool.sh
-
-
- #+BEGIN_SRC bash :eval no-export :results output
- etool.sh 
- #+END_SRC
-
- #+RESULTS:
- #+begin_example
- Created ETOOL_DIR=/home/hacklab/.etool
-
-          marcus2002/etool:6
-
-          A tool for mapping Gerber/image files to gcode for CNC
-          machining and launching linuxcnc -simulator for validating
-          CNC execution paths.
-
-          Usage:
-
-          docker DOCKER_OPTS run marcus2002/etool CMD_AND_OPTIONS ...
-
-          where CMD_AND_OPTIONS one of follwoing operations:
-          o gerber PROJECT [USER] : create gcode for PROJECT Gerber -files
-                                    USER -specific cam parameters replace default paramerters
-                                    (/etool/pcb2gcode.ini, /etool/pcb2gcode-control.template)
-          o adrill PROJECT        : convert PTH -drill file to alignement PTH-ALIGN drill file,
-                                    used for two sided boards
-          o simulator             : start 'linuxcnc'
-
-          or image cam operation:
-          o image IMAGE           : convert IMAGE to gcode 
-
-          or one of data management utilities:
-          o ls                    : list data files in /etool -data directories
-          o cleanup               : remove files from /etool -data directories 
-                                    /etool/01-gerber, /etool/01-image, /etool/02-ngc
-          o example TYPE PROJECT  : copy example PROJECT of TYPE input directory
-                                    TYPE is 'gerber' or 'image', with respective input direcotories
-                                    01-gerber and 01-image
-
-          or one of miscallaneous commands:
-          o --help                : this help text
-          o usage                 : workflow example (w. example of multiple commands on one line)
-          o gerber-help           : help on pcb2gcode options to put into
-                                    /etool/pcb2gcode.ini -file and open image explaining
-                                    dimension options
-          o releases              : output RELEASES document
-          o Dockerfile            : show Dockerfile used
-
-          and DOCKER_OPTS options for 'docker run' -command, particularly
-          o --rm                             : cleanup after Docker finished
-          o --user $(id -u):$(id -g)         : user credentials (instead of root)
-          o -e DISPLAY=unix:0                : allow Docker to open X11 apps
-          o -v /tmp/.X11-unix:/tmp/.X11-unix : allow Docker to open X11 apps
-          o -v HOSTD:/etool                  : data directory HOSTD (must exist,
-                                               owned by --user), structure is initialized
-         
-          Example usage:
-
-          mkdir $HOME/.etool           # create working directory
-
-          export ETOOL='docker run --rm --user 1000:1000 -e DISPLAY=unix:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME/.etool:/etool marcus2002/etool:6'
-
-          $ETOOL cleanup               # clean working directories
-          $ETOOL ls                    # empty directories
-          $ETOOL example pad2pad       # init example 'pad2pad'
-          $ETOOL ls                    # expect to see directory /etool/01-gerber populated
-          $ETOOL gerber pad2pad        # create gCode for gerber
-          $ETOOL simulator             # start linuxcnc for simulating gcode
-
-          The commands can be given as a one-liner. For example, for the command above:
-
-          $ETOOL cleanup ls example gerber pad2pad ls gerber pad2pad -- simulator
-         
-          Notice! Separator '--' in cam -command signaling end of optional parameters
- #+end_example
-
-
-
-
-
-*** Run ~etool.sh exe glxgears~ to check X11 
-
- #+RESULTS:
-
- + docker run --rm --user 1000:1000 -e DISPLAY=unix:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v /home/hacklab/.etool:/etool marcus2002/etool:6 exe glxgears
- libGL error: No matching fbConfigs or visuals found
- libGL error: failed to load driver: swrast
- X Error of failed request:  GLXBadContext
-   Major opcode of failed request:  154 (GLX)
-   Minor opcode of failed request:  6 (X_GLXIsDirect)
-   Serial number of failed request:  42
-   Current serial number in output stream:  41
-
-
-
-
 * Other
-
-** REFT (Roll End, Front Tuck = mailer box)
-
 
 ** OpenScan ~/bin/reft.scad
 
-OpenSCAD koodi REFT/Mailer box:ien tekemiseen
+OpenSCAD code to create REFT/Mailer boxes
 
-#+BEGIN_SRC bash :eval no-export :results output
+#+BEGIN_SRC bash :eval no-export :results output :exports results
 cat ~/bin/reft.scad
 #+END_SRC
 
@@ -2472,81 +2139,9 @@ module simple_closing_lid(box_length, box_width, box_height, holding_extension =
 #+end_example
 
 
-** Esimerkki: SmaterStore 2l Module inlay
-:PROPERTIES:
-:header-args+:   :var  X="80"
-:header-args+:   :var  Y="43"
-:header-args+:   :var  Z="31"
-:END:
+** Script  ~bin/etool.sh~ -directory
 
-Modulimitat
-#+BEGIN_SRC bash :eval no-export :results output
-echo X=$X
-echo Y=$Y
-echo Z=$Z
-#+END_SRC
-
-#+RESULTS:
-: X=80
-: Y=43
-: Z=31
-
-
-#+name: gen-dxf
-#+BEGIN_SRC bash :eval no-export :results output :var NX=1 NY=1 NZ=1
-MODULE=${NX}x${NY}x${NZ}
-FILE=~/tmp/smartstore-2l-${MODULE}.dxf
-echo MODULE=$MODULE, X=$(($NX*$X)) Y=$(($NY*$Y))  Z=$(($NZ*$Z)) 
-openscad -D box_length=$(($NX*$X)) -D box_width=$(($NY*$Y)) -D box_height=$(($NZ*$Z)) -o $FILE ~/bin/reft.scad
-ls -ltr $FILE
-#+END_SRC
-
-#+RESULTS: gen-dxf
-: MODULE=1x1x1, X=80 Y=43 Z=31
-: -rw-rw-r-- 1 hacklab hacklab 6703 Aug  1 11:25 /home/hacklab/tmp/smartstore-2l-1x1x1.dxf
-
-2x1x1: 
-#+call: gen-dxf( NX="2",  NY="1", NZ="1" )
-
-#+RESULTS:
-: MODULE=2x1x1, X=160 Y=43 Z=31
-: -rw-rw-r-- 1 hacklab hacklab 6731 Aug  1 11:29 /home/hacklab/tmp/smartstore-2l-2x1x1.dxf
-
-2x2x1:
-#+call: gen-dxf( NX="2",  NY="2", NZ="1" )
-
-#+RESULTS:
-: MODULE=2x2x1, X=160 Y=86 Z=31
-: -rw-rw-r-- 1 hacklab hacklab 6731 Aug  1 11:28 /home/hacklab/tmp/smartstore-2l-2x2x1.dxf
-
-
-
-** Scriptit bin -hakemistossa
-
-#+BEGIN_SRC bash :eval no-export :results output
-cat ~/bin/ebench.sh 
-#+END_SRC
-
-#+RESULTS:
-#+begin_example
-#!/bin/bash
-
-set -e
-
-TAG=1
-EBENCH_DIR=$HOME/.config/ebench
-PICS_DIR=$HOME/tmp
-
-[ -d $EBENCH_DIR ] || ( mkdir $EBENCH_DIR && echo Created $EBENCH_DIR )
-[ -d $EBENCH_DIR/tmp ] || ( mkdir $EBENCH_DIR/tmp && echo Created $EBENCH_DIR/tmp )
-[ -d $PICS_DIR ] || ( mkdir $PICS_DIR && echo Created $PICS_DIR )
-
-EBENCH="docker run -i --rm --user $(id -u):dialout --device=/dev/ttyUSB0 --net=host --privileged -e DISPLAY=unix:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v $EBENCH_DIR:/ebench -v $PICS_DIR:/pics   marcus2002/ebench:$TAG"
-set -x
-$EBENCH $*
-#+end_example
-
-#+BEGIN_SRC bash :eval no-export :results output
+#+BEGIN_SRC bash :eval no-export :results output :exports both
 cat ~/bin/etool.sh
 #+END_SRC
 
@@ -2567,7 +2162,6 @@ ETOOL="docker run --rm --user $(id -u):$(id -g) -e DISPLAY=unix:0 -v /tmp/.X11-u
 set -x
 $ETOOL $*
 #+end_example
-
 
 
 * Backup
