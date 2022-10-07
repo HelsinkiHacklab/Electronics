@@ -1,29 +1,3 @@
 *  DPS5020 virtalähdekotelo
-:PROPERTIES:
-:TOC:      :include all
-:END:
 
-DPS5020 teholähteen kotelon tiedostojen tallennusrepositorio. Kotelon
-dokumentaatio https://wiki.helsinki.hacklab.fi/DPS5020_kotelo
-
-
-* Päivitykset
-
-** Muutoslogi
-
-|       Pvm | Muutos               | Suunnitelman versio |
-|-----------+----------------------+---------------------|
-| 16.9.2021 | Muutokset versiion i | v97                 |
-| 26.8.2021 | Ensimmäinen versio   | i                   |
-
-
-** Muutokset versioon i
-
-- [X] naparuuvien läpivienti nyt 7.5 mm, pitää olla > 8mm (--> 8.3mm)
-- [X] USB aukko
-  - [X] nyt 6x12 --> 8.5x12
-  - [X] siirto sisäänpäin 1mm, 
-- [X] kansi
-  - [X] 0.2 mm kapeammaksi
-  - [X] n. 0.3 mm syvemmälle
-
+Siirrety https://github.com/HelsinkiHacklab/DPS5020
