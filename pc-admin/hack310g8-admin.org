@@ -2,7 +2,7 @@
 
 ** hostname
 
-#+BEGIN_SRC bash :eval no-export :results output
+#+BEGIN_SRC bash :eval no-export :results output :exports both
 hostname
 #+END_SRC
 
@@ -11,7 +11,7 @@ hostname
 
 ** Check os version in linux
 
-#+BEGIN_SRC bash :eval no-export :results output
+#+BEGIN_SRC bash :eval no-export :results output :exports both
 lsb_release -a
 #+END_SRC
 
@@ -26,7 +26,7 @@ lsb_release -a
 ** Add ~bin~ to  PATH
 
 Initial path
-#+BEGIN_SRC bash :eval no :results output
+#+BEGIN_SRC bash :eval no :results output :exports both
 echo PATH=$PATH
 #+END_SRC
 
@@ -342,7 +342,7 @@ Processing triggers for desktop-file-utils (0.24+linuxmint1) ...
 #+end_example
 
 We should now have ~snap~ command
-#+BEGIN_SRC bash :eval no-export :results output
+#+BEGIN_SRC bash :eval no-export :results output :exports both
 which snap
 #+END_SRC
 
@@ -535,14 +535,14 @@ Reading package lists... 0%Reading package lists... 0%Reading package lists.
 
 *** Setup stable repository
 
- #+BEGIN_SRC bash :eval no-export :results output
+ #+BEGIN_SRC bash :eval no-export :results output :exports both
  dpkg --print-architecture
  #+END_SRC
 
  #+RESULTS:
  : amd64
 
- #+BEGIN_SRC bash :eval no-export :results output
+ #+BEGIN_SRC bash :eval no-export :results output :exports both
  lsb_release -cs
  #+END_SRC
 
@@ -561,7 +561,7 @@ Reading package lists... 0%Reading package lists... 0%Reading package lists.
 
 
 
- #+BEGIN_SRC bash :eval no-export :results output
+ #+BEGIN_SRC bash :eval no-export :results output :exports both
  cat /etc/apt/sources.list.d/docker.list 
  #+END_SRC
 
@@ -585,7 +585,7 @@ Reading package lists... 0%Reading package lists... 0%Reading package lists.
 
  #+END_SRC
 
- #+BEGIN_SRC bash :eval no-export :results output
+ #+BEGIN_SRC bash :eval no-export :results output :exports both
  cat /etc/apt/sources.list.d/docker.list 
  #+END_SRC
 
@@ -755,9 +755,9 @@ Reading state information... 0%Reading state information... 0%Reading state 
  : sambashare:x:135:hacklab
  : docker:x:999:hacklab
 
- Logout
+ Logout and rerun groups command again
 
- #+BEGIN_SRC sh :eval no-export :results output
+ #+BEGIN_SRC sh :eval no-export :results output :exports both
  groups
  #+END_SRC
 
@@ -780,7 +780,7 @@ Reading state information... 0%Reading state information... 0%Reading state 
 Check releases https://github.com/docker/compose/releases
 
 
-#+BEGIN_SRC bash :eval no-export :results output
+#+BEGIN_SRC bash :eval no-export :results output :exports both
 echo DOCKER_VERSION=$DOCKER_VERSION
 #+END_SRC
 
@@ -798,7 +798,8 @@ echo DOCKER_VERSION=$DOCKER_VERSION
 
  #+RESULTS:
 
- #+BEGIN_SRC sh :eval no-export :results output
+ Show that ~docker-compose~ is there
+ #+BEGIN_SRC sh :eval no-export :results output :exports both
  ls -ltr /usr/local/bin/docker-compose
  #+END_SRC
 
@@ -806,13 +807,12 @@ echo DOCKER_VERSION=$DOCKER_VERSION
  : -rwxr-xr-x 1 root root 26525696 May  2 11:16 /usr/local/bin/docker-compose
 
 
- #+BEGIN_SRC bash :eval no-export :results output
+ #+BEGIN_SRC bash :eval no-export :results output :exports both
  /usr/local/bin/docker-compose --version
  #+END_SRC
 
  #+RESULTS:
  : Docker Compose version v2.5.0
-
 
 
 ** ~openscad~: software for creating solid 3D CAD objects.
@@ -1166,6 +1166,7 @@ Ref: https://github.com/lxi-tools/lxi-tools
 
 *** Install ~lxi-tools~ -package
 
+Snap package includes ~lxi-gui~, which was missing from os-distribution
 #+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
 # sudo apt-get install -y lxi-tools
 # sudo apt-get purge -y lxi-tools
@@ -2164,7 +2165,7 @@ $ETOOL $*
 #+end_example
 
 
-* Backup
+* Backup                                                           :noexport:
 
 ** Copy to USB stick tikulle
 :PROPERTIES:
