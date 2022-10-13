@@ -21,6 +21,7 @@ git merge origin/master 2>&1; echo STATUS=$?
 : STATUS=1
 
 
+
 * Initialize operating system environment
 
 ** Add ~bin~ to PATH
@@ -226,6 +227,66 @@ DIR=~/tmp
 
 #+RESULTS:
 : Directory /home/hacklab/tmp exists
+
+
+** Add .ssh alias names
+
+*** Add ssh -identity ~git-hacklab-jukkaj~
+
+**** Add ssh -identity ~git-hacklab-jukkaj~ to ~.ssh/config~
+
+Add ssh -identity ~id_jukka358~ to ~.ssh/config~ (remove old
+definifiton if its exists). Retain origin version in
+~.ssh/config.old~.
+#+BEGIN_SRC bash :eval no-export :results output
+
+# Remove old config
+sed -i.old -E '/host +git-hacklab-jukkaj/,/^ *$/d' ~/.ssh/config
+
+# Append new config
+cat <<HERE >>~/.ssh/config
+host git-hacklab-jukkaj
+     user git
+     hostname github.com
+     IdentityFile /media/jj/JJ/.ssh/id_jukka358
+HERE
+
+diff ~/.ssh/config.old ~/.ssh/config || true
+#+END_SRC
+
+#+RESULTS:
+
+
+**** Add remote ~git-hacklab-jukkaj~ git repo 
+
+Show remotes before changes
+#+BEGIN_SRC bash :eval no-export :results output
+git remote -v
+#+END_SRC
+
+#+RESULTS:
+: origin	https://github.com/HelsinkiHacklab/Electronics (fetch)
+: origin	https://github.com/HelsinkiHacklab/Electronics (push)
+
+
+Adding remote ~git-hacklab-jukkaj~
+
+#+BEGIN_SRC bash :eval no-export :results output
+git remote add git-hacklab-jukkaj git-hacklab-jukkaj:HelsinkiHacklab/Electronics
+#+END_SRC
+
+#+RESULTS:
+
+Show remotes after the changes
+#+BEGIN_SRC bash :eval no-export :results output
+git remote -v
+#+END_SRC
+
+#+RESULTS:
+: git-hacklab-jukkaj	git-hacklab-jukkaj:HelsinkiHacklab/Electronics (fetch)
+: git-hacklab-jukkaj	git-hacklab-jukkaj:HelsinkiHacklab/Electronics (push)
+: origin	https://github.com/HelsinkiHacklab/Electronics (fetch)
+: origin	https://github.com/HelsinkiHacklab/Electronics (push)
 
 
 * Install packages

@@ -2,4 +2,5 @@
 
 	* pc-admin/hack310g8-admin.org (Synchronize local repo with remote
 	origin): added git commands
+	(Add ssh -identity ~git-hacklab-jukkaj~): added
 
