@@ -1,29 +1,29 @@
-* Pre-Admin stuff
+* Synchronize local repo with remote origin
 
-** hostname
+** Pull changes from ~origin~
 
-#+BEGIN_SRC bash :eval no-export :results output :exports both
-hostname
+*Fetch* from a repository grabs all the new remote-tracking branches
+and tags without merging those changes into your own branches.
+#+BEGIN_SRC bash :eval no-export :results output
+git fetch origin
 #+END_SRC
 
 #+RESULTS:
-: hack310g8
 
-** Check os version in linux
-
-#+BEGIN_SRC bash :eval no-export :results output :exports both
-lsb_release -a
+*Merge* combines your local changes with changes made by
+others. (Ignore error not something we can merge - )
+#+BEGIN_SRC bash :eval no-export :results output
+git merge origin/master 2>&1; echo STATUS=$?
 #+END_SRC
 
 #+RESULTS:
-: Distributor ID:	Linuxmint
-: Description:	Linux Mint 20.3
-: Release:	20.3
-: Codename:	una
+: merge: origin/master - not something we can merge
+: STATUS=1
 
 
+* Initialize operating system environment
 
-** Add ~bin~ to  PATH
+** Add ~bin~ to PATH
 
 Initial path
 #+BEGIN_SRC bash :eval no :results output :exports both
@@ -204,6 +204,7 @@ echo PATH=$PATH
 
 #+RESULTS:
 : PATH=/home/hacklab/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
 
 ** Create some directories
 
@@ -765,7 +766,7 @@ Reading state information... 0%Reading state information... 0%Reading state 
  : hacklab adm cdrom sudo dip plugdev lpadmin sambashare docker
 
 
-** =docker-compose=: tool for defining and running multi-container Docker applications
+** ~docker-compose~: tool for defining and running multi-container Docker applications
 :PROPERTIES:
 :header-args+: :var  DOCKER_VERSION="2.5.0"
 :END:
@@ -2167,7 +2168,7 @@ $ETOOL $*
 
 * Backup                                                           :noexport:
 
-** Copy to USB stick tikulle
+** Copy files to ~BACKUP~ -usb stick
 :PROPERTIES:
 :header-args+: :var  BACKUP="/media/hacklab/JJ/hack310g8"
 :END:
@@ -2368,11 +2369,21 @@ etool.sh exe glxgears
 #+RESULTS:
 
 
-* Admin 
+* Usefull admin commands
 
-** Show linux release
+** hostname
 
-#+BEGIN_SRC bash :eval no-export :results output
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+hostname
+#+END_SRC
+
+#+RESULTS:
+: hack310g8
+
+
+** Check OS version
+
+#+BEGIN_SRC bash :eval no-export :results output :exports both
 lsb_release -a
 #+END_SRC
 
@@ -2381,6 +2392,7 @@ lsb_release -a
 : Description:	Linux Mint 20.3
 : Release:	20.3
 : Codename:	una
+
 
 
 * Fin                                                              :noexport:
