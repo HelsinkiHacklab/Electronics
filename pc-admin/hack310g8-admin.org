@@ -419,6 +419,14 @@ git config --global user.name "jukkaj"
 
 *** Push change to remote ~git-hacklab~ 
 
+Push changes to remote ~git-hacklab~
+
+#+BEGIN_SRC bash :eval no-export :results output
+git push git-hacklab
+#+END_SRC
+
+#+RESULTS:
+
 
 ** Install packages
 
