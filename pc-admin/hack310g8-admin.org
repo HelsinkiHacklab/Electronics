@@ -36,8 +36,8 @@ Emacs org -file for administering ~hack310g8~ PC in electronics room.
   - [[#usefull-admin-commands][Usefull admin commands]]
     - [[#hostname][hostname]]
     - [[#check-os-version][Check OS version]]
-  - [[#issues][Issues]]
-  - [[#mount-manually-usb--stick][Mount manually usb -stick]]
+- [[#issues][Issues]]
+  - [[#etoolsh-exe-glxgears---error-libgl-error-failed-to-load-driver-swrast-resolved][etool.sh exe glxgears - error 'libGL error: failed to load driver: swrast' (resolved)]]
   - [[#emacs-variables][Emacs variables]]
 :END:
 
@@ -382,6 +382,8 @@ echo GITHUB_IDENTITY=$GITHUB_IDENTITY | sed -E 's!=(.*)!=xxxxxx2!'
 
 
 *** Show git status
+
+Before pushing changes back repo expect git status to be clean.
 
 #+BEGIN_SRC bash :eval no-export :results output
 git status
@@ -2472,11 +2474,9 @@ Reading state information... 0%Reading state information... 0%Reading state 
 
 
 
-* Notes                                                            :noexport:
+* Issues
 
-** Issues
-
-*** etool.sh exe glxgears - error 'libGL error: failed to load driver: swrast' (resolved)
+** etool.sh exe glxgears - error 'libGL error: failed to load driver: swrast' (resolved)
 
  #+BEGIN_SRC bash :eval no-export :results output
  etool.sh exe glxgears
@@ -2592,127 +2592,12 @@ Reading state information... 0%Reading state information... 0%Reading state 
 
 
 
-** Mount manually usb -stick
-
-#+BEGIN_SRC bash :eval no-export :results output
-lsusb
-#+END_SRC
-
-#+RESULTS:
-#+begin_example
-Bus 002 Device 002: ID 8087:8000 Intel Corp. 
-Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-Bus 003 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
-Bus 001 Device 002: ID 8087:8008 Intel Corp. 
-Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-Bus 005 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
-Bus 004 Device 004: ID 046d:c018 Logitech, Inc. Optical Wheel Mouse
-Bus 004 Device 006: ID 0204:6025 Chipsbank Microelectronics Co., Ltd CBM2080 / CBM2090 Flash drive controller
-Bus 004 Device 003: ID 0424:2412 Microchip Technology, Inc. (formerly SMSC) 
-Bus 004 Device 002: ID 0424:2660 Microchip Technology, Inc. (formerly SMSC) Hub
-Bus 004 Device 005: ID 03f0:0024 HP, Inc KU-0316 Keyboard
-Bus 004 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-#+end_example
-
-lsblk BEFORE mount
-#+BEGIN_SRC bash :eval no-export :results output
-lsblk
-#+END_SRC
-
-#+RESULTS:
-#+begin_example
-NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
-loop0    7:0    0  63,2M  1 loop /snap/core20/1695
-loop1    7:1    0  63,2M  1 loop /snap/core20/1623
-loop2    7:2    0  72,8M  1 loop /snap/core22/310
-loop3    7:3    0 140,3M  1 loop /snap/lxi-tools/1517
-loop4    7:4    0  33,8M  1 loop /snap/lxi-tools/1577
-loop6    7:6    0    48M  1 loop /snap/snapd/17336
-loop7    7:7    0  49,7M  1 loop /snap/snapd/17576
-sda      8:0    0 931,5G  0 disk 
-├─sda1   8:1    0   512M  0 part /boot/efi
-├─sda2   8:2    0     1K  0 part 
-└─sda5   8:5    0   931G  0 part /
-sdb      8:16   0 931,5G  0 disk 
-└─sdb1   8:17   0 931,5G  0 part /data/SATA1
-sr0     11:0    1  1024M  0 rom  
-#+end_example
-
-
-
-
-#+BEGIN_SRC bash :eval no-export :results output
-ls /media/hacklab
-#+END_SRC
-
-#+RESULTS:
-: JJ
-
-#+BEGIN_SRC bash :eval no-export :results output
-umount /media/hacklab/JJ
-#+END_SRC
-
-#+RESULTS:
-
-#+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
-MOUNT_POINT=/home/hacklab/mnt
-chmod 700 $MOUNT_POINT
-sudo mount -o uid=hacklab,gid=hacklab,dmask=077,fmask=177 /dev/sdc1 $MOUNT_POINT
-# sudo mount -o uid=hacklab,gid=hacklab /dev/sdc1 $MOUNT_POINT
-#+END_SRC
-
-#+RESULTS:
-
-lsblk AFTER mount
-#+BEGIN_SRC bash :eval no-export :results output
-lsblk
-#+END_SRC
-
-#+RESULTS:
-#+begin_example
-NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
-loop0    7:0    0  63,2M  1 loop /snap/core20/1695
-loop1    7:1    0  63,2M  1 loop /snap/core20/1623
-loop2    7:2    0  72,8M  1 loop /snap/core22/310
-loop3    7:3    0 140,3M  1 loop /snap/lxi-tools/1517
-loop4    7:4    0  33,8M  1 loop /snap/lxi-tools/1577
-loop6    7:6    0    48M  1 loop /snap/snapd/17336
-loop7    7:7    0  49,7M  1 loop /snap/snapd/17576
-sda      8:0    0 931,5G  0 disk 
-├─sda1   8:1    0   512M  0 part /boot/efi
-├─sda2   8:2    0     1K  0 part 
-└─sda5   8:5    0   931G  0 part /
-sdb      8:16   0 931,5G  0 disk 
-└─sdb1   8:17   0 931,5G  0 part /data/SATA1
-sdc      8:32   1   476M  0 disk 
-└─sdc1   8:33   1   476M  0 part /home/hacklab/mnt
-sr0     11:0    1  1024M  0 rom  
-#+end_example
-
-#+BEGIN_SRC bash :eval no-export :results output
-# chmod 600 ~/mnt/.ssh/*
->ls -ltr  ~/mnt/.ssh
-#+END_SRC
-
-#+RESULTS:
-: total 16
-: -rw------- 1 hacklab hacklab 102 Oct  7 10:13 id_jukka358.pub
-: -rw------- 1 hacklab hacklab 464 Oct  7 10:13 id_jukka358
-
-
-
-
-#+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
-sudo umount /home/hacklab/mnt
-#+END_SRC
-
-#+RESULTS:
-
 
 * Fin                                                              :noexport:
 
 ** Emacs variables
 
+   We set some file local variables for emacs users.
    #+RESULTS:
 
    # Local Variables:
