@@ -436,6 +436,7 @@ git remote -v
 : origin	https://github.com/HelsinkiHacklab/Electronics (fetch)
 : origin	https://github.com/HelsinkiHacklab/Electronics (push)
 
+
 *** Prepare for push operation
 
 Remote ~git-hacklab~ refers to ssh alias ~git-hacklab~, which must
@@ -492,6 +493,7 @@ ls -ltr $GITHUB_IDENTITY
 #+RESULTS:
 : -rw------- 1 hacklab hacklab 464 Oct  7 10:13 /home/hacklab/mnt/.ssh/id_jukka358
 
+
 *** Push change to remote ~git-hacklab~ 
 
 Push changes to remote ~git-hacklab~ (must use command line here, because requests pass phare)
@@ -500,6 +502,15 @@ git push git-hacklab
 #+END_SRC
 
 #+RESULTS:
+
+Unmount USB stick and remove it from the USB port
+
+#+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
+sudo umount /home/hacklab/mnt
+#+END_SRC
+
+#+RESULTS:
+
 
 After  push -operation fetch and merge changes from remote.
 
@@ -512,6 +523,9 @@ After  push -operation fetch and merge changes from remote.
 #+RESULTS:
 : merge: origin/master - not something we can merge
 : STATUS=1
+
+
+
 
 
 ** Install packages
