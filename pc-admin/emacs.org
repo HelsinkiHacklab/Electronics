@@ -175,7 +175,7 @@ https://magit.vc/
 : magit-status
 
 
-**  ~yasnippet~ -  template system for emacs
+** ~yasnippet~ -  template system for emacs
    :PROPERTIES:
    :CUSTOM_ID: config-yas-snippet
    :END:
@@ -227,6 +227,16 @@ Create directory ~tmp/snippets/org-mode~, unless it exists
   )
 #+END_SRC
 
+** ~org-make-toc~ - easy to have one or more customizable tables of contents in Org files
+
+https://github.com/alphapapa/org-make-toc
+
+#+BEGIN_SRC elisp :tangle ~/.emacs.d/init.el
+(use-package org-make-toc
+  :ensure t
+  :defer t
+  )
+#+END_SRC
 
 
 * Fin                                                              :noexport:
