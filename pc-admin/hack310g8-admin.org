@@ -362,6 +362,7 @@ echo GITHUB_IDENTITY=$GITHUB_IDENTITY | sed -E 's!=(.*)!=xxxxxx2!'
 
  *Fetch* from a repository grabs all the new remote-tracking branches
  and tags without merging those changes into your own branches.
+ #+name: git-fetch
  #+BEGIN_SRC bash :eval no-export :results output
  git fetch origin
  #+END_SRC
@@ -370,6 +371,7 @@ echo GITHUB_IDENTITY=$GITHUB_IDENTITY | sed -E 's!=(.*)!=xxxxxx2!'
 
  *Merge* combines your local changes with changes made by
  others. 
+ #+name: git-merge
  #+BEGIN_SRC bash :eval no-export :results output
  git merge origin/master 2>&1; echo STATUS=$?
  #+END_SRC
@@ -492,6 +494,18 @@ git push git-hacklab
 #+END_SRC
 
 #+RESULTS:
+
+After  push -operation fetch and merge changes from remote.
+
+#+call: git-fetch()
+
+#+RESULTS:
+
+#+call: git-merge()
+
+#+RESULTS:
+: merge: origin/master - not something we can merge
+: STATUS=1
 
 
 ** Install packages
