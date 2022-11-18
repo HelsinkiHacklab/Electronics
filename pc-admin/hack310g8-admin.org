@@ -287,11 +287,12 @@ echo GITHUB_IDENTITY=$GITHUB_IDENTITY | sed -E 's!=(.*)!=xxxxxx2!'
 
 ***** Add ssh alias ~git-hacklab~ for -identity ~GITHUB_IDENTITY~ to ~.ssh/config~
 
- Add ssh -identity ~id_jukka358~ to ~.ssh/config~ (remove old
- definifiton if its exists). Retain origin version in
- ~.ssh/config.old~.
- #+BEGIN_SRC bash :eval no-export :results output
+ Add ssh -identity ~GITHUB_IDENTITY~ to ~.ssh/config~ with alias name
+ ~git-hacklab~. Existing alias definifiton is removed, if its
+ exists. Original version is saved into ~.ssh/config.old~.
 
+
+ #+BEGIN_SRC bash :eval no-export :results output
  # Remove old config
  sed -i.old -E '/host +git-hacklab/,/^ *$/d' ~/.ssh/config
 
