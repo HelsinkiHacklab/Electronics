@@ -20,6 +20,7 @@ Emacs org -file for administering ~hack310g8~ PC in electronics room.
     - [[#pull-changes-from-origin][Pull changes from origin]]
     - [[#show-git-status][Show git status]]
     - [[#set-identity-on-git-repo-before-pushing][Set identity on git repo before pushing]]
+    - [[#prepare-for-push-operation][Prepare for push operation]]
     - [[#push-change-to-remote-git-hacklab][Push change to remote git-hacklab]]
   - [[#install-packages][Install packages]]
     - [[#snap-admin-tool-to-bundle-of-an-app-and-its-dependencies][snap: admin tool to bundle of an app and its dependencies]]
@@ -421,7 +422,6 @@ git config --global user.name "jukkaj"
 
 
 
-*** Push change to remote ~git-hacklab~ 
 
 We are using remote ~git-hacklab~ to push changes to github. Show remotes:
 
@@ -434,6 +434,8 @@ git remote -v
 : git-hacklab	git-hacklab:HelsinkiHacklab/Electronics (push)
 : origin	https://github.com/HelsinkiHacklab/Electronics (fetch)
 : origin	https://github.com/HelsinkiHacklab/Electronics (push)
+
+*** Prepare for push operation
 
 Remote ~git-hacklab~ refers to ssh alias ~git-hacklab~, which must
 point to a valid ssh private key readable only to the owner. Lets
@@ -489,6 +491,7 @@ ls -ltr $GITHUB_IDENTITY
 #+RESULTS:
 : -rw------- 1 hacklab hacklab 464 Oct  7 10:13 /home/hacklab/mnt/.ssh/id_jukka358
 
+*** Push change to remote ~git-hacklab~ 
 
 Push changes to remote ~git-hacklab~ (must use command line here, because requests pass phare)
 #+BEGIN_SRC bash :eval no-export :results output
