@@ -1,5 +1,4 @@
-#+PROPERTY: header-args+ :var GITHUB_IDENTITY="/media/jj/JJ/.ssh/id_jukka358"
-
+#+PROPERTY: header-args+ :var GITHUB_IDENTITY="/home/hacklab/mnt/.ssh/id_jukka358"
 
 
 * Manage ~hack310g8~ pc
@@ -12,15 +11,16 @@ Emacs org -file for administering ~hack310g8~ PC in electronics room.
 
 :CONTENTS:
 - [[#manage-hack310g8-pc][Manage hack310g8 pc]]
-  - [[#configations][Configations]]
-  - [[#synchronize-local-repo-with-remote-origin][Synchronize local repo with remote origin]]
-    - [[#pull-changes-from-origin][Pull changes from origin]]
-    - [[#show-status][Show status]]
-    - [[#set-identity][Set identity]]
+  - [[#show-environment-configuration][Show environment configuration]]
   - [[#initialize-operating-system-environment][Initialize operating system environment]]
     - [[#add-bin-to-path][Add bin to PATH]]
     - [[#create-some-directories][Create some directories]]
     - [[#add-ssh-alias-names][Add .ssh alias names]]
+  - [[#manage-git-repo][Manage git repo]]
+    - [[#pull-changes-from-origin][Pull changes from origin]]
+    - [[#show-git-status][Show git status]]
+    - [[#set-identity-on-git-repo-before-pushing][Set identity on git repo before pushing]]
+    - [[#push-change-to-remote-git-hacklab][Push change to remote git-hacklab]]
   - [[#install-packages][Install packages]]
     - [[#snap-admin-tool-to-bundle-of-an-app-and-its-dependencies][snap: admin tool to bundle of an app and its dependencies]]
     - [[#git-free-and-open-source-distributed-version-control][git: free and open source distributed version control]]
@@ -33,17 +33,16 @@ Emacs org -file for administering ~hack310g8~ PC in electronics room.
   - [[#other][Other]]
     - [[#openscan-binreftscad][OpenScan ~/bin/reft.scad]]
     - [[#script--binetoolsh--directory][Script  bin/etool.sh -directory]]
-    - [[#copy-files-to-backup--usb-stick][Copy files to BACKUP -usb stick]]
-  - [[#issues][Issues]]
-    - [[#etoolsh-exe-glxgears---error-libgl-error-failed-to-load-driver-swrast-resolved][etool.sh exe glxgears - error 'libGL error: failed to load driver: swrast' (resolved)]]
   - [[#usefull-admin-commands][Usefull admin commands]]
     - [[#hostname][hostname]]
     - [[#check-os-version][Check OS version]]
+  - [[#issues][Issues]]
+  - [[#mount-manually-usb--stick][Mount manually usb -stick]]
   - [[#emacs-variables][Emacs variables]]
 :END:
 
 
-** Configations
+** Show environment configuration 
 
 Private key used to write to repo
 #+BEGIN_SRC bash :eval no-export :results output :exports results
@@ -52,69 +51,6 @@ echo GITHUB_IDENTITY=$GITHUB_IDENTITY | sed -E 's!=(.*)!=xxxxxx2!'
 
 #+RESULTS:
 : GITHUB_IDENTITY=xxxxx
-
-
-
-** Synchronize local repo with remote origin
-
-*** Pull changes from ~origin~
-
- *Fetch* from a repository grabs all the new remote-tracking branches
- and tags without merging those changes into your own branches.
- #+BEGIN_SRC bash :eval no-export :results output
- git fetch origin
- #+END_SRC
-
- #+RESULTS:
-
- *Merge* combines your local changes with changes made by
- others. (Ignore error not something we can merge - )
- #+BEGIN_SRC bash :eval no-export :results output
- git merge origin/master 2>&1; echo STATUS=$?
- #+END_SRC
-
- #+RESULTS:
- : merge: origin/master - not something we can merge
- : STATUS=1
-
-
-
-*** Show status
-
-#+BEGIN_SRC bash :eval no-export :results output
-git status
-#+END_SRC
-
-#+RESULTS:
-#+begin_example
-On branch main
-Your branch is up to date with 'origin/main'.
-
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-	modified:   emacs.org
-	modified:   hack310g8-admin.org
-
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-	#hack310g8-admin.org#
-	.#hack310g8-admin.org
-	..emacs.org.~undo-tree~.~undo-tree~
-
-no changes added to commit (use "git add" and/or "git commit -a")
-#+end_example
-
-
-*** Set identity
-
-#+BEGIN_SRC bash :eval no-export :results output
-git config user.email "jukkaj@example.com"
-git config --global user.name "jukkaj"
-
-#+END_SRC
-
-#+RESULTS:
 
 
 ** Initialize operating system environment
@@ -305,14 +241,19 @@ git config --global user.name "jukkaj"
 *** Create some directories
 
  Create ~pics~ sub-directory
- #+BEGIN_SRC bash :eval no-export :results output
- DIR=pics
+ #+name: create-dir
+ #+BEGIN_SRC bash :eval no-export :results output :var  DIR="pics"
  ( [ -d $DIR ] && echo Directory $DIR exists ) || (mkdir -p $DIR; echo Directory $DIR created)
  #+END_SRC
 
  #+RESULTS:
  : Directory pics exists
 
+ Create ~mnt~ sub-directory
+ #+call: create-dir(DIR="/home/hacklab/mnt")
+
+ #+RESULTS:
+ : Directory /home/hacklab/mnt created
 
  Ensure that =~/tmp= directory exists
  #+BEGIN_SRC bash :eval no-export :results output
@@ -365,11 +306,10 @@ git config --global user.name "jukkaj"
  #+END_SRC
 
  #+RESULTS:
- : 0a1,4
- : > host git-hacklab
- : >      user git
- : >      hostname github.com
- : >      IdentityFile /media/jj/JJ/.ssh/id_jukka358
+ : 4c4
+ : <      IdentityFile /media/hacklab/mnt/.ssh/id_jukka358
+ : ---
+ : >      IdentityFile /home/hacklab/mnt/.ssh/id_jukka358
 
 
 ***** Add remote ~git-hacklab~ git repo 
@@ -380,6 +320,8 @@ git config --global user.name "jukkaj"
  #+END_SRC
 
  #+RESULTS:
+ : git-hacklab	git-hacklab:HelsinkiHacklab/Electronics (fetch)
+ : git-hacklab	git-hacklab:HelsinkiHacklab/Electronics (push)
  : origin	https://github.com/HelsinkiHacklab/Electronics (fetch)
  : origin	https://github.com/HelsinkiHacklab/Electronics (push)
 
@@ -402,6 +344,80 @@ git config --global user.name "jukkaj"
  : git-hacklab	git-hacklab:HelsinkiHacklab/Electronics (push)
  : origin	https://github.com/HelsinkiHacklab/Electronics (fetch)
  : origin	https://github.com/HelsinkiHacklab/Electronics (push)
+
+
+
+** Manage git repo
+
+*** Pull changes from ~origin~
+
+  #+BEGIN_SRC bash :eval no-export :results output
+  git pull origin
+  #+END_SRC
+
+  #+RESULTS:
+  : Already up to date.
+
+
+ *Fetch* from a repository grabs all the new remote-tracking branches
+ and tags without merging those changes into your own branches.
+ #+BEGIN_SRC bash :eval no-export :results output
+ git fetch origin
+ #+END_SRC
+
+ #+RESULTS:
+
+ *Merge* combines your local changes with changes made by
+ others. (Ignore error not something we can merge - )
+ #+BEGIN_SRC bash :eval no-export :results output
+ git merge origin/master 2>&1; echo STATUS=$?
+ #+END_SRC
+
+ #+RESULTS:
+ : merge: origin/master - not something we can merge
+ : STATUS=1
+
+
+
+*** Show git status
+
+#+BEGIN_SRC bash :eval no-export :results output
+git status
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   emacs.org
+	modified:   hack310g8-admin.org
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	#hack310g8-admin.org#
+	.#hack310g8-admin.org
+	..emacs.org.~undo-tree~.~undo-tree~
+
+no changes added to commit (use "git add" and/or "git commit -a")
+#+end_example
+
+
+*** Set identity on git repo before pushing
+
+#+BEGIN_SRC bash :eval no-export :results output
+git config user.email "jukkaj@example.com"
+git config --global user.name "jukkaj"
+#+END_SRC
+
+#+RESULTS:
+
+
+
+*** Push change to remote ~git-hacklab~ 
 
 
 ** Install packages
@@ -2342,91 +2358,33 @@ Reading state information... 0%Reading state information... 0%Reading state 
  #+end_example
 
 
-** Backup                                                          :noexport:
+** Usefull admin commands
 
-*** Copy files to ~BACKUP~ -usb stick
-    :PROPERTIES:
-    :header-args+: :var  BACKUP="/media/hacklab/JJ/hack310g8"
-    :END:
+*** hostname
 
- Modify property ~BACKUP~ to change target
- #+BEGIN_SRC bash :eval no-export :results output
- echo BACKUP=$BACKUP
- #+END_SRC
-
-**** Emacs
- #+call: backup( FILE=".emacs.d/emacs.org" )
-
- #+RESULTS:
- : Backup /home/hacklab/.emacs.d/emacs.org to backup /media/hacklab/JJ/hack310g8
- : total 208
- : -rw-r--r-- 1 hacklab hacklab 152632 Oct  6 10:39 hack310g8-admin.org
- : -rw-r--r-- 1 hacklab hacklab  48412 Oct  6 11:06 lxi-output.png
- : -rw-r--r-- 1 hacklab hacklab   4878 Oct  7 08:32 emacs.org
-
-
-**** Backup this (admin) file
-
- Show file name of this buffer
- #+BEGIN_SRC elisp
- (buffer-file-name)
+ #+BEGIN_SRC bash :eval no-export :results output :exports both
+ hostname
  #+END_SRC
 
  #+RESULTS:
- : /home/hacklab/admin/hack310g8-admin.org
+ : hack310g8
 
- #+call: backup( FILE=(buffer-file-name))
 
- #+RESULTS:
- : Backup /home/hacklab/admin/hack310g8-admin.org to backup /media/hacklab/JJ/hack310g8
- : total 160
- : -rw-r--r-- 1 hacklab hacklab   4878 Oct  6 10:39 emacs.org
- : -rw-r--r-- 1 hacklab hacklab 152632 Oct  6 10:39 hack310g8-admin.org
+*** Check OS version
 
- #+call: backup( FILE="pics/lxi-output.png")
-
- #+RESULTS:
- : Backup pics/lxi-output.png to backup /media/hacklab/JJ/hack310g8
- : total 208
- : -rw-r--r-- 1 hacklab hacklab   4878 Oct  6 10:39 emacs.org
- : -rw-r--r-- 1 hacklab hacklab 152632 Oct  6 10:39 hack310g8-admin.org
- : -rw-r--r-- 1 hacklab hacklab  48412 Oct  6 11:06 lxi-output.png
-
-**** Backup code 
-
- #+BEGIN_SRC bash :eval no-export :results output
- echo BACKUP=$BACKUP
+ #+BEGIN_SRC bash :eval no-export :results output :exports both
+ lsb_release -a
  #+END_SRC
 
  #+RESULTS:
- : BACKUP=/media/hacklab/JJ/hack310g8
+ : Distributor ID:	Linuxmint
+ : Description:	Linux Mint 20.3
+ : Release:	20.3
+ : Codename:	una
 
- This code copies ~FILE~  to ~$BACKUP~. 
- #+name: backup
- #+BEGIN_SRC bash :eval no-export :results output :var FILE=(buffer-file-name)
- BFILE=$FILE
- if [ ! -f $BFILE ]; then
-    BFILE=$HOME/$FILE
- fi
- if [ -d $BACKUP  ]; then
-    if [ -f $BFILE ]; then
-       echo Backup $BFILE to backup $BACKUP
-       cp $BFILE $BACKUP
-    else
-	echo No such file $BFILE to backup
-    fi 
- else
-    echo no directory $$BACKUP
- fi
- ls -ltr $BACKUP
- #+END_SRC
 
- #+RESULTS: backup
- : Backup /home/hacklab/admin/hack310g8-admin.org to backup /media/hacklab/JJ/hack310g8
- : total 160
- : -rw-r--r-- 1 hacklab hacklab   4878 Oct  6 10:36 emacs.org
- : -rw-r--r-- 1 hacklab hacklab 152672 Oct  6 10:37 hack310g8-admin.org
 
+* Notes                                                            :noexport:
 
 ** Issues
 
@@ -2545,30 +2503,122 @@ Reading state information... 0%Reading state information... 0%Reading state 
  #+RESULTS:
 
 
-** Usefull admin commands
 
-*** hostname
+** Mount manually usb -stick
 
- #+BEGIN_SRC bash :eval no-export :results output :exports both
- hostname
- #+END_SRC
+#+BEGIN_SRC bash :eval no-export :results output
+lsusb
+#+END_SRC
 
- #+RESULTS:
- : hack310g8
+#+RESULTS:
+#+begin_example
+Bus 002 Device 002: ID 8087:8000 Intel Corp. 
+Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 003 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 001 Device 002: ID 8087:8008 Intel Corp. 
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 005 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 004 Device 004: ID 046d:c018 Logitech, Inc. Optical Wheel Mouse
+Bus 004 Device 006: ID 0204:6025 Chipsbank Microelectronics Co., Ltd CBM2080 / CBM2090 Flash drive controller
+Bus 004 Device 003: ID 0424:2412 Microchip Technology, Inc. (formerly SMSC) 
+Bus 004 Device 002: ID 0424:2660 Microchip Technology, Inc. (formerly SMSC) Hub
+Bus 004 Device 005: ID 03f0:0024 HP, Inc KU-0316 Keyboard
+Bus 004 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+#+end_example
+
+lsblk BEFORE mount
+#+BEGIN_SRC bash :eval no-export :results output
+lsblk
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+loop0    7:0    0  63,2M  1 loop /snap/core20/1695
+loop1    7:1    0  63,2M  1 loop /snap/core20/1623
+loop2    7:2    0  72,8M  1 loop /snap/core22/310
+loop3    7:3    0 140,3M  1 loop /snap/lxi-tools/1517
+loop4    7:4    0  33,8M  1 loop /snap/lxi-tools/1577
+loop6    7:6    0    48M  1 loop /snap/snapd/17336
+loop7    7:7    0  49,7M  1 loop /snap/snapd/17576
+sda      8:0    0 931,5G  0 disk 
+├─sda1   8:1    0   512M  0 part /boot/efi
+├─sda2   8:2    0     1K  0 part 
+└─sda5   8:5    0   931G  0 part /
+sdb      8:16   0 931,5G  0 disk 
+└─sdb1   8:17   0 931,5G  0 part /data/SATA1
+sr0     11:0    1  1024M  0 rom  
+#+end_example
 
 
-*** Check OS version
 
- #+BEGIN_SRC bash :eval no-export :results output :exports both
- lsb_release -a
- #+END_SRC
 
- #+RESULTS:
- : Distributor ID:	Linuxmint
- : Description:	Linux Mint 20.3
- : Release:	20.3
- : Codename:	una
+#+BEGIN_SRC bash :eval no-export :results output
+ls /media/hacklab
+#+END_SRC
 
+#+RESULTS:
+: JJ
+
+#+BEGIN_SRC bash :eval no-export :results output
+umount /media/hacklab/JJ
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
+MOUNT_POINT=/home/hacklab/mnt
+chmod 700 $MOUNT_POINT
+sudo mount -o uid=hacklab,gid=hacklab,dmask=077,fmask=177 /dev/sdc1 $MOUNT_POINT
+# sudo mount -o uid=hacklab,gid=hacklab /dev/sdc1 $MOUNT_POINT
+#+END_SRC
+
+#+RESULTS:
+
+lsblk AFTER mount
+#+BEGIN_SRC bash :eval no-export :results output
+lsblk
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+loop0    7:0    0  63,2M  1 loop /snap/core20/1695
+loop1    7:1    0  63,2M  1 loop /snap/core20/1623
+loop2    7:2    0  72,8M  1 loop /snap/core22/310
+loop3    7:3    0 140,3M  1 loop /snap/lxi-tools/1517
+loop4    7:4    0  33,8M  1 loop /snap/lxi-tools/1577
+loop6    7:6    0    48M  1 loop /snap/snapd/17336
+loop7    7:7    0  49,7M  1 loop /snap/snapd/17576
+sda      8:0    0 931,5G  0 disk 
+├─sda1   8:1    0   512M  0 part /boot/efi
+├─sda2   8:2    0     1K  0 part 
+└─sda5   8:5    0   931G  0 part /
+sdb      8:16   0 931,5G  0 disk 
+└─sdb1   8:17   0 931,5G  0 part /data/SATA1
+sdc      8:32   1   476M  0 disk 
+└─sdc1   8:33   1   476M  0 part /home/hacklab/mnt
+sr0     11:0    1  1024M  0 rom  
+#+end_example
+
+#+BEGIN_SRC bash :eval no-export :results output
+# chmod 600 ~/mnt/.ssh/*
+>ls -ltr  ~/mnt/.ssh
+#+END_SRC
+
+#+RESULTS:
+: total 16
+: -rw------- 1 hacklab hacklab 102 Oct  7 10:13 id_jukka358.pub
+: -rw------- 1 hacklab hacklab 464 Oct  7 10:13 id_jukka358
+
+
+
+
+#+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
+sudo umount /home/hacklab/mnt
+#+END_SRC
+
+#+RESULTS:
 
 
 * Fin                                                              :noexport:
