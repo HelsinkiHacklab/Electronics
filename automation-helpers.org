@@ -1,0 +1,186 @@
+#+PROPERTY: header-args+ :var  SKOOPPI="192.168.1.15"
+#+PROPERTY: TOC       :include all :depth 3 :force (depth)
+
+
+#+RESULTS:
+: export SKOOPPI=192.168.1.15
+
+
+
+
+* Hacklab Helsinki E-room  Automation Helpers
+:PROPERTIES:
+:TOC:      :include all :depth 3
+:END:
+
+:CONTENTS:
+- [[#hacklab-helsinki-e-room--automation-helpers][Hacklab Helsinki E-room  Automation Helpers]]
+  - [[#oscilloscpe-discovery-and-screenshot-using-lxi--tool][Oscilloscpe discovery and screenshot using lxi -tool]]
+  - [[#oscilloscpe-screenshot-using-os-tools-netcat][Oscilloscpe screenshot using OS-tools (netcat)]]
+:END:
+
+** Oscilloscpe discovery and screenshot using ~lxi~ -tool
+
+ Run ~lxi discover~ to search for LXI compatible machines accessible
+ from this PC.
+ #+BEGIN_SRC bash :eval no-export :results output
+ lxi discover
+ #+END_SRC
+
+ #+RESULTS:
+ : Searching for LXI devices - please wait...
+ : 
+ : Broadcasting on interface lo
+ : Broadcasting on interface eno1
+ :   Found "RIGOL TECHNOLOGIES,DS1104Z,DS1ZB192000144,00.04.04.SP3" on address 192.168.120.56
+ : Broadcasting on interface docker0
+ : 
+ : Found 1 device 
+ : 
+
+
+ #+BEGIN_SRC bash :eval no-export :results output :exports none
+   # Just testing regexp - not exported
+   echo 'Found "RIGOL TECHNOLOGIES,DS1104Z,DS1ZB192000144,00.04.04.SP3" on address 192.168.120.56' | grep -oE '192\.[0-9]+\.[0-9]+\.[0-9]+' 
+ #+END_SRC
+
+ #+RESULTS:
+ : 192.168.120.56
+
+ One liner returning IP-address using ~lxi~ tool
+ #+BEGIN_SRC bash :eval no-export :results output
+ lxi discover | grep 'DS1104Z' | grep -oE '192\.[0-9]+\.[0-9]+\.[0-9]+' 
+ #+END_SRC
+
+ #+RESULTS:
+ : 192.168.120.56
+
+
+ #+BEGIN_SRC bash :eval no-export :results output
+ SKOOPPI=$(lxi discover | grep 'DS1104Z' | grep -oE '192\.[0-9]+\.[0-9]+\.[0-9]+')
+ echo Screenshot for SKOOPPI=$SKOOPPI
+ lxi screenshot -a $SKOOPPI pics/lxi-output.png
+ #+END_SRC
+
+ #+RESULTS:
+ : Screenshot for SKOOPPI=192.168.120.56
+ : Saved screenshot image to pics/lxi-output.png
+
+
+ Check file in 
+ [[file:pics/lxi-output.png]]
+
+ #+BEGIN_SRC bash :eval no-export :results output
+ lxi screenshot -a $(lxi discover | grep 'DS1104Z' | grep -oE '192\.[0-9]+\.[0-9]+\.[0-9]+') 
+ #+END_SRC
+
+ #+RESULTS:
+ : Saved screenshot image to screenshot_192.168.120.56_2022-10-06T10:53:24.png
+
+
+** Oscilloscpe screenshot using OS-tools (~netcat~)
+
+  Set environment variable ~SKOOPPI~ to the IP-address of the
+  oscilloscope.
+#+BEGIN_SRC bash :eval no-export :results output :exports results
+echo export SKOOPPI=$SKOOPPI
+#+END_SRC
+
+  https://www.theimpossiblecode.com/blog/rigol-ds1054z-screen-capture-linux/.
+
+  #+BEGIN_SRC bash :eval no-export :results output
+  ping -c 2 $SKOOPPI
+  #+END_SRC
+
+  #+RESULTS:
+  : PING rigol (192.168.1.15) 56(84) bytes of data.
+  : 64 bytes from rigol (192.168.1.15): icmp_seq=1 ttl=255 time=0.365 ms
+  : 64 bytes from rigol (192.168.1.15): icmp_seq=2 ttl=255 time=0.200 ms
+  : 
+  : --- rigol ping statistics ---
+  : 2 packets transmitted, 2 received, 0% packet loss, time 1011ms
+  : rtt min/avg/max/mdev = 0.200/0.282/0.365/0.084 ms
+
+  #+BEGIN_SRC bash :eval no-export :results output file
+    IMG=pics/tst.bmp
+    echo ':display:data?' |  netcat -w 20 -N $SKOOPPI 5555 | tail -c +12 > $IMG
+    echo -n  $IMG
+  #+END_SRC
+
+  #+RESULTS:
+  [[file:pics/tst.bmp]]
+
+  Option ~-N~ for 'shutdown(2) the network socket after EOF on the
+  input.'. Option ~-w~ for  'idle timeout'
+  #+BEGIN_SRC bash :eval no-export :results output
+  echo 'ACQ:TYPE?' |  netcat -w 20 -N $SKOOPPI 5555
+  #+END_SRC
+
+  #+RESULTS:
+  : NORM
+
+  
+  #+BEGIN_SRC bash :eval no-export :results output :exports both
+  echo '*IDN?' |  netcat -q 10 $SKOOPPI 5555
+  #+END_SRC
+
+  #+RESULTS:
+  : RIGOL TECHNOLOGIES,MSO1104Z,DS1ZC210200015,00.04.04.SP4
+
+
+  #+BEGIN_SRC bash :eval no-export :results output :exports both
+  echo '*IDN?' |  netcat -w 20 -N $SKOOPPI 5555
+  #+END_SRC
+
+  
+
+  #+RESULTS:
+  : RIGOL TECHNOLOGIES,MSO1104Z,DS1ZC210200015,00.04.04.SP4
+
+
+  #+RESULTS:
+
+  #+BEGIN_SRC bash :eval no-export :results output :exports both
+  lxi discover  
+  #+END_SRC
+
+  #+RESULTS:
+  #+begin_example
+  Searching for LXI devices - please wait...
+
+  Broadcasting on interface lo
+  Broadcasting on interface eno1
+    Found "RIGOL TECHNOLOGIES,MSO1104Z,DS1ZC210200015,00.04.04.SP4" on address 192.168.1.15
+  Broadcasting on interface wlo1
+    Found "RIGOL TECHNOLOGIES,MSO1104Z,DS1ZC210200015,00.04.04.SP4" on address 192.168.1.15
+  Broadcasting on interface vmnet1
+  Broadcasting on interface vmnet8
+  Broadcasting on interface docker0
+  Broadcasting on interface br-f641245a85b4
+  Broadcasting on interface br-b912ddcdd2b5
+
+  Found 2 devices
+
+  #+end_example
+
+  
+
+
+
+
+* Fin                                                              :noexport:
+
+
+** Emacs variables
+
+   We set some file local variables for emacs users.
+   #+RESULTS:
+
+   # Local Variables:
+   # org-confirm-babel-evaluate: nil
+   # eval: (add-hook 'before-save-hook 'org-make-toc)
+   # End:
+   #
+
+
+
