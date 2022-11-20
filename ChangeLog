@@ -1,3 +1,8 @@
+2022-11-20  jj  <jj@santtu>
+
+	* pc-admin/hack310g8-admin.org (Manage ~hack310g8~ pc): ~Manage
+	git repo~ refractored to ~Setup git repo~
+
 2022-10-13  jj  <jj@santtu>
 
 	* pc-admin/hack310g8-admin.org (Synchronize local repo with remote

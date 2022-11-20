@@ -16,10 +16,13 @@ Emacs org -file for administering ~hack310g8~ PC in electronics room.
     - [[#add-bin-to-path][Add bin to PATH]]
     - [[#create-some-directories][Create some directories]]
     - [[#add-ssh-alias-names][Add .ssh alias names]]
+  - [[#setup-git-repo][Setup git repo]]
+    - [[#clone-repo-githubcomhelsinkihacklabelectronics][Clone repo github.com/HelsinkiHacklab/Electronics]]
+    - [[#set-maintenance-identity-on-git-repo][Set maintenance identity on git repo]]
+    - [[#add-remote-git-hacklab-git-repo][Add remote git-hacklab git repo]]
   - [[#manage-git-repo][Manage git repo]]
     - [[#pull-changes-from-origin][Pull changes from origin]]
     - [[#show-git-status][Show git status]]
-    - [[#set-identity-on-git-repo-before-pushing][Set identity on git repo before pushing]]
     - [[#prepare-for-push-operation][Prepare for push operation]]
     - [[#push-change-to-remote-git-hacklab][Push change to remote git-hacklab]]
   - [[#install-packages][Install packages]]
@@ -39,7 +42,6 @@ Emacs org -file for administering ~hack310g8~ PC in electronics room.
     - [[#check-os-version][Check OS version]]
 - [[#issues][Issues]]
   - [[#etoolsh-exe-glxgears---error-libgl-error-failed-to-load-driver-swrast-resolved][etool.sh exe glxgears - error 'libGL error: failed to load driver: swrast' (resolved)]]
-  - [[#emacs-variables][Emacs variables]]
 :END:
 
 
@@ -285,11 +287,9 @@ echo GITHUB_IDENTITY=$GITHUB_IDENTITY | sed -E 's!=(.*)!=xxxxxx2!'
 
 **** Add ssh -identity ~GITHUB_IDENTITY~
 
-***** Add ssh alias ~git-hacklab~ for -identity ~GITHUB_IDENTITY~ to ~.ssh/config~
-
- Add ssh -identity ~GITHUB_IDENTITY~ to ~.ssh/config~ with alias name
- ~git-hacklab~. Existing alias definifiton is removed, if its
- exists. Original version is saved into ~.ssh/config.old~.
+Add ssh -identity ~GITHUB_IDENTITY~ to ~.ssh/config~ with alias name
+~git-hacklab~. Existing alias definifiton is removed, if its
+exists. Original version is saved into ~.ssh/config.old~.
 
 
  #+BEGIN_SRC bash :eval no-export :results output
@@ -314,7 +314,24 @@ echo GITHUB_IDENTITY=$GITHUB_IDENTITY | sed -E 's!=(.*)!=xxxxxx2!'
  : >      IdentityFile /home/hacklab/mnt/.ssh/id_jukka358
 
 
-***** Add remote ~git-hacklab~ git repo 
+
+** Setup git repo
+
+*** Clone repo ~github.com/HelsinkiHacklab/Electronics~
+
+#+BEGIN_SRC bash :eval no-export :results output
+git clone  https://github.com/HelsinkiHacklab/Electronics
+#+END_SRC
+
+*** TODO Set maintenance identity on git repo
+
+#+BEGIN_SRC bash :eval no-export :results output
+git config user.email "jukkaj@example.com"
+git config --global user.name "jukkaj"
+#+END_SRC
+
+
+*** Add remote ~git-hacklab~ git repo 
 
  Show remotes before changes
  #+BEGIN_SRC bash :eval no-export :results output :exports both
@@ -328,7 +345,10 @@ echo GITHUB_IDENTITY=$GITHUB_IDENTITY | sed -E 's!=(.*)!=xxxxxx2!'
  : origin	https://github.com/HelsinkiHacklab/Electronics (push)
 
 
- Adding remote ~git-hacklab~
+ Add remote ~git-hacklab~ using ssh alias
+ ~git-hacklab:HelsinkiHacklab/Electronics~
+
+ *NB*: ssh alias name ~git-hacklab~ configured in =~/.ssh/config=.
 
  #+BEGIN_SRC bash :eval no-export :results output
  git remote add git-hacklab git-hacklab:HelsinkiHacklab/Electronics
@@ -350,6 +370,21 @@ echo GITHUB_IDENTITY=$GITHUB_IDENTITY | sed -E 's!=(.*)!=xxxxxx2!'
 
 
 
+
+We are using remote ~git-hacklab~ to push changes to github. Show remotes:
+
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+git remote -v
+#+END_SRC
+
+#+RESULTS:
+: git-hacklab	git-hacklab:HelsinkiHacklab/Electronics (fetch)
+: git-hacklab	git-hacklab:HelsinkiHacklab/Electronics (push)
+: origin	https://github.com/HelsinkiHacklab/Electronics (fetch)
+: origin	https://github.com/HelsinkiHacklab/Electronics (push)
+
+
+ 
 ** Manage git repo
 
 *** Pull changes from ~origin~
@@ -411,30 +446,6 @@ Untracked files:
 no changes added to commit (use "git add" and/or "git commit -a")
 #+end_example
 
-
-*** Set identity on git repo before pushing
-
-#+BEGIN_SRC bash :eval no-export :results output
-git config user.email "jukkaj@example.com"
-git config --global user.name "jukkaj"
-#+END_SRC
-
-#+RESULTS:
-
-
-
-
-We are using remote ~git-hacklab~ to push changes to github. Show remotes:
-
-#+BEGIN_SRC bash :eval no-export :results output :exports both
-git remote -v
-#+END_SRC
-
-#+RESULTS:
-: git-hacklab	git-hacklab:HelsinkiHacklab/Electronics (fetch)
-: git-hacklab	git-hacklab:HelsinkiHacklab/Electronics (push)
-: origin	https://github.com/HelsinkiHacklab/Electronics (fetch)
-: origin	https://github.com/HelsinkiHacklab/Electronics (push)
 
 
 *** Prepare for push operation
