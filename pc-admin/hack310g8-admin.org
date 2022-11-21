@@ -37,11 +37,16 @@ Emacs org -file for administering ~hack310g8~ PC in electronics room.
   - [[#other][Other]]
     - [[#openscan-binreftscad][OpenScan ~/bin/reft.scad]]
     - [[#script--binetoolsh--directory][Script  bin/etool.sh -directory]]
-  - [[#usefull-admin-commands][Usefull admin commands]]
+  - [[#administer-docker][Administer docker]]
+    - [[#list-docker-images][List docker images]]
+    - [[#pull-docker-image-marcus2002etooletool_tag][Pull docker image marcus2002/etool/$ETOOL_TAG]]
+    - [[#change-etool_tag-in-binetoolsh][Change $ETOOL_TAG in ~/bin/etool.sh]]
+  - [[#other-usefull-admin-commands][Other usefull admin commands]]
     - [[#hostname][hostname]]
     - [[#check-os-version][Check OS version]]
 - [[#issues][Issues]]
   - [[#etoolsh-exe-glxgears---error-libgl-error-failed-to-load-driver-swrast-resolved][etool.sh exe glxgears - error 'libGL error: failed to load driver: swrast' (resolved)]]
+  - [[#emacs-variables][Emacs variables]]
 :END:
 
 
@@ -323,12 +328,14 @@ exists. Original version is saved into ~.ssh/config.old~.
 git clone  https://github.com/HelsinkiHacklab/Electronics
 #+END_SRC
 
-*** TODO Set maintenance identity on git repo
+*** Set maintenance identity on git repo
 
 #+BEGIN_SRC bash :eval no-export :results output
 git config user.email "jukkaj@example.com"
-git config --global user.name "jukkaj"
+git config user.name "jukkaj"
 #+END_SRC
+
+#+RESULTS:
 
 
 *** Add remote ~git-hacklab~ git repo 
@@ -464,12 +471,12 @@ lsblk
 #+begin_example
 NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
 loop0    7:0    0  63,2M  1 loop /snap/core20/1695
-loop1    7:1    0  63,2M  1 loop /snap/core20/1623
-loop2    7:2    0  72,8M  1 loop /snap/core22/310
-loop3    7:3    0 140,3M  1 loop /snap/lxi-tools/1517
-loop4    7:4    0  33,8M  1 loop /snap/lxi-tools/1577
+loop1    7:1    0  72,8M  1 loop /snap/core22/310
+loop2    7:2    0  33,8M  1 loop /snap/lxi-tools/1577
+loop3    7:3    0  63,2M  1 loop /snap/core20/1623
+loop4    7:4    0 140,3M  1 loop /snap/lxi-tools/1517
+loop5    7:5    0  49,7M  1 loop /snap/snapd/17576
 loop6    7:6    0    48M  1 loop /snap/snapd/17336
-loop7    7:7    0  49,7M  1 loop /snap/snapd/17576
 sda      8:0    0 931,5G  0 disk 
 ├─sda1   8:1    0   512M  0 part /boot/efi
 ├─sda2   8:2    0     1K  0 part 
@@ -477,7 +484,7 @@ sda      8:0    0 931,5G  0 disk
 sdb      8:16   0 931,5G  0 disk 
 └─sdb1   8:17   0 931,5G  0 part /data/SATA1
 sdc      8:32   1   476M  0 disk 
-└─sdc1   8:33   1   476M  0 part /home/hacklab/mnt
+└─sdc1   8:33   1   476M  0 part /media/hacklab/JJ
 sr0     11:0    1  1024M  0 rom  
 #+end_example
 
@@ -2477,7 +2484,115 @@ Reading state information... 0%Reading state information... 0%Reading state 
  #+end_example
 
 
-** Usefull admin commands
+** Administer docker
+:PROPERTIES:
+:header-args+: :var  ETOOL_TAG="7"
+:END:
+
+*** List docker images
+
+#+name: docker-image-ls
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+docker image ls
+#+END_SRC
+
+#+RESULTS: docker-image-ls
+: REPOSITORY          TAG       IMAGE ID       CREATED         SIZE
+: marcus2002/etool    7         506b1d5e8b94   3 months ago    4.33GB
+: marcus2002/ebench   1         3727289e40bd   6 months ago    1.54GB
+: marcus2002/etool    6         3619e013f458   7 months ago    4.33GB
+: hello-world         latest    feb5d9fea6a5   14 months ago   13.3kB
+
+
+*** Pull docker image ~marcus2002/etool/$ETOOL_TAG~
+
+Tag number of ~marcus2002/etool~ Docker image to pull from Docker Hub
+#+BEGIN_SRC bash :eval no-export :results output :exports results
+echo export ETOOL_TAG=$ETOOL_TAG
+#+END_SRC
+
+#+RESULTS:
+: export ETOOL_TAG=6
+
+Pull  image  ~marcus2002/etool:$ETOOL_TAG~ from Docker Hub
+#+BEGIN_SRC bash :eval no-export :results output
+docker pull marcus2002/etool:$ETOOL_TAG
+#+END_SRC
+
+#+RESULTS:
+: 7: Pulling from marcus2002/etool
+: Digest: sha256:8150eb52eb17bf79acf92d8f47bf5e9ff7e0e46fb0d69fa704446388efeb36ee
+: Status: Image is up to date for marcus2002/etool:7
+: docker.io/marcus2002/etool:7
+
+
+List docker images pulled, and expect to see docker image
+~marcus2002/etool/$ETOOL_TAG~ listed.
+#+call: docker-image-ls()
+
+#+RESULTS:
+: REPOSITORY          TAG       IMAGE ID       CREATED         SIZE
+: marcus2002/etool    7         506b1d5e8b94   3 months ago    4.33GB
+: marcus2002/ebench   1         3727289e40bd   6 months ago    1.54GB
+: marcus2002/etool    6         3619e013f458   7 months ago    4.33GB
+: hello-world         latest    feb5d9fea6a5   14 months ago   13.3kB
+
+*** Change $ETOOL_TAG in =~/bin/etool.sh=
+
+Etool scripts in  =~/bin= -directory:
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+  ls -ltr ~/bin/etool.sh*
+#+END_SRC
+
+#+RESULTS:
+: -rwxrwxr-x 1 hacklab hacklab 361 May  2  2022 /home/hacklab/bin/etool.sh~
+: -rwxrwxr-x 1 hacklab hacklab 361 Aug 29 12:02 /home/hacklab/bin/etool.sh.old
+: -rwxrwxr-x 1 hacklab hacklab 394 Nov 21 11:04 /home/hacklab/bin/etool.sh
+
+
+Run 
+#+name: etool-current-version
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+grep 'TAG' ~/bin/etool.sh
+#+END_SRC
+
+to see value of shell variable ~TAG~ in =~/bin/etool.sh= defining docker image
+version used:
+#+RESULTS: etool-current-version
+: TAG=6 # changed on 2022-11-21-11:04:23
+: ETOOL="docker run --rm --user $(id -u):$(id -g) -e DISPLAY=unix:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v $ETOOL_DIR:/etool marcus2002/etool:$TAG"
+
+
+
+We are going to set tag number for ~marcus2002/etool~ Docker image
+#+BEGIN_SRC bash :eval no-export :results output :exports results
+echo export ETOOL_TAG=$ETOOL_TAG
+#+END_SRC
+
+#+RESULTS:
+: export ETOOL_TAG=7
+
+Set variable ~TAG=$ETOOL_TAG~ in =~/bin/etool.sh= -script. Original
+version retained in =~/bin/etool.sh.old=.
+#+BEGIN_SRC bash :eval no-export :results output
+FILE=~/bin/etool.sh
+echo ETOOL_TAG=$ETOOL_TAG
+sed -i.old -e "s!TAG=.*!TAG=$ETOOL_TAG # changed on $(date +'%F-%T')!"  $FILE
+#+END_SRC
+
+#+RESULTS:
+: ETOOL_TAG=7
+
+Validate that shell variable ~TAG~ has the correct value
+
+#+call: etool-current-version()
+
+#+RESULTS:
+: TAG=7 # changed on 2022-11-21-11:12:40
+: ETOOL="docker run --rm --user $(id -u):$(id -g) -e DISPLAY=unix:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v $ETOOL_DIR:/etool marcus2002/etool:$TAG"
+
+
+** Other usefull admin commands
 
 *** hostname
 
@@ -2500,6 +2615,7 @@ Reading state information... 0%Reading state information... 0%Reading state 
  : Description:	Linux Mint 20.3
  : Release:	20.3
  : Codename:	una
+
 
 
 

@@ -16,18 +16,20 @@
 :CONTENTS:
 - [[#hacklab-helsinki-e-room--automation-helpers][Hacklab Helsinki E-room  Automation Helpers]]
   - [[#oscilloscpe-discovery-and-screenshot-using-lxi--tool][Oscilloscpe discovery and screenshot using lxi -tool]]
-  - [[#oscilloscpe-screenshot-using-os-tools-netcat][Oscilloscpe screenshot using OS-tools (netcat)]]
+  - [[#oscilloscope-lxi-screenshot-using-os-tools-netcat][Oscilloscope LXI screenshot using OS-tools (netcat)]]
+  - [[#emacs-variables][Emacs variables]]
 :END:
 
 ** Oscilloscpe discovery and screenshot using ~lxi~ -tool
 
  Run ~lxi discover~ to search for LXI compatible machines accessible
  from this PC.
- #+BEGIN_SRC bash :eval no-export :results output
+ #+name: lxi-discover
+ #+BEGIN_SRC bash :eval no-export :results output :exports both
  lxi discover
  #+END_SRC
 
- #+RESULTS:
+ #+RESULTS: lxi-discover
  : Searching for LXI devices - please wait...
  : 
  : Broadcasting on interface lo
@@ -38,26 +40,18 @@
  : Found 1 device 
  : 
 
-
- #+BEGIN_SRC bash :eval no-export :results output :exports none
-   # Just testing regexp - not exported
-   echo 'Found "RIGOL TECHNOLOGIES,DS1104Z,DS1ZB192000144,00.04.04.SP3" on address 192.168.120.56' | grep -oE '192\.[0-9]+\.[0-9]+\.[0-9]+' 
- #+END_SRC
-
- #+RESULTS:
- : 192.168.120.56
-
- One liner returning IP-address using ~lxi~ tool
- #+BEGIN_SRC bash :eval no-export :results output
+ One liner to extract IP-address from  ~lxi~ tool output:
+ #+name: lxi-ip
+ #+BEGIN_SRC bash :eval no-export :results output :exports both
  lxi discover | grep 'DS1104Z' | grep -oE '192\.[0-9]+\.[0-9]+\.[0-9]+' 
  #+END_SRC
 
- #+RESULTS:
+ #+RESULTS: lxi-ip
  : 192.168.120.56
 
 
- #+BEGIN_SRC bash :eval no-export :results output
- SKOOPPI=$(lxi discover | grep 'DS1104Z' | grep -oE '192\.[0-9]+\.[0-9]+\.[0-9]+')
+ #+BEGIN_SRC bash :eval no-export :results output :var SKOOPPI=lxi-ip
+ # SKOOPPI=$(lxi discover | grep 'DS1104Z' | grep -oE '192\.[0-9]+\.[0-9]+\.[0-9]+')
  echo Screenshot for SKOOPPI=$SKOOPPI
  lxi screenshot -a $SKOOPPI pics/lxi-output.png
  #+END_SRC
@@ -67,51 +61,54 @@
  : Saved screenshot image to pics/lxi-output.png
 
 
- Check file in 
+ Sceenshot taken:
  [[file:pics/lxi-output.png]]
 
- #+BEGIN_SRC bash :eval no-export :results output
- lxi screenshot -a $(lxi discover | grep 'DS1104Z' | grep -oE '192\.[0-9]+\.[0-9]+\.[0-9]+') 
- #+END_SRC
 
- #+RESULTS:
- : Saved screenshot image to screenshot_192.168.120.56_2022-10-06T10:53:24.png
-
-
-** Oscilloscpe screenshot using OS-tools (~netcat~)
+** Oscilloscope LXI screenshot using OS-tools (~netcat~)
 
   Set environment variable ~SKOOPPI~ to the IP-address of the
   oscilloscope.
-#+BEGIN_SRC bash :eval no-export :results output :exports results
+#+BEGIN_SRC bash :eval no-export :results output :exports results :var SKOOPPI=lxi-ip
 echo export SKOOPPI=$SKOOPPI
 #+END_SRC
 
-  https://www.theimpossiblecode.com/blog/rigol-ds1054z-screen-capture-linux/.
+#+RESULTS:
+: export SKOOPPI=192.168.120.56
 
-  #+BEGIN_SRC bash :eval no-export :results output
+  Ping IP-address 
+  #+BEGIN_SRC bash :eval no-export :results output :var SKOOPPI=lxi-ip
   ping -c 2 $SKOOPPI
   #+END_SRC
 
   #+RESULTS:
-  : PING rigol (192.168.1.15) 56(84) bytes of data.
-  : 64 bytes from rigol (192.168.1.15): icmp_seq=1 ttl=255 time=0.365 ms
-  : 64 bytes from rigol (192.168.1.15): icmp_seq=2 ttl=255 time=0.200 ms
+  : PING 192.168.120.56 (192.168.120.56) 56(84) bytes of data.
+  : 64 bytes from 192.168.120.56: icmp_seq=1 ttl=255 time=0.273 ms
+  : 64 bytes from 192.168.120.56: icmp_seq=2 ttl=255 time=0.290 ms
   : 
-  : --- rigol ping statistics ---
-  : 2 packets transmitted, 2 received, 0% packet loss, time 1011ms
-  : rtt min/avg/max/mdev = 0.200/0.282/0.365/0.084 ms
+  : --- 192.168.120.56 ping statistics ---
+  : 2 packets transmitted, 2 received, 0% packet loss, time 1020ms
+  : rtt min/avg/max/mdev = 0.273/0.281/0.290/0.008 ms
 
-  #+BEGIN_SRC bash :eval no-export :results output file
-    IMG=pics/tst.bmp
+  Take a screenshot using ~netcat~ using the idea presented in
+  https://www.theimpossiblecode.com/blog/rigol-ds1054z-screen-capture-linux/.
+
+  Options passed to ~netcat~:
+  - ~-N~: 'shutdown(2) the network socket after EOF on the
+  input.'. 
+  - ~-w~: idle timeout
+
+  #+BEGIN_SRC bash :eval no-export :results output file :var SKOOPPI=lxi-ip :expors both
+    IMG=pics/netcat-example.bmp
     echo ':display:data?' |  netcat -w 20 -N $SKOOPPI 5555 | tail -c +12 > $IMG
     echo -n  $IMG
   #+END_SRC
 
   #+RESULTS:
-  [[file:pics/tst.bmp]]
+  [[file:pics/netcat-example.bmp]]
 
-  Option ~-N~ for 'shutdown(2) the network socket after EOF on the
-  input.'. Option ~-w~ for  'idle timeout'
+
+
   #+BEGIN_SRC bash :eval no-export :results output
   echo 'ACQ:TYPE?' |  netcat -w 20 -N $SKOOPPI 5555
   #+END_SRC
@@ -136,34 +133,6 @@ echo export SKOOPPI=$SKOOPPI
 
   #+RESULTS:
   : RIGOL TECHNOLOGIES,MSO1104Z,DS1ZC210200015,00.04.04.SP4
-
-
-  #+RESULTS:
-
-  #+BEGIN_SRC bash :eval no-export :results output :exports both
-  lxi discover  
-  #+END_SRC
-
-  #+RESULTS:
-  #+begin_example
-  Searching for LXI devices - please wait...
-
-  Broadcasting on interface lo
-  Broadcasting on interface eno1
-    Found "RIGOL TECHNOLOGIES,MSO1104Z,DS1ZC210200015,00.04.04.SP4" on address 192.168.1.15
-  Broadcasting on interface wlo1
-    Found "RIGOL TECHNOLOGIES,MSO1104Z,DS1ZC210200015,00.04.04.SP4" on address 192.168.1.15
-  Broadcasting on interface vmnet1
-  Broadcasting on interface vmnet8
-  Broadcasting on interface docker0
-  Broadcasting on interface br-f641245a85b4
-  Broadcasting on interface br-b912ddcdd2b5
-
-  Found 2 devices
-
-  #+end_example
-
-  
 
 
 

@@ -1,3 +1,11 @@
+2022-11-21  hacklab  <hacklab@hack310g8>
+
+	* pc-admin/hack310g8-admin.org: Set maintenance identity on git
+	repo: removed --global option
+	- Docker adamin added
+
+	* .gitignore: ignore emacs backup files (files starting with #-char)
+
 2022-11-20  jj  <jj@santtu>
 
 	* pc-admin/hack310g8-admin.org (Manage ~hack310g8~ pc): ~Manage
