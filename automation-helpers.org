@@ -98,7 +98,7 @@ echo export SKOOPPI=$SKOOPPI
   - ~-N~: 'shutdown(2) the network socket after EOF on the input.'.
   - ~-w~: idle timeout
 
-  #+BEGIN_SRC bash :eval no-export :results output file :var SKOOPPI=lxi-ip :expors both
+  #+BEGIN_SRC bash :eval no-export :results output file :var SKOOPPI=lxi-ip :exports both
     IMG=pics/netcat-example.bmp
     echo ':display:data?' |  netcat -w 20 -N $SKOOPPI 5555 | tail -c +12 > $IMG
     echo -n  $IMG
