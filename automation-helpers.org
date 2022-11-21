@@ -109,12 +109,13 @@ echo export SKOOPPI=$SKOOPPI
 
 ** Misc lxi commands sent using ~netcat~
 
-  #+BEGIN_SRC bash :eval no-export :results output :var SKOOPPI=lxi-ip
+  #+BEGIN_SRC bash :eval no-export :results output :var SKOOPPI=lxi-ip :exports both
   echo 'ACQ:TYPE?' |  netcat -w 20 -N $SKOOPPI 5555
   #+END_SRC
 
   #+RESULTS:
   : HRES
+
   
   #+BEGIN_SRC bash :eval no-export :results output :exports both :var SKOOPPI=lxi-ip
   echo '*IDN?' |  netcat -q 10 $SKOOPPI 5555
