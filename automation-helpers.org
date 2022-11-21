@@ -17,7 +17,6 @@
 - [[#hacklab-helsinki-e-room--automation-helpers][Hacklab Helsinki E-room  Automation Helpers]]
   - [[#oscilloscpe-discovery-and-screenshot-using-lxi--tool][Oscilloscpe discovery and screenshot using lxi -tool]]
   - [[#oscilloscope-lxi-screenshot-using-os-tools-netcat][Oscilloscope LXI screenshot using OS-tools (netcat)]]
-  - [[#emacs-variables][Emacs variables]]
 :END:
 
 ** Oscilloscpe discovery and screenshot using ~lxi~ -tool
@@ -140,7 +139,7 @@ echo export SKOOPPI=$SKOOPPI
 * Fin                                                              :noexport:
 
 
-** Emacs variables
+** Emacs variables                                                 :noexport:
 
    We set some file local variables for emacs users.
    #+RESULTS:
