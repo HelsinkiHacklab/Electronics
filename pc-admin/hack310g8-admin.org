@@ -2486,7 +2486,7 @@ Reading state information... 0%Reading state information... 0%Reading state 
 
 ** Administer docker
 :PROPERTIES:
-:header-args+: :var  ETOOL_TAG="7"
+:header-args+: :var  ETOOL_TAG="8"
 :END:
 
 *** List docker images
@@ -2499,7 +2499,7 @@ docker image ls
 #+RESULTS: docker-image-ls
 : REPOSITORY          TAG       IMAGE ID       CREATED         SIZE
 : marcus2002/etool    7         506b1d5e8b94   3 months ago    4.33GB
-: marcus2002/ebench   1         3727289e40bd   6 months ago    1.54GB
+: marcus2002/ebench   1         3727289e40bd   7 months ago    1.54GB
 : marcus2002/etool    6         3619e013f458   7 months ago    4.33GB
 : hello-world         latest    feb5d9fea6a5   14 months ago   13.3kB
 
@@ -2512,18 +2512,65 @@ echo export ETOOL_TAG=$ETOOL_TAG
 #+END_SRC
 
 #+RESULTS:
-: export ETOOL_TAG=6
+: export ETOOL_TAG=8
 
 Pull  image  ~marcus2002/etool:$ETOOL_TAG~ from Docker Hub
-#+BEGIN_SRC bash :eval no-export :results output
+#+BEGIN_SRC bash :eval no-export :results output :exports code
 docker pull marcus2002/etool:$ETOOL_TAG
 #+END_SRC
 
 #+RESULTS:
-: 7: Pulling from marcus2002/etool
-: Digest: sha256:8150eb52eb17bf79acf92d8f47bf5e9ff7e0e46fb0d69fa704446388efeb36ee
-: Status: Image is up to date for marcus2002/etool:7
-: docker.io/marcus2002/etool:7
+#+begin_example
+8: Pulling from marcus2002/etool
+23884877105a: Already exists
+bc38caa0f5b9: Already exists
+2910811b6c42: Already exists
+36505266dcc6: Already exists
+09078f1dbd1f: Already exists
+c68e897da802: Already exists
+932914a4bdba: Already exists
+da9dbf43052b: Already exists
+f2e70a02ad10: Already exists
+4870e1fccbd6: Already exists
+522925788138: Already exists
+5c6020548a8e: Already exists
+b25b389cb0eb: Already exists
+77e2ba063739: Already exists
+71d92a46b2c8: Already exists
+b87ecf8d998f: Already exists
+843160f00df3: Already exists
+b198f1be9911: Already exists
+dcb77c92f7c6: Already exists
+7baf73607699: Already exists
+52c9580ffe1b: Already exists
+fb5a24dc5700: Pulling fs layer
+ef0a383013d7: Pulling fs layer
+488c5c5c025e: Pulling fs layer
+427efe4e5ead: Pulling fs layer
+f1831f29f288: Pulling fs layer
+392ee1a85e7e: Pulling fs layer
+427efe4e5ead: Waiting
+f1831f29f288: Waiting
+392ee1a85e7e: Waiting
+ef0a383013d7: Download complete
+488c5c5c025e: Verifying Checksum
+488c5c5c025e: Download complete
+fb5a24dc5700: Verifying Checksum
+fb5a24dc5700: Download complete
+fb5a24dc5700: Pull complete
+427efe4e5ead: Verifying Checksum
+f1831f29f288: Verifying Checksum
+f1831f29f288: Download complete
+392ee1a85e7e: Download complete
+ef0a383013d7: Pull complete
+488c5c5c025e: Pull complete
+427efe4e5ead: Pull complete
+f1831f29f288: Pull complete
+392ee1a85e7e: Pull complete
+Digest: sha256:6767a493aeae318b598dee98891cd4a1e6ed1f715de705aabfea201665e914a3
+Status: Downloaded newer image for marcus2002/etool:8
+docker.io/marcus2002/etool:8
+#+end_example
 
 
 List docker images pulled, and expect to see docker image
@@ -2532,10 +2579,12 @@ List docker images pulled, and expect to see docker image
 
 #+RESULTS:
 : REPOSITORY          TAG       IMAGE ID       CREATED         SIZE
+: marcus2002/etool    8         80368670711e   2 months ago    4.33GB
 : marcus2002/etool    7         506b1d5e8b94   3 months ago    4.33GB
-: marcus2002/ebench   1         3727289e40bd   6 months ago    1.54GB
+: marcus2002/ebench   1         3727289e40bd   7 months ago    1.54GB
 : marcus2002/etool    6         3619e013f458   7 months ago    4.33GB
 : hello-world         latest    feb5d9fea6a5   14 months ago   13.3kB
+
 
 *** Change $ETOOL_TAG in =~/bin/etool.sh=
 
@@ -2546,8 +2595,8 @@ Etool scripts in  =~/bin= -directory:
 
 #+RESULTS:
 : -rwxrwxr-x 1 hacklab hacklab 361 May  2  2022 /home/hacklab/bin/etool.sh~
-: -rwxrwxr-x 1 hacklab hacklab 361 Aug 29 12:02 /home/hacklab/bin/etool.sh.old
-: -rwxrwxr-x 1 hacklab hacklab 394 Nov 21 11:04 /home/hacklab/bin/etool.sh
+: -rwxrwxr-x 1 hacklab hacklab 394 Nov 21 11:04 /home/hacklab/bin/etool.sh.old
+: -rwxrwxr-x 1 hacklab hacklab 394 Nov 21 11:12 /home/hacklab/bin/etool.sh
 
 
 Run 
@@ -2559,7 +2608,7 @@ grep 'TAG' ~/bin/etool.sh
 to see value of shell variable ~TAG~ in =~/bin/etool.sh= defining docker image
 version used:
 #+RESULTS: etool-current-version
-: TAG=6 # changed on 2022-11-21-11:04:23
+: TAG=7 # changed on 2022-11-21-11:12:40
 : ETOOL="docker run --rm --user $(id -u):$(id -g) -e DISPLAY=unix:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v $ETOOL_DIR:/etool marcus2002/etool:$TAG"
 
 
@@ -2570,7 +2619,7 @@ echo export ETOOL_TAG=$ETOOL_TAG
 #+END_SRC
 
 #+RESULTS:
-: export ETOOL_TAG=7
+: export ETOOL_TAG=8
 
 Set variable ~TAG=$ETOOL_TAG~ in =~/bin/etool.sh= -script. Original
 version retained in =~/bin/etool.sh.old=.
@@ -2581,14 +2630,14 @@ sed -i.old -e "s!TAG=.*!TAG=$ETOOL_TAG # changed on $(date +'%F-%T')!"  $FILE
 #+END_SRC
 
 #+RESULTS:
-: ETOOL_TAG=7
+: ETOOL_TAG=8
 
 Validate that shell variable ~TAG~ has the correct value
 
 #+call: etool-current-version()
 
 #+RESULTS:
-: TAG=7 # changed on 2022-11-21-11:12:40
+: TAG=8 # changed on 2022-11-29-15:21:45
 : ETOOL="docker run --rm --user $(id -u):$(id -g) -e DISPLAY=unix:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v $ETOOL_DIR:/etool marcus2002/etool:$TAG"
 
 
