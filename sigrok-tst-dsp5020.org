@@ -328,7 +328,7 @@ A simple script for controlling DSP5020:
 - configuring serial device where DPS is attached to (default /dev/ttyUSB0)
 - turning DPS on/off
 - setting target voltage
-- waiting for given time (to create ramp)
+- waiting for given time (to create /stepwise/ ramp)
 
 Save the following code into a file ~dps5020.sh~ in a PATH-directory,
 and make it executable
