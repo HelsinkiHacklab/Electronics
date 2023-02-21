@@ -466,7 +466,7 @@ dps5020.sh off voltage 0 on voltage 1 sleep 5 voltage 2.5 sleep 5  off
 * Fin                                                              :noexport:
 
 
-** Emacs variables
+
 
    #+RESULTS:
 
@@ -480,11 +480,11 @@ dps5020.sh off voltage 0 on voltage 1 sleep 5 voltage 2.5 sleep 5  off
    # eval: (add-hook 'before-save-hook 'time-stamp)
    # org-confirm-babel-evaluate: nil
    # End:
-   #
+
    # Muuta
    # org-cdlatex-mode: t
    # eval: (cdlatex-mode)
-   #
+
    # Local ebib:
    # org-ref-default-bibliography: "./sigrok-tst-dsp5020.bib"
    # org-ref-bibliography-notes: "./sigrok-tst-dsp5020-notes.org"
