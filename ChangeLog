@@ -1,6 +1,9 @@
 2023-02-21  jj  <jj@eero>
 
 	* sigrok-tst-dsp5020.org: added
+	(~dps5020.sh~: script created): volta usage fixed
+	(Use ~sigrok-cli~ to control DPS5020 Digital Power Supply):
+	Clarified stepwise ramp
 
 2022-11-29  hacklab  <hacklab@hack310g8>
 

@@ -17,7 +17,7 @@ Digital Power Supply. The steps used in this demonstations are:
 1) connect DPS5020 using USB cable to PC
 2) use ~sigrok-cli~ command line tool to control DPS5020
 3) use a bash script (~dps5020.sh~) to wrap ~sigrok-cli~ to make it
-   easier to implement voltage ramp using DPS5020
+   easier to implement voltage stepwise ramp using DPS5020
 
 
 It is assumed that sigrok package has already been installed on the
@@ -362,7 +362,7 @@ and make it executable
      echo "- sleep <secs>    : delay of secs <secs> seconds"
      echo "- on              : turn DPS on"
      echo "- off             : turn DPS off"
-     echo "- voltage         : set DPS volatage target"
+     echo "- voltage <volt>  : set DPS voltage target to <volt>"
    
      exit 1
   }
@@ -441,7 +441,7 @@ and make it executable
 
 *** ~dps5020.sh~: example use  
 
-Example of using the script ~dps5020.sh~ to ramp voltage from 0 to 1V
+Example of using the script ~dps5020.sh~ to stepwise ramp voltage from 0 to 1V
 (5 secs) to 2.5V (5 secs). After the ramp the device is turned off.
 
 #+BEGIN_SRC bash :eval no-export :results output :exports both
