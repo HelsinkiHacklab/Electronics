@@ -9,11 +9,11 @@
 
 * Use ~sigrok-cli~ to control DPS5020 Digital Power Supply
 :PROPERTIES:
-:TOC:  :include all     :depth 2
+:TOC:   :include all     :depth 2 
 :END:
 
-This document demonstrates using ~sigrok-cli~ to DPS5020 Digital Power
-Supply. The steps used in this demonstations are:
+This document demonstrates using ~sigrok-cli~ to control DPS5020
+Digital Power Supply. The steps used in this demonstations are:
 1) connect DPS5020 using USB cable to PC
 2) use ~sigrok-cli~ command line tool to control DPS5020
 3) use a bash script (~dps5020.sh~) to wrap ~sigrok-cli~ to make it
@@ -28,6 +28,8 @@ PC. For installing sigrok on
 - Mac - refer to https://sigrok.org/wiki/Mac_OS_X
 
 
+
+*Table of Content*
 :CONTENTS:
 - [[#use-sigrok-cli-to-control-dps5020-digital-power-supply][Use sigrok-cli to control DPS5020 Digital Power Supply]]
   - [[#connect-dps5020-with-an-usb-to-pc][Connect DPS5020 with an USB to PC]]
