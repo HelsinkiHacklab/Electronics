@@ -74,7 +74,7 @@ see ~dialout~ in the list, as in the example below
 #+RESULTS: groups
 : jj adm dialout cdrom sudo dip plugdev lpadmin lxd sambashare vboxusers docker
 
-\bigskip 
+ 
 Missing ~dialout~ group can be added with the command. 
 #+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
 sudo usermod -a -G dialout hacklab
@@ -86,7 +86,7 @@ In the example above, ~dialout~ group was added to ~hacklab~ user
 (replace it with your own user id).  Logout and login is needed for
 the new group associations to become active.
 
-\bigskip
+
 
 ** ~sigrok-cli~ -version used
 This document uses sigrok version 
