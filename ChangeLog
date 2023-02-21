@@ -1,3 +1,7 @@
+2023-02-21  jj  <jj@eero>
+
+	* sigrok-tst-dsp5020.org: added
+
 2022-11-29  hacklab  <hacklab@hack310g8>
 
 	* pc-admin/hack310g8-admin.org (FILE): ETOOL_TAG:7->8

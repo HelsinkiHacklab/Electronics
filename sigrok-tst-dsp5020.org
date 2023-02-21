@@ -1,0 +1,486 @@
+#+TITLE: Accessing DPS5020 Digital Power Supply using sigrok
+#+DATE: 2023-02-21
+#+author: jj
+#+LATEX: \setlength{\parindent}{0pt}
+#+latex_compiler: pdflatex
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+creator: Emacs 27.1 (Org mode 9.3)
+
+
+* Use ~sigrok-cli~ to control DPS5020 Digital Power Supply
+:PROPERTIES:
+:TOC:  :include all     :depth 2
+:END:
+
+This document demonstrates using ~sigrok-cli~ to DPS5020 Digital Power
+Supply.
+
+
+:CONTENTS:
+- [[#use-sigrok-cli-to-control-dps5020-digital-power-supply][Use sigrok-cli to control DPS5020 Digital Power Supply]]
+  - [[#connect-dps5020-with-an-usb-to-pc][Connect DPS5020 with an USB to PC]]
+  - [[#sigrok-cli--version-used][sigrok-cli -version used]]
+  - [[#rdtech-dps-dps5020-driver-in-sigrok-cli][rdtech-dps: DPS5020 driver in sigrok-cli]]
+  - [[#sigrok-cli-command-line-usage][sigrok-cli command line usage]]
+    - [[#list-serial-identify-usb-serial-devices][list-serial: identify USB serial devices]]
+    - [[#scan-scan-for-connected-devices][scan: scan for connected devices]]
+    - [[#show--show-deviceformatdecoder-details][show:  show device/format/decoder details]]
+    - [[#get-set-and-config-access-device-options][get, set and config: access device options]]
+  - [[#wrap-sigrok-cli-with-a-simple-bash--script-to-control-dps5020][Wrap sigrok-cli with a simple bash -script to control DPS5020]]
+    - [[#dps5020sh-script-created][dps5020.sh: script created]]
+    - [[#dps5020sh-example-use][dps5020.sh: example use]]
+:END:
+
+
+** Connect DPS5020 with an USB to PC
+
+When DPS5020 power supply is connected with an USB cable to a Linux
+PC, the command
+#+name: lsusb
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+lsusb | grep CH340
+#+END_SRC
+
+shows CH340 serial converter attahced to USB bus:
+
+#+RESULTS: lsusb
+: Bus 003 Device 021: ID 1a86:7523 QinHeng Electronics CH340 serial converter
+
+
+A serial device ~/dev/ttyUSB0~ should be created automagically once
+the USB connection is established. Command
+#+name: dev-usb
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+ls -ltr /dev/ttyUSB*
+#+END_SRC
+
+shows the device with the owner ~root~ and group ~dialout~
+
+#+RESULTS: dev-usb
+: crw-rw---- 1 root dialout 188, 0 helmi  21 08:30 /dev/ttyUSB0
+
+In order to be able access USB -device, the user should be attached to
+~dialout~ group. This can be verified 
+using the command. 
+
+#+name: groups
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+groups
+#+END_SRC
+
+which returns list of group names the user is attached to.  Expect to
+see ~dialout~ in the list, as in the example below
+
+#+RESULTS: groups
+: jj adm dialout cdrom sudo dip plugdev lpadmin lxd sambashare vboxusers docker
+
+\bigskip 
+Missing ~dialout~ group can be added with the command. 
+#+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
+sudo usermod -a -G dialout hacklab
+#+END_SRC
+
+#+RESULTS:
+
+In the example above, ~dialout~ group was added to ~hacklab~ user
+(replace it with your own user id).  Logout and login is needed for
+the new group associations to become active.
+
+\bigskip
+
+** ~sigrok-cli~ -version used
+This document uses sigrok version 
+#+BEGIN_SRC bash :eval no-export :results output :exports results
+sigrok-cli --version
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+sigrok-cli 0.7.2
+
+Libraries and features:
+- libsigrok 0.5.2/5:1:1 (rt: 0.5.2/5:1:1).
+ - Libs:
+  - glib 2.67.5 (rt: 2.72.4/7204:4)
+  - libzip 1.7.3
+  - libserialport 0.1.1/1:0:1 (rt: 0.1.1/1:0:1)
+  - libusb-1.0 1.0.25.11696 API 0x01000108
+  - hidapi 0.10.1
+  - bluez 5.56
+  - libftdi 1.5
+  - Host: x86_64-pc-linux-gnu, little-endian.
+  - SCPI backends: TCP, serial, USBTMC.
+- libsigrokdecode 0.5.3/6:1:2 (rt: 0.5.3/6:1:2).
+ - Libs:
+  - glib 2.71.1 (rt: 2.72.4/7204:4)
+  - Python 3.10.2 / 0x30a02f0 (API 1013, ABI 3)
+  - Host: x86_64-pc-linux-gnu, little-endian.
+#+end_example
+
+** ~rdtech-dps~: DPS5020 driver in ~sigrok-cli~
+
+Documentation on page https://sigrok.org/wiki/RDTech_DPS_series gives
+the name of the driver, ~rdtech-dps~, for acccessing DPS5020 power
+supply. The driver is bundled with ~sigrok-cli~, as demonstraded with
+the command:
+
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+sigrok-cli -L | grep rdtech-dps
+#+END_SRC
+
+#+RESULTS:
+:   rdtech-dps           RDTech DPS/DPH series power supply
+
+** ~sigrok-cli~ command line usage
+*** ~list-serial~: identify USB serial devices
+
+Command
+#+name: list-serial
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+sigrok-cli --list-serial
+#+END_SRC
+
+lists serial ports available on the system. If USB connection to
+DPS5020 is present the output should include ~/dev/ttyUSB~ device file
+for accessing DPS5020 power supply:
+#+RESULTS: list-serial
+#+begin_example
+Available serial/HID/BT/BLE ports:
+  /dev/ttyUSB0	USB Serial
+  hid/<chip>/raw=/dev/hidraw2	HID Logitech USB Receiver 400a-e0-f3-34-8b [046d.400a]
+  hid/<chip>/raw=/dev/hidraw2	HID Logitech USB Receiver 400a-e0-f3-34-8b [046d.400a]
+  hid/<chip>/raw=/dev/hidraw2	HID Logitech USB Receiver 400a-e0-f3-34-8b [046d.400a]
+  hid/<chip>/raw=/dev/hidraw2	HID Logitech USB Receiver 400a-e0-f3-34-8b [046d.400a]
+  hid/<chip>/raw=/dev/hidraw2	HID Logitech USB Receiver 400a-e0-f3-34-8b [046d.400a]
+  hid/<chip>/raw=/dev/hidraw1	HID Logitech USB Receiver [046d.c52b]
+  hid/<chip>/raw=/dev/hidraw1	HID Logitech USB Receiver [046d.c52b]
+  hid/<chip>/raw=/dev/hidraw1	HID Logitech USB Receiver [046d.c52b]
+  hid/<chip>/raw=/dev/hidraw4	HID SteelSeries SteelSeries Apex Pro [1038.1610]
+  hid/<chip>/raw=/dev/hidraw5	HID SteelSeries SteelSeries Apex Pro [1038.1610]
+  hid/<chip>/raw=/dev/hidraw6	HID SteelSeries SteelSeries Apex Pro [1038.1610]
+  hid/<chip>/raw=/dev/hidraw7	HID SteelSeries SteelSeries Apex Pro [1038.1610]
+  hid/<chip>/raw=/dev/hidraw7	HID SteelSeries SteelSeries Apex Pro [1038.1610]
+  hid/<chip>/raw=/dev/hidraw7	HID SteelSeries SteelSeries Apex Pro [1038.1610]
+  hid/<chip>/raw=/dev/hidraw8	HID SteelSeries SteelSeries Apex Pro [1038.1610]
+#+end_example
+
+Later, the examples below use serial device ~/dev/ttyUSB0~ to
+demonstrate DPS5020 usage.
+
+*** ~scan~: scan for connected devices
+
+Without driver and connection specifiaction ~sigrok-cli --scan~
+#+name: scan
+#+BEGIN_SRC bash :eval no-export :results output :exports results
+sigrok-cli  --scan
+#+END_SRC
+
+finds only demo device.
+#+RESULTS: scan
+: The following devices were found:
+: demo - Demo device with 13 channels: D0 D1 D2 D3 D4 D5 D6 D7 A0 A1 A2 A3 A4
+
+
+When the ~--scan~ command is given driver and connection options
+
+#+name: scan-with-driver
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+sigrok-cli  --driver=rdtech-dps:conn=/dev/ttyUSB0  --scan
+#+END_SRC
+
+the output identifies RDTech DPS5020
+
+#+RESULTS: scan-with-driver
+: The following devices were found:
+: rdtech-dps - RDTech DPS5020 v16 with 3 channels: V I P
+
+*** ~show~:  show device/format/decoder details
+
+ Details of the device are retrieved with ~--show~
+ -command. 
+
+ #+name: query-status
+ #+BEGIN_SRC bash :eval no-export :results output :exports both
+ sigrok-cli  --driver=rdtech-dps:conn=/dev/ttyUSB0 --show
+ #+END_SRC
+
+Particularly, the output presents configuration options
+supported, i.e. parameters that can be read or set on the device.
+
+ #+RESULTS: query-status
+ #+begin_example
+ Driver functions:
+     Power supply
+ Scan options:
+     conn
+     serialcomm
+     modbusaddr
+ rdtech-dps - RDTech DPS5020 v16 with 3 channels: V I P
+ Supported configuration options:
+     continuous: on, off
+     limit_samples: 0 (current)
+     limit_time: 0 (current)
+     voltage: 0.000000 (current)
+     voltage_target: 0.000000, 50.000000, 0.010000
+     current: 0.000000 (current)
+     current_limit: 0.000000, 20.000000, 0.010000
+     enabled: on, off (current)
+     regulation: CV (current)
+     ovp_active: on, off (current)
+     ovp_threshold: 51.000000 (current)
+     ocp_active: on, off (current)
+     ocp_threshold: 20.200000 (current)
+ #+end_example
+
+*** ~get~, ~set~ and ~config~: access device options
+    
+ This chapter demonstrates:
+ - reading ~enabled~ status of DPS5020 (initially ~false~)
+ - setting ~voltage_target~ to 3.3V
+ - reading ~voltage_target~ to validate that is was set correctly
+ - reading output ~voltage~ (expect 0V, because device is not enabled)
+ - turning the output on by setting the ~enabled~ status to ~true~
+ - reading output ~voltage~ (should match ~voltage_target~ once the device is on)
+   enabled)
+ - finally setting ~enabled~ status off
+
+ The ~enabled~ status of DPS5020 on USB device ~/dev/ttyUSB0~ is read
+ with the command
+ #+name: get-enabled
+ #+BEGIN_SRC bash :eval no-export :results output :exports both 
+ sigrok-cli  --driver=rdtech-dps:conn=/dev/ttyUSB0 --get enabled
+ #+END_SRC
+
+ #+RESULTS: get-enabled
+ : false
+
+ To set voltage target to ~3.3V~, pass ~--config~ and ~--set~ options,
+ as shown below
+ #+BEGIN_SRC bash :eval no-export :results output :exports both
+ sigrok-cli  --driver=rdtech-dps:conn=/dev/ttyUSB0 --config voltage_target=3.3V --set
+ #+END_SRC
+
+ #+RESULTS:
+
+ Current voltage target is read with the command
+ #+BEGIN_SRC bash :eval no-export :results output :exports both
+ sigrok-cli  --driver=rdtech-dps:conn=/dev/ttyUSB0 --get voltage_target
+ #+END_SRC
+
+ #+RESULTS:
+ : 3.29
+
+ If the device the output is not enabled, the voltage shows ~0.0~
+ #+BEGIN_SRC bash :eval no-export :results output :exports both
+ sigrok-cli  --driver=rdtech-dps:conn=/dev/ttyUSB0 --get voltage
+ #+END_SRC
+
+ #+RESULTS:
+ : 0.0
+
+ After turning the device on,  
+ #+BEGIN_SRC bash :eval no-export :results output :exports both 
+ sigrok-cli  --driver=rdtech-dps:conn=/dev/ttyUSB0 --config enabled=on --set
+ #+END_SRC
+
+ #+RESULTS:
+
+ the enable status is ~true~
+ #+BEGIN_SRC bash :eval no-export :results output :exports both 
+ sigrok-cli  --driver=rdtech-dps:conn=/dev/ttyUSB0 --get enabled
+ #+END_SRC
+
+
+ #+RESULTS:
+ : true
+
+ and the output voltage corresponds the target_voltage set above
+ #+BEGIN_SRC bash :eval no-export :results output
+ sigrok-cli  --driver=rdtech-dps:conn=/dev/ttyUSB0 --get voltage
+ #+END_SRC
+
+ #+RESULTS:
+ : 3.2799999999999998
+
+ Finally, the device is turned off
+ #+BEGIN_SRC bash :eval no-export :results output :exports both 
+ sigrok-cli  --driver=rdtech-dps:conn=/dev/ttyUSB0 --config enabled=false --set
+ #+END_SRC
+
+ #+RESULTS:
+
+** Wrap ~sigrok-cli~ with a simple bash -script to control DPS5020
+*** ~dps5020.sh~: script created
+
+A simple script for controlling DSP5020:
+- configuring serial device where DPS is attached to (default /dev/ttyUSB0)
+- turning DPS on/off
+- setting target voltage
+- waiting for given time (to create ramp)
+
+Save the following code into a file ~dps5020.sh~ in a PATH-directory,
+and make it executable
+
+#+BEGIN_SRC bash :eval no :results output :tangle ~/bin/dps5020.sh :shebang "#!/bin/bash"
+  # Tangled from sigrogk-tst-dps5020.org - changes will be overridden
+
+  # A simple script to allow:
+  # - configuring serial device where DPS is attached to (default /dev/ttyUSB0) 
+  # - turning DPS on/off
+  # - setting target voltage
+  # - wait for given time
+
+
+  # exit on error or undefined variable
+  set -e
+  set -u 
+
+  TTY=/dev/ttyUSB0
+  TS_FORMAT="+%Y%m%d-%T"
+
+  usage() {
+     echo $0 usage:
+     echo 
+     echo $0 'option* cmd*'
+     echo
+     echo "where 'option' one one"
+     echo "- tty  <dev>      : use device <dev> instead of default device /dev/ttyUSB0"
+     echo
+     echo "and 'cmd' one one"
+     echo "- sleep <secs>    : delay of secs <secs> seconds"
+     echo "- on              : turn DPS on"
+     echo "- off             : turn DPS off"
+     echo "- voltage         : set DPS volatage target"
+   
+     exit 1
+  }
+
+  if [ "$#" -lt 1 ]; then usage; fi
+
+  # ------------------------------------------------------------------
+  # Parse options
+  while :; do
+
+      case "$1" in
+	  -sh_trace)
+	      shift; set -x;
+	      ;;
+
+	  -\?|--help)
+	      usage
+	      ;;
+
+	  -tty)
+	      shift; TTY=$1; shift
+	      ;;
+
+	  ,*) # not an option - start processing cmds
+	      break
+	      ;;
+      esac
+  done
+
+  # ------------------------------------------------------------------
+  # Parse cmd
+
+  while :; do
+      # Done?
+      if [ "$#" -lt 1 ]; then break; fi
+
+      case "$1" in
+	  on)
+	      shift; 
+	      echo $(date +$TS_FORMAT)  - on
+	      sigrok-cli  --driver=rdtech-dps:conn=$TTY --config enabled=on --set
+	      ;;
+
+	  off)
+	      shift; 
+	      echo $(date +$TS_FORMAT)  - off
+	      sigrok-cli  --driver=rdtech-dps:conn=$TTY --config enabled=off --set
+	      ;;
+
+	  sleep)
+	      shift; 
+	      TIME=$1; shift
+	      echo $(date +$TS_FORMAT)  - enter sleep
+	      sleep $TIME
+	      echo $(date +$TS_FORMAT)  - exit sleep
+	      ;;
+
+	  voltage)
+	      shift; 
+	      V=$1; shift
+	      echo $(date +$TS_FORMAT)  - set target voltage $V
+	      sigrok-cli  --driver=rdtech-dps:conn=/dev/ttyUSB0 --config voltage_target=$V --set
+	      ;;
+
+	  ,*)  # error
+	      echo "Unknown command '$1'"
+	      echo
+	      usage
+	      ;;
+      esac
+  done
+
+  exit 0
+
+#+END_SRC
+
+*** ~dps5020.sh~: example use  
+
+Example of using the script ~dps5020.sh~ to ramp voltage from 0 to 1V
+(5 secs) to 2.5V (5 secs). After the ramp the device is turned off.
+
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+dps5020.sh off voltage 0 on voltage 1 sleep 5 voltage 2.5 sleep 5  off 
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
++20230221-12:21:13 - off
++20230221-12:21:14 - set target voltage 0
++20230221-12:21:16 - on
++20230221-12:21:18 - set target voltage 1
++20230221-12:21:20 - enter sleep
++20230221-12:21:25 - exit sleep
++20230221-12:21:25 - set target voltage 2.5
++20230221-12:21:27 - enter sleep
++20230221-12:21:32 - exit sleep
++20230221-12:21:32 - off
+#+end_example
+
+
+* Fin                                                              :noexport:
+
+
+** Emacs variables
+
+   #+RESULTS:
+
+   # Local Variables:
+   # org-indent-mode: -1
+   # time-stamp-line-limit: 10
+   # time-stamp-start: "DATE:"
+   # time-stamp-format: " %:y-%02m-%02d"
+   # time-stamp-time-zone: nil
+   # time-stamp-end: "$"
+   # eval: (add-hook 'before-save-hook 'time-stamp)
+   # org-confirm-babel-evaluate: nil
+   # End:
+   #
+   # Muuta
+   # org-cdlatex-mode: t
+   # eval: (cdlatex-mode)
+   #
+   # Local ebib:
+   # org-ref-default-bibliography: "./sigrok-tst-dsp5020.bib"
+   # org-ref-bibliography-notes: "./sigrok-tst-dsp5020-notes.org"
+   # org-ref-pdf-directory: "./pdf/"
+   # org-ref-notes-directory: "."
+   # bibtex-completion-notes-path: "./sigrok-tst-dsp5020-notes.org"
+   # ebib-preload-bib-files: ("./sigrok-tst-dsp5020.bib")
+   # ebib-notes-file: ("./sigrok-tst-dsp5020-notes.org")
+   # reftex-default-bibliography: ("./sigrok-tst-dsp5020.bib")
+
+
