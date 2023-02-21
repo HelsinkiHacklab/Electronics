@@ -13,20 +13,32 @@
 :END:
 
 This document demonstrates using ~sigrok-cli~ to DPS5020 Digital Power
-Supply.
+Supply. The steps used in this demonstations are:
+1) connect DPS5020 using USB cable to PC
+2) use ~sigrok-cli~ command line tool to control DPS5020
+3) use a bash script (~dps5020.sh~) to wrap ~sigrok-cli~ to make it
+   easier to implement voltage ramp using DPS5020
+
+
+It is assumed that sigrok package has already been installed on the
+PC. For installing sigrok on 
+
+- Linux -> refer to https://sigrok.org/wiki/Linux
+- Windows -> refer to https://sigrok.org/wiki/Windows
+- Mac - refer to https://sigrok.org/wiki/Mac_OS_X
 
 
 :CONTENTS:
 - [[#use-sigrok-cli-to-control-dps5020-digital-power-supply][Use sigrok-cli to control DPS5020 Digital Power Supply]]
   - [[#connect-dps5020-with-an-usb-to-pc][Connect DPS5020 with an USB to PC]]
-  - [[#sigrok-cli--version-used][sigrok-cli -version used]]
-  - [[#rdtech-dps-dps5020-driver-in-sigrok-cli][rdtech-dps: DPS5020 driver in sigrok-cli]]
   - [[#sigrok-cli-command-line-usage][sigrok-cli command line usage]]
+    - [[#sigrok-cli--version-used][sigrok-cli -version used]]
+    - [[#rdtech-dps-dps5020-driver-in-sigrok-cli][rdtech-dps: DPS5020 driver in sigrok-cli]]
     - [[#list-serial-identify-usb-serial-devices][list-serial: identify USB serial devices]]
     - [[#scan-scan-for-connected-devices][scan: scan for connected devices]]
     - [[#show--show-deviceformatdecoder-details][show:  show device/format/decoder details]]
     - [[#get-set-and-config-access-device-options][get, set and config: access device options]]
-  - [[#wrap-sigrok-cli-with-a-simple-bash--script-to-control-dps5020][Wrap sigrok-cli with a simple bash -script to control DPS5020]]
+  - [[#dps5020sh-a-simple-bash-wrapping-sigrok-cli][dps5020.sh a simple bash wrapping sigrok-cli]]
     - [[#dps5020sh-script-created][dps5020.sh: script created]]
     - [[#dps5020sh-example-use][dps5020.sh: example use]]
 :END:
@@ -86,9 +98,8 @@ In the example above, ~dialout~ group was added to ~hacklab~ user
 (replace it with your own user id).  Logout and login is needed for
 the new group associations to become active.
 
-
-
-** ~sigrok-cli~ -version used
+** ~sigrok-cli~ command line usage
+*** ~sigrok-cli~ -version used
 This document uses sigrok version 
 #+BEGIN_SRC bash :eval no-export :results output :exports results
 sigrok-cli --version
@@ -117,7 +128,7 @@ Libraries and features:
   - Host: x86_64-pc-linux-gnu, little-endian.
 #+end_example
 
-** ~rdtech-dps~: DPS5020 driver in ~sigrok-cli~
+*** ~rdtech-dps~: DPS5020 driver in ~sigrok-cli~
 
 Documentation on page https://sigrok.org/wiki/RDTech_DPS_series gives
 the name of the driver, ~rdtech-dps~, for acccessing DPS5020 power
@@ -131,7 +142,6 @@ sigrok-cli -L | grep rdtech-dps
 #+RESULTS:
 :   rdtech-dps           RDTech DPS/DPH series power supply
 
-** ~sigrok-cli~ command line usage
 *** ~list-serial~: identify USB serial devices
 
 Command
@@ -309,7 +319,7 @@ supported, i.e. parameters that can be read or set on the device.
 
  #+RESULTS:
 
-** Wrap ~sigrok-cli~ with a simple bash -script to control DPS5020
+** ~dps5020.sh~ a simple bash wrapping ~sigrok-cli~
 *** ~dps5020.sh~: script created
 
 A simple script for controlling DSP5020:
