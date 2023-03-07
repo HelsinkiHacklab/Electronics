@@ -253,7 +253,7 @@ Using driverString='rdtech-dps:conn=/dev/ttyUSB0'
 Wrap function ~ramp_up~ into a Python thread to ramp up voltage from
 0..3V with 0.25V  (1/4) increments.
 
-#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :var reset=reset-modules ramp_up_module=ramp_up_module
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :var reset=reset-modules ramp_up_module=ramp_up_module :exports both
 from threading import Thread
 
 dps_driver=sigrokWrapper.SigrokDriver(driver=driverString)
