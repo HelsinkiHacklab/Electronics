@@ -91,7 +91,7 @@ Using ~driveString~='demo'~ to access Sigrok demo device. In this example:
   - for each channel group output configuration keys of the channel group
 
 #+name: wrapper-doc
-#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :var reset=reset-modules driverString="demo" 
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :var reset=reset-modules driverString="demo" :exports both
 import sigrokWrapper
 
 print( f"Create sigork wrapper using driverString='{driverString}'")
@@ -128,7 +128,7 @@ Using ~driverString="rdtech-dps:conn=/dev/ttyUSB0"~ for the code in
 the previous chapter documents configuration options for RDTech
 Digital Power Supply DPS5020 as follows:
 
-#+call: wrapper-doc(driverString="rdtech-dps:conn=/dev/ttyUSB0")
+#+call: wrapper-doc[:exports results](driverString="rdtech-dps:conn=/dev/ttyUSB0")
 
 #+RESULTS:
 : Create sigork wrapper using driverString='rdtech-dps:conn=/dev/ttyUSB0'
