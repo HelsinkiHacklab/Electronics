@@ -293,14 +293,9 @@ print( f"{datetime.now()} - main return from join thread t1")
 #+end_example
 
 ** Ramp up voltage, read measurements using Rigol *NOT WORKING*
-:PROPERTIES:
-:header-args+: :var  driverString="rigol-ds:conn=tcp-raw/192.168.120.56/5555"
-:END:
 
-*THIS DOES NOT WORK - SEEMS TO BE DROPPING PACKAGES*
+*THIS DOES NOT WORK - SEEMS TO BE DROPPING PACKAGES IN CALLBACK*
 
-This chapter 
-- shows 
 
 
 *** Document Rigol DS1104Z parameters using sigrokWrapper 
@@ -308,7 +303,7 @@ This chapter
 Documentation of from Rigol DS1104Z oscilloscope using sigrokWrapper
 code presented above:
 
-#+call:wrapper-doc[:exports results]()
+#+call:wrapper-doc[:exports results](driverString="rigol-ds:conn=tcp-raw/192.168.120.56/5555")
 
 #+RESULTS:
 : Create sigork wrapper using driverString='rigol-ds:conn=tcp-raw/192.168.120.56/5555'
@@ -450,7 +445,7 @@ sr: rigol-ds: Read should have been completed
 
 Save ~data~ -dictionary collected above to a CSV-file ~tmp/demo1.csv~.
 
-#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python*
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* 
 import pandas as pd
 CSV_FILE="tmp/demo1.csv"
 df = pd.DataFrame.from_dict(data)
@@ -463,7 +458,7 @@ df.to_csv(CSV_FILE)
 
 Read data frame from CSV-file ~tmp/demo1.csv~ and create a line plot:
 
-#+BEGIN_SRC python :eval no-export :results value file :noweb no :session *Python* 
+#+BEGIN_SRC python :eval no-export :results value file :noweb no :session *Python*  :exports both
 import pandas as pd
 import matplotlib.pyplot as plt
 
