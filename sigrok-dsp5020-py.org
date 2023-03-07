@@ -128,7 +128,7 @@ Using ~driverString="rdtech-dps:conn=/dev/ttyUSB0"~ for the code in
 the previous chapter documents configuration options for RDTech
 Digital Power Supply DPS5020 as follows:
 
-#+call: wrapper-doc[:exports results](driverString="rdtech-dps:conn=/dev/ttyUSB0")
+#+call: wrapper-doc[ :exports results ](driverString="rdtech-dps:conn=/dev/ttyUSB0")
 
 #+RESULTS:
 : Create sigork wrapper using driverString='rdtech-dps:conn=/dev/ttyUSB0'
@@ -136,6 +136,8 @@ Digital Power Supply DPS5020 as follows:
 :    config_keys=['CONTINUOUS', 'LIMIT_SAMPLES', 'LIMIT_MSEC', 'REGULATION', 'OVER_CURRENT_PROTECTION_THRESHOLD', 'OVER_CURRENT_PROTECTION_ACTIVE', 'OVER_VOLTAGE_PROTECTION_THRESHOLD', 'OVER_VOLTAGE_PROTECTION_ACTIVE', 'ENABLED', 'CURRENT_LIMIT', 'CURRENT', 'VOLTAGE_TARGET', 'VOLTAGE']
 : Channel-groups=[]
 : Channels=['V', 'I', 'P']
+
+
 
 ** Set RDTech DPS5020 ~enabled~ state
 
@@ -258,7 +260,7 @@ from threading import Thread
 dps_driver=sigrokWrapper.SigrokDriver(driver=driverString)
 print( f"{datetime.now()} - main create thread t1")
 
-t1 = Thread(target=ramp_up, kwargs={'drv':dps_driver, 'TARGET':3, 'STEP':4}xo)
+t1 = Thread(target=ramp_up, kwargs={'drv':dps_driver, 'TARGET':3, 'STEP':4})
 
 print( f"{datetime.now()} - main start thread t1")
 t1.start()
