@@ -474,6 +474,8 @@ plt.savefig( "pics/demo1.png", format="png" ) # , dpi=fig.dpi )
 
 * Python middleware ~sigrokWrapper.py~
 
+Python code in [[file:sigrokWrapper.py]]
+
 ** Module document string
 #+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
 """Wrap sigrok python API 
