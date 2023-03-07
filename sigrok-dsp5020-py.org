@@ -1,0 +1,1068 @@
+#+DATE: 2023-03-07
+
+* Use ~sigrok-python~ to control DPS5020 Digital Power Supply
+:PROPERTIES:
+:TOC:   :include all     :depth 2 
+:END:
+
+
+Document gives a small example of using Ruideng DPS5020 Digital Power
+Supply over [[https://sigrok.org/wiki/RDTech_DPS_series][Sigrok Python API driver]]. The example uses a middleware
+wrapper, ~sigrogWrapper.py~, to simplify code in the Python demo.
+
+
+
+
+
+
+*Table of Content*
+:CONTENTS:
+- [[#use-sigrok-python-to-control-dps5020-digital-power-supply][Use sigrok-python to control DPS5020 Digital Power Supply]]
+- [[#sigrok-python-api-demo][Sigrok Python API Demo]]
+  - [[#document-sigrok-demo-device-configuration-keys][Document Sigrok Demo device configuration keys]]
+  - [[#document-rdtech-dps5020-configuration-keys][Document RDTech DPS5020 configuration keys]]
+  - [[#set-rdtech-dps5020-enabled-state][Set RDTech DPS5020 enabled state]]
+  - [[#ramp-up-rdtech-dps5020-voltage][Ramp up RDTech DPS5020 voltage]]
+  - [[#ramp-up-rdtech-dps5020-voltage-in-a-thread][Ramp up RDTech DPS5020 voltage in a thread]]
+  - [[#ramp-up-voltage-read-measurements-using-rigol-not-working][Ramp up voltage, read measurements using Rigol NOT WORKING]]
+- [[#python-middleware-sigrokwrapperpy][Python middleware sigrokWrapper.py]]
+  - [[#module-document-string][Module document string]]
+  - [[#module-imports][Module imports]]
+  - [[#class-device-document-string][class Device document string]]
+  - [[#class-device-constructor][class Device constructor]]
+  - [[#class-device-config_keys-channel_groups-channels-methods][class Device: config_keys, channel_groups, channels methods]]
+  - [[#class-device-getter-and-setter-methods][class Device: getter and setter methods]]
+  - [[#class-device-keyname2key][class Device keyName2key]]
+  - [[#class-device-open-and-close-guarded-by-open--state][class Device open and close guarded by open -state:]]
+  - [[#class-device-output-device-information-string][class Device: output device information string]]
+  - [[#class-sigrokdriver-document-string][class SigrokDriver document string]]
+  - [[#class-sigrokdriver-manage-context][class SigrokDriver: manage context]]
+  - [[#class-sigrokdriver-constructor][class SigrokDriver: constructor]]
+  - [[#class-sigrokdriver-finddevice][class SigrokDriver: findDevice]]
+  - [[#class-sigrokdriver-manage-device-openclose-state][class SigrokDriver: manage device open/close state]]
+  - [[#class-sigrokdriver-session-management][class SigrokDriver: session management]]
+  - [[#class-sigrokdriver-utilities-for-session-callback-functions][class SigrokDriver: utilities for session callback functions]]
+  - [[#class-sigrokdriver-documentation-string][class SigrokDriver: documentation string]]
+  - [[#end-of-module][End of module]]
+- [[#references][References]]
+:END:
+
+
+* Sigrok Python API Demo
+
+[[https://github.com/pysigrok/][Pysigrok (Sigrok Python API)]] is a thin wrapper on top of [[http://sigrok.org/wiki/Libsigrok][libsigrok]] C++
+implementation. It has only limited support for diagnostics and just
+returns an error code without any diagnostics messages.  The number of
+classes/types exposed to user on API interface also is quite large
+(30-40 classes).
+
+This documents uses a Python module, ~sigrokWrapper.py~, which is
+middleware exposing two classes needed to use a Sigrok Device.  It
+also wraps errors in lib with Python Exceptions documenting error
+context and possible fixes. The ~sigrokWrapper.py~ s documented in the
+next chapter.
+
+** Document Sigrok ~Demo~ device configuration keys
+
+#+name: reset-modules
+#+BEGIN_SRC python :eval no-export :results value :noweb no :session *Python* :exports no
+# Document artefacts:
+# 
+# - Delete sigrokWrapper module from Python context so that changes
+#   make take effect
+#
+# - Delete logging module from Python context so that we can reset
+#   logging level
+import sys
+for m in [ 'logging', 'sigrokWrapper', ]:
+    if m  in sys.modules:  
+       print( f"delete module={m}")
+       del sys.modules[m]
+#+END_SRC
+
+#+RESULTS: reset-modules
+
+
+Using ~driveString~='demo'~ to access Sigrok demo device. In this example:
+- create SigrokDriver using ~driveString~='demo'~
+- open demo device for the ~SigrokDriver~ created
+  - output device configuration keys
+  - output device channel groups
+  - for each channel group output configuration keys of the channel group
+
+#+name: wrapper-doc
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :var reset=reset-modules driverString="demo" 
+import sigrokWrapper
+
+print( f"Create sigork wrapper using driverString='{driverString}'")
+demo_drv  = sigrokWrapper.SigrokDriver(driver=driverString)
+with demo_drv as demo_dev:  
+    # Document string created
+    print( f"Device {demo_dev}")
+    print( f"   config_keys={demo_dev.config_keys()}")
+    print( f"Channel-groups={demo_dev.channel_groups()}")
+    for grp in demo_dev.channel_groups(): 
+        print( f"  Channel -group {grp}: config_keys={demo_dev.config_keys(channel_group=grp)}")
+    print( f"Channels={demo_dev.channels()}")
+#+END_SRC
+
+#+RESULTS: wrapper-doc
+#+begin_example
+Create sigork wrapper using driverString='demo'
+Device , model :Demo device, version:  - 13 channels: D0, D1, D2, D3, D4, D5, D6, D7, A0, A1, A2, A3, A4
+   config_keys=['CONTINUOUS', 'LIMIT_FRAMES', 'LIMIT_SAMPLES', 'LIMIT_MSEC', 'TRIGGER_MATCH', 'AVG_SAMPLES', 'AVERAGING', 'CAPTURE_RATIO', 'SAMPLERATE']
+Channel-groups=['A0', 'A1', 'A2', 'A3', 'A4', 'Analog', 'Logic']
+  Channel -group A0: config_keys=['OFFSET', 'MEASURED_QUANTITY', 'AMPLITUDE', 'PATTERN_MODE']
+  Channel -group A1: config_keys=['OFFSET', 'MEASURED_QUANTITY', 'AMPLITUDE', 'PATTERN_MODE']
+  Channel -group A2: config_keys=['OFFSET', 'MEASURED_QUANTITY', 'AMPLITUDE', 'PATTERN_MODE']
+  Channel -group A3: config_keys=['OFFSET', 'MEASURED_QUANTITY', 'AMPLITUDE', 'PATTERN_MODE']
+  Channel -group A4: config_keys=['OFFSET', 'MEASURED_QUANTITY', 'AMPLITUDE', 'PATTERN_MODE']
+  Channel -group Analog: config_keys=['OFFSET', 'AMPLITUDE']
+  Channel -group Logic: config_keys=['PATTERN_MODE']
+Channels=['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'A0', 'A1', 'A2', 'A3', 'A4']
+#+end_example
+
+** Document RDTech DPS5020 configuration keys
+
+Using ~driverString="rdtech-dps:conn=/dev/ttyUSB0"~ for the code in
+the previous chapter documents configuration options for RDTech
+Digital Power Supply DPS5020 as follows:
+
+#+call: wrapper-doc(driverString="rdtech-dps:conn=/dev/ttyUSB0")
+
+#+RESULTS:
+: Create sigork wrapper using driverString='rdtech-dps:conn=/dev/ttyUSB0'
+: Device RDTech, model :DPS5020, version: v16 - 3 channels: V, I, P
+:    config_keys=['CONTINUOUS', 'LIMIT_SAMPLES', 'LIMIT_MSEC', 'REGULATION', 'OVER_CURRENT_PROTECTION_THRESHOLD', 'OVER_CURRENT_PROTECTION_ACTIVE', 'OVER_VOLTAGE_PROTECTION_THRESHOLD', 'OVER_VOLTAGE_PROTECTION_ACTIVE', 'ENABLED', 'CURRENT_LIMIT', 'CURRENT', 'VOLTAGE_TARGET', 'VOLTAGE']
+: Channel-groups=[]
+: Channels=['V', 'I', 'P']
+
+** Set RDTech DPS5020 ~enabled~ state
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :var reset=reset-modules driverString="rdtech-dps:conn=/dev/ttyUSB0" :exports both
+import sigrokWrapper
+
+print( f"Create Sigork wrapper driver  using driverString='{driverString}'")
+dps_drv = sigrokWrapper.SigrokDriver(driver=driverString)
+
+with dps_drv as dev:
+    status = dev.get('enabled')
+    print( f"dev {dev} enabled {status}")
+    time.sleep(1)
+    dev.set( "enabled", not status )
+    print( f"dev {dev} enabled {dev.get('enabled')}")
+    
+#+END_SRC
+
+#+Results:
+: Create Sigork wrapper driver  using driverString='rdtech-dps:conn=/dev/ttyUSB0'
+: dev RDTech, model :DPS5020, version: v16 - 3 channels: V, I, P enabled True
+: dev RDTech, model :DPS5020, version: v16 - 3 channels: V, I, P enabled False
+
+** Ramp up RDTech DPS5020 voltage 
+
+Define function ~ramp_up~, which steps up voltge from 0V to 5V in 1/STEP V increments.
+
+#+name: ramp_up_module
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :exports code
+import sigrokWrapper
+import time
+from datetime import datetime
+
+def ramp_up( drv, TARGET=5, STEP=5 ): 
+   """
+   Ramp up voltage from 0 to TARGET with number of STEPs
+
+   :drv: sigrok
+   
+   :TARGET: target voltage
+
+   :STEP:  time step 1/STEP s, voltage step TARGET/STEP V
+
+   """
+
+   # Ramp up voltage
+   with dps_drv as dev: 
+
+     # start from 0V
+     dev.set( "enabled", False)
+     dev.set( "voltage_target", 0.0)
+
+     # let it settle
+     time.sleep(1)
+
+     dev.set( "enabled", True)
+     for v in range (0,TARGET*STEP+1):
+         voltage = v/STEP
+         print( f"{datetime.now()}: voltage={voltage}")
+         dev.set( "voltage_target", voltage)
+         time.sleep(1/STEP)
+
+     # Close output
+     dev.set( "enabled", False)
+     dev.set( "voltage_target", 0.0)
+#+END_SRC
+
+#+RESULTS: ramp_up_module
+
+
+Call the function ~ramp_up~ function defined above to create voltage
+ramp 0-5V.
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :var reset=reset-modules  ramp_up_module=ramp_up_module  driverString="rdtech-dps:conn=/dev/ttyUSB0" :exports both
+
+print( f"Using driverString='{driverString}'")
+ramp_up(sigrokWrapper.SigrokDriver(driver=driverString))
+
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Using driverString='rdtech-dps:conn=/dev/ttyUSB0'
+2023-03-07 13:56:33.455057: voltage=0.0
+2023-03-07 13:56:34.119487: voltage=0.2
+2023-03-07 13:56:34.583753: voltage=0.4
+2023-03-07 13:56:35.048099: voltage=0.6
+2023-03-07 13:56:35.512535: voltage=0.8
+2023-03-07 13:56:35.976632: voltage=1.0
+2023-03-07 13:56:36.440767: voltage=1.2
+2023-03-07 13:56:36.904845: voltage=1.4
+2023-03-07 13:56:37.369555: voltage=1.6
+2023-03-07 13:56:37.833419: voltage=1.8
+2023-03-07 13:56:38.297698: voltage=2.0
+2023-03-07 13:56:38.762092: voltage=2.2
+2023-03-07 13:56:39.226353: voltage=2.4
+2023-03-07 13:56:39.690723: voltage=2.6
+2023-03-07 13:56:40.155514: voltage=2.8
+2023-03-07 13:56:40.619328: voltage=3.0
+2023-03-07 13:56:41.083750: voltage=3.2
+2023-03-07 13:56:41.547862: voltage=3.4
+2023-03-07 13:56:42.012490: voltage=3.6
+2023-03-07 13:56:42.476458: voltage=3.8
+2023-03-07 13:56:42.940868: voltage=4.0
+2023-03-07 13:56:43.405043: voltage=4.2
+2023-03-07 13:56:43.869375: voltage=4.4
+2023-03-07 13:56:44.333244: voltage=4.6
+2023-03-07 13:56:44.797901: voltage=4.8
+2023-03-07 13:56:45.262222: voltage=5.0
+#+end_example
+
+** Ramp up RDTech DPS5020 voltage in a thread
+
+Wrap function ~ramp_up~ into a Python thread to ramp up voltage from
+0..3V with 0.25V  (1/4) increments.
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :var reset=reset-modules ramp_up_module=ramp_up_module
+from threading import Thread
+
+dps_driver=sigrokWrapper.SigrokDriver(driver=driverString)
+print( f"{datetime.now()} - main create thread t1")
+
+t1 = Thread(target=ramp_up, kwargs={'drv':dps_driver, 'TARGET':3, 'STEP':4}xo)
+
+print( f"{datetime.now()} - main start thread t1")
+t1.start()
+
+print( f"{datetime.now()} - main join thread t1")
+t1.join()
+print( f"{datetime.now()} - main return from join thread t1")
+
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+2023-03-07 13:54:05.610069 - main create thread t1
+2023-03-07 13:54:05.610221 - main start thread t1
+2023-03-07 13:54:05.610574 - main join thread t1
+2023-03-07 13:54:08.375299: voltage=0.0
+2023-03-07 13:54:09.089735: voltage=0.25
+2023-03-07 13:54:09.759203: voltage=0.5
+2023-03-07 13:54:10.473189: voltage=0.75
+2023-03-07 13:54:11.142815: voltage=1.0
+2023-03-07 13:54:11.856900: voltage=1.25
+2023-03-07 13:54:12.526750: voltage=1.5
+2023-03-07 13:54:13.240729: voltage=1.75
+2023-03-07 13:54:13.909973: voltage=2.0
+2023-03-07 13:54:14.623952: voltage=2.25
+2023-03-07 13:54:15.293809: voltage=2.5
+2023-03-07 13:54:16.007700: voltage=2.75
+2023-03-07 13:54:16.677083: voltage=3.0
+2023-03-07 13:54:18.740140 - main return from join thread t1
+#+end_example
+
+** Ramp up voltage, read measurements using Rigol *NOT WORKING*
+:PROPERTIES:
+:header-args+: :var  driverString="rigol-ds:conn=tcp-raw/192.168.120.56/5555"
+:END:
+
+*THIS DOES NOT WORK - SEEMS TO BE DROPPING PACKAGES*
+
+This chapter 
+- shows 
+
+
+*** Document Rigol DS1104Z parameters using sigrokWrapper 
+
+Documentation of from Rigol DS1104Z oscilloscope using sigrokWrapper
+code presented above:
+
+#+call:wrapper-doc[:exports results]()
+
+#+RESULTS:
+: Create sigork wrapper using driverString='rigol-ds:conn=tcp-raw/192.168.120.56/5555'
+: Device Rigol, model :DS1104Z, version: 00.04.04.SP3 - 4 channels: CH1, CH2, CH3, CH4
+:    config_keys=['LIMIT_FRAMES', 'DATA_SOURCE', 'TRIGGER_LEVEL', 'NUM_HDIV', 'TIMEBASE', 'HORIZ_TRIGGERPOS', 'TRIGGER_SOURCE', 'TRIGGER_SLOPE', 'SAMPLERATE']
+: Channel-groups=['CH1', 'CH2', 'CH3', 'CH4']
+:   Channel -group CH1: config_keys=['PROBE_FACTOR', 'NUM_VDIV', 'COUPLING', 'VDIV']
+:   Channel -group CH2: config_keys=['PROBE_FACTOR', 'NUM_VDIV', 'COUPLING', 'VDIV']
+:   Channel -group CH3: config_keys=['PROBE_FACTOR', 'NUM_VDIV', 'COUPLING', 'VDIV']
+:   Channel -group CH4: config_keys=['PROBE_FACTOR', 'NUM_VDIV', 'COUPLING', 'VDIV']
+: Channels=['CH1', 'CH2', 'CH3', 'CH4']
+
+*** Define ~run_measurements~ function to collect measurements
+
+Define a function, which collects measurements from Rigol
+oscilloscope. 
+
+#+name: run_measurements
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :exports code
+def run_measurements(drv, callback):
+  """
+  :drv: sigrokWrapper driver object
+
+  :callback: function to call to collect measurements
+  """
+  logging.info( f"{datetime.now()} - run_measurements - called callback={callback}")
+
+
+  with drv as dev:
+      logging.info( f"{datetime.now()} - run_measurements -  add {dev}")
+      sigrokWrapper.SigrokDriver.session_add_device(dev)
+      logging.info( f"{datetime.now()} - run_measurements -  session_start")
+      started = sigrokWrapper.SigrokDriver.session_start(callback)
+      logging.info( f"{datetime.now()} - run_measurements -  enter session_run")
+      runned = sigrokWrapper.SigrokDriver.session_run()
+      logging.info( f"{datetime.now()} - run_measurements -  returned session_run")
+      # sigrokWrapper.Sigrok.session_stop()
+#+END_SRC
+
+#+RESULTS: run_measurements
+
+*** Run two threads and collect data
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :var reset=reset-modules :exports both
+from threading import Thread
+import time
+from datetime import datetime
+
+# Start logging
+import logging
+# logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.DEBUG)
+logging.info( f"{datetime.now()} - main - started")
+
+# Driver strings
+RIGOL="rigol-ds:conn=tcp-raw/192.168.120.56/5555"
+DPS="rdtech-dps:conn=/dev/ttyUSB0"
+
+import sigrokWrapper
+
+dps_drv = sigrokWrapper.SigrokDriver(driver=DPS)
+skooppi_drv = sigrokWrapper.SigrokDriver(driver=RIGOL)
+
+
+# Collect data
+data = {}
+
+# Callback function 
+def datafeed_in( device, packet ):
+  logging.info( f"{datetime.now()} - datafeed_in - device={device.model}, packet type {packet.type} ")
+  # print( f"{datetime.now()} - datafeed_in - device={device.model}, packet type {packet.type} ")
+  sigrokWrapper.SigrokDriver.parsePacketData(packet=packet, data=data)
+  logging.debug( f"{datetime.now()} - datafeed_in - { [ k + ':' + str(type(v)) for k,v in data.items()] }")
+
+
+# setup scope
+with skooppi_drv as skooppi_dev:
+   # skooppi_dev.set( "probe_factor", 10, channel_group="CH1")
+   # logging.info( f"{datetime.now()} - run_measurements -  before samplerate={skooppi_dev.get('samplerate')}")
+   # skooppi_dev.set( "data_source", 'Memory')
+   skooppi_dev.set( "data_source", 'Live')
+   logging.info( f"{datetime.now()} - main -  {skooppi_dev.get('data_source')}")
+   # Not supported
+   # skooppi_dev.set( "samplerate", 10)
+   # logging.info( f"{datetime.now()} - run_measurements after samplerate={skooppi_dev.get('samplerate')}")
+   pass
+
+
+# Create session object
+logging.info( f"{datetime.now()} - run_measurements -  session_create")
+sigrokWrapper.SigrokDriver.session_create()
+
+# Define threds
+t_drive = Thread(target=ramp_up, kwargs={'drv':dps_driver, 'TARGET':3, 'STEP':4})
+t_measure = Thread(target=run_measurements, kwargs={'drv':skooppi_drv, 'callback': datafeed_in})
+
+# Start threds
+t_measure.start()
+t_drive.start()
+
+# Wait for driving thread (=dps ramp up) to finish
+logging.info( f"{datetime.now()} - main - before join t_drive")
+t_drive.join()
+logging.info( f"{datetime.now()} - main - after join t_drive")
+
+# Stop session = stops session in 't_measure' to quit
+sigrokWrapper.SigrokDriver.session_stop()
+logging.info( f"{datetime.now()} - main - before join t_measure")
+t_measure.join()
+logging.info( f"{datetime.now()} - main - after join t_measure")
+
+# Cleanup
+sigrokWrapper.SigrokDriver.session_close()
+print( f"{datetime.now()} - datafeed_in - { [ k + ':' + str(len(v)) for k,v in data.items()] }")
+# print( f"{datetime.now()} - datafeed_in - {data}")
+
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+2023-03-07 14:28:09.670026: voltage=0.0
+2023-03-07 14:28:10.384463: voltage=0.25
+2023-03-07 14:28:11.054365: voltage=0.5
+2023-03-07 14:28:11.767942: voltage=0.75
+2023-03-07 14:28:12.436947: voltage=1.0
+2023-03-07 14:28:13.150911: voltage=1.25
+2023-03-07 14:28:13.820645: voltage=1.5
+2023-03-07 14:28:14.534535: voltage=1.75
+2023-03-07 14:28:15.203756: voltage=2.0
+sr: rigol-ds: Read should have been completed
+2023-03-07 14:28:15.917670: voltage=2.25
+2023-03-07 14:28:16.587132: voltage=2.5
+2023-03-07 14:28:17.300769: voltage=2.75
+2023-03-07 14:28:17.970699: voltage=3.0
+2023-03-07 14:28:20.151616 - datafeed_in - ['CH1:1200']
+#+end_example
+
+*** Save collected data to a CSV -file
+
+Save ~data~ -dictionary collected above to a CSV-file ~tmp/demo1.csv~.
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python*
+import pandas as pd
+CSV_FILE="tmp/demo1.csv"
+df = pd.DataFrame.from_dict(data)
+df.to_csv(CSV_FILE)
+#+END_SRC
+
+#+RESULTS:
+
+*** Draw image using data in CSV -file
+
+Read data frame from CSV-file ~tmp/demo1.csv~ and create a line plot:
+
+#+BEGIN_SRC python :eval no-export :results value file :noweb no :session *Python* 
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv( "tmp/demo1.csv", decimal=".")
+df.plot( y="CH1")
+plt.savefig( "tmp/demo1.png", format="png" ) # , dpi=fig.dpi )
+"tmp/demo1.png"
+#+END_SRC
+
+#+RESULTS:
+[[file:tmp/demo1.png]]
+
+
+* Python middleware ~sigrokWrapper.py~
+
+** Module document string
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+"""Wrap sigrok python API 
+
+   ,* sigrok-py hangs Python session if sr.Context created more than
+     once --> use class leven persistent state 'context'
+
+   ,* sigrok-py complains if device open/close state not managet
+     correctly && make it easier to make several actions on device -->
+     add support for python with statement (__enter__, __exit__ -methods)
+
+   ,* key-names must be converted to sigrok internal representation -->
+     hide this mapping
+
+   ,* wrap error in exceptions to document error context (and to help
+     user to solve the problem)
+
+
+   * add support for some Python constructs:
+     * manage device open/close state to support Python with -statement
+     * drivers/device documentation string 
+
+   * provide utilites for parsing datacquisition callback (WORK IN PROGRESS)
+
+   * expose Sigrok Python API (i.e. no need to use import sigrok.core as sr)
+
+"""
+
+#+END_SRC
+
+** Module imports 
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+import sigrok.core as sr
+import sys
+import time
+from datetime import datetime
+import logging
+#+END_SRC
+
+#+RESULTS:
+: Python 3.9.16 | packaged by conda-forge | (main, Feb  1 2023, 21:39:03) 
+: [GCC 11.3.0] on linux
+: Type "help", "copyright", "credits" or "license" for more information.
+: >>> python.el: native completion setup loaded
+
+** class ~Device~ document string
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+class Device:
+      """Responsibilities: 
+
+      1) Manage device 'open' state
+      2) Map keyName to internal key-id in getter&setter
+      3) Get and set functions
+      4) __str__ support for the device
+
+      """
+#+END_SRC
+
+** class ~Device~ constructor
+
+Constructor accepts sigrok  device instance (in closed state):
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+      # ------------------------------------------------------------------
+      # Constructor
+      def __init__( self, device):
+        self.device = device     # sigrok device 
+        self.isOpen = False      # we are managing device state, initially 'Closed'
+#+END_SRC
+
+** class ~Device~: ~config_keys~, ~channel_groups~, ~channels~ methods
+
+Methods to document device properties. Properties can be set on device
+or on channel_groups.
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+      def config_keys( self, channel_group=None ):
+           if not channel_group is None:
+               try:
+                   configObject = self.device.channel_groups[channel_group]
+               except KeyError as err:
+                   raise KeyError(f"Invalid channel_group '{channel_group}'. Expect one of {[ k for k,v in self.device.channel_groups.items()]}") from err
+           else:
+                configObject = self.device
+           config_key_names = [ key.name for key in configObject.config_keys() ]
+           return config_key_names
+
+      def channel_groups( self ):
+           channel_group_names = [ gr for gr in self.device.channel_groups ]
+           return channel_group_names
+
+      def channels( self ):
+           channel_names = [ ch.name for ch in self.device.channels ]
+           return channel_names
+
+
+#+END_SRC
+
+** class ~Device~: getter and setter methods
+
+Get and set methods dispatching actions on device or on channel group.
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+
+      # Device getters and setters
+      def get(self, keyName, channel_group=None):
+        """
+	:channel_group: access 'keyName' on channel_group if given
+	"""
+        logging.info( f"get: keyName={keyName}, channel_group={channel_group}")
+        if self.isOpen:
+           if not channel_group is None:
+               try:
+                   channel_group_obj = self.device.channel_groups[channel_group]
+               except KeyError as err:
+                   raise KeyError(f"Invalid channel_group '{channel_group}'. Expect one of {[ k for k,v in self.device.channel_groups.items()]}") from err
+               return self.getConfigObject( keyName=keyName, configObject=channel_group_obj)
+           else:
+               return self.getConfigObject( keyName=keyName, configObject=self.device)
+        else:
+            print( f"Device {self} not open", file=sys.stderr)
+            return None
+
+
+      def set(self, keyName, value, channel_group=None):
+        """Set 'keyName' to 'value' on device or  on 'channel_group'
+       
+	:channel_group: access 'keyName' on channel_group if given
+
+	"""
+        logging.info( f"set: keyName={keyName}, value={value}, channel_group={channel_group}")
+        if self.isOpen:
+           if not channel_group is None:
+               try:
+                   channel_group_obj = self.device.channel_groups[channel_group]
+               except KeyError as err:
+                   raise KeyError(f"Invalid channel_group '{channel_group}'. Expect one of {[ k for k,v in self.device.channel_groups.items()]}") from err
+               return self.setConfigObject( keyName=keyName, value=value, configObject=channel_group_obj)
+           else:
+               return self.setConfigObject( keyName=keyName, value=value, configObject=self.device)
+        else:
+            print( f"Device {self} not open - nothin done", file=sys.stderr)
+            return None
+
+#+END_SRC
+
+Methods acting on device or on channel group. 
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+            
+      def getConfigObject(self, keyName, configObject):
+           """
+           :configObject: sigrok.Configurable (i.e. Device, Channel_Group etc)
+           """
+           try:
+              key = self.keyName2key(keyName)
+           except ValueError as err:
+              valid_key_names = [ key.name for key in configObject.config_keys() ]
+              raise ValueError( f"Invalid key '{keyName}'. Expect one of: {valid_key_names}") from err 
+
+           try:
+              value = configObject.config_get(key)
+           except ValueError as err:
+              valid_key_names = [ key.name for key in configObject.config_keys() ]
+              raise ValueError( f"Error reading '{keyName}'. Expect one of: {valid_key_names}") from err 
+
+            
+           return value
+
+      def setConfigObject(self, keyName, value, configObject):
+            try:
+              key = self.keyName2key(keyName)
+            except ValueError as err:
+              valid_key_names = [ key.name for key in configObject.config_keys() ]
+              raise ValueError( f"Invalid key '{keyName}'. Expect one of: {valid_key_names}") from err 
+
+            try:
+               # print( f"settign {value}[{type(value)}]")
+               ret = configObject.config_set(key,value)
+            except Exception as err:
+              capabilities = configObject.config_capabilities(key)
+              print( f"{keyName}[{key}], capabilities={capabilities}, listable: {sr.Capability.LIST in capabilities:}")
+              try:
+                   # Not possible to peek for value
+                   if sr.Capability.LIST in capabilities:
+                        valid_values = f" Valid values={ configObject.config_list(key) }"
+                        # valid_values = f" Valid values={ [str(v)+type(v) for v in configObject.config_list(key)]}"
+                   else: 
+                        valid_values = ""
+              except:
+                   valid_values = "exception in valid values"
+
+              raise Exception( f"Error in setting '{keyName}' to value {value}[{type(value)}].{valid_values}") from err 
+
+            return  ret
+
+
+#+END_SRC
+
+** class ~Device~ keyName2key
+
+Map ~keyName~ to sigrok identifier.
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+      @staticmethod
+      def keyName2key(keyName):
+        """Map 'keyName' to key sigrok identifier"""
+        key = sr.ConfigKey.get_by_identifier(keyName)
+        return key
+#+END_SRC
+
+** class ~Device~ open and close guarded by open -state:
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+      # ------------------------------------------------------------------
+      # Open close
+      def open(self):
+         if not self.isOpen: 
+            self.isOpen = True
+            self.device.open()
+         return self
+
+      def close(self):
+         if self.isOpen: 
+            self.isOpen = False
+            self.device.close()
+
+#+END_SRC
+
+** class ~Device~: output device information string
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+      # Device information string
+      def __str__(self):
+          return f"{self.device.vendor}, model :{self.device.model}, version: {self.device.version} - {len(self.device.channels)} channels: {', '.join([c.name for c in self.device.channels])}"
+#+END_SRC
+
+** class ~SigrokDriver~ document string
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+class SigrokDriver:
+  """Wrap sigrok python API 
+
+  - find device for driver string
+
+  - manage device open/close state = support Python with statement
+
+  - manage context (class attribute)
+   
+  - manage session (class attribute)
+
+  - session interface (open, start, run, close, clenaup)
+
+  - utilities to parse session run callback
+
+  Attributes:
+
+  * 'driver': sigrok.Driver object
+
+  """
+
+#+END_SRC
+
+** class ~SigrokDriver~: manage context 
+
+single context state to freezing Python REPL
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+  # Persisent, shared context - one instance to avoid python REPL
+  # (Read-Eval-Print Loop) from freezing
+  context = None
+
+  # One context managed
+  session = None
+#+END_SRC
+
+** class ~SigrokDriver~: constructor
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+  # Contstructore
+  def __init__( self, driver="rdtech-dps"):
+    """Create 'sigrok.context', locate 'driver' (default rdtechDps')
+    from this context, find device from from
+
+    :driver: sigrok driver string used in sigrok-cli
+    e.g. 'rdtech-dps:conn=/dev/ttyUSB0'
+
+    """
+
+
+    # Create only one 'context' instance in one python session 
+    if SigrokDriver.context is None:
+        SigrokDriver.context = sr.Context.create()
+
+
+    # 
+    driver_spec = driver.split(':')
+    driver_name = driver_spec[0]
+
+    # locate driver bundle into libsigrok
+    if driver_name not in self.context.drivers: 
+        raise KeyError( f"Unknown driver name '{driver_name}' in '{driver}'. Supported hardware drivers: {','.join(self.context.drivers.keys())}")
+    self.driver = self.context.drivers[driver_name]
+
+
+
+    driver_options = {}
+    for pair in driver_spec[1:]:
+        name, value = pair.split('=')
+        # key = self.driver.ConfigKey.get_by_identifier(name)
+        # driver_options[name] = key.parse_string(value)
+        driver_options[name] = value
+
+
+
+    # attach to sigrok.Device wrapped within Device class
+    self.device = self.findDevice(self.driver, driver_options)
+
+#+END_SRC
+
+** class ~SigrokDriver~: findDevice
+
+Scan for first device found
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+  def findDevice(self, driver, driver_options):
+    """Locate first (=the one and only?) device found using
+      driver_options. Stderr message if not found.
+
+      :driver: Driver for the device we are looking for
+
+      :driver_options: Hash map for drivers options used to locate the
+      device
+
+      :return: Device wrapper for the first sigrok device scanned,
+      None if not found
+"""
+    scanned = driver.scan(**driver_options)
+    if len(scanned) > 0: 
+      # return first device found
+      return Device(scanned[0])
+    else:
+      raise ValueError( f"Could not find any device for driver '{self.driver.name}' with options '{ ','.join([k+'='+v for k,v in driver_options.items()])}'")
+#+END_SRC
+
+** class ~SigrokDriver~: manage device open/close state
+
+to open/close device within python with statements. For example:
+#+begin_example
+with dps as dev: 
+    # Enable
+    dev.voltage_target = 3.3
+    dev.enabled = True
+#+END_SRC
+
+#+end_example
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+  # ------------------------------------------------------------------
+  # support with statement
+  def open(self):
+    if self.device is not None:
+       self.device.open()
+    return self.device
+
+  def close(self):
+    if self.device is not None:
+      self.device.close()
+  
+  def __enter__(self):
+    """Called when entering with -statement.
+
+      :return: device (which is opened)
+    """
+    return( self.open())
+
+  def __exit__( self, *args):
+    """Called when exiting with -statement. Close 'device' (if it open)
+
+      :return: device (which is opened)
+    """
+    self.close()
+#+END_SRC
+
+** class ~SigrokDriver~: session management
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+  # ------------------------------------------------------------------
+  # support with statement
+  @staticmethod
+  def session_create():
+    if SigrokDriver.session is None:
+        logging.info( "session created")
+        SigrokDriver.session = SigrokDriver.context.create_session()
+    return SigrokDriver.session
+
+  @staticmethod
+  def session_get():
+    if SigrokDriver.session is None:
+        raise ValueError( "session_get: Session missing - should have called 'session_create'")
+    return SigrokDriver.session
+
+
+
+  @staticmethod
+  def session_add_device( device ):
+      session = SigrokDriver.session_get()
+      session.add_device(device.device)
+      logging.info( f"added device {device.device}[{type(device.device)}] to session ")
+
+
+  @staticmethod
+  def session_start( fRun, fStop=lambda device,frame: print( "Stopped" )  ):
+      session = SigrokDriver.session_get()
+      logging.debug( f"session_start: called: is_running={session.is_running()}")
+      if session.is_running():
+          raise ValueError( f"Session was already running - not started")
+      # def datafeed_in(device, packet):
+      #     logging.info( f"datafeed_in: packet type {packet.type} ")
+      #     logging.debug( f"datafeed_in: payload methods  {dir(packet.payload)} ")
+      #     # print( f"device:{device.name}")
+      # session.append( device, packet)
+
+      # session.begin_save(outputFile)
+      session.add_datafeed_callback(fRun)
+      logging.debug( f"session_start: before start is_running={session.is_running()}" )
+      session.start()
+      logging.debug( f"session_start: after start is_running={session.is_running()}" )
+
+  @staticmethod
+  def session_run():
+      """:return: False is already running, else True
+      """
+      session = SigrokDriver.session_get()
+      logging.debug( f"session_run: called session is_running {session.is_running()}" )
+      # if session.is_running(): 
+      #     logging.info( f"session_run: session already running {session.is_running()} - nothing done" )
+      #     return False
+      logging.info( f"session_run: before session.run, is_running {session.is_running()}" )
+      session.run()
+      logging.info( f"session_run: after session.run, is_running {session.is_running()}" )
+      return True
+
+
+  @staticmethod
+  def session_stop():
+      session = SigrokDriver.session_get()
+      session.stop()
+      # SigrokDriver.session = None
+
+  @staticmethod
+  def session_close():
+      SigrokDriver.session = None
+
+
+
+#+END_SRC
+
+#+RESULTS:
+: Python 3.9.16 | packaged by conda-forge | (main, Feb  1 2023, 21:39:03) 
+: [GCC 11.3.0] on linux
+: Type "help", "copyright", "credits" or "license" for more information.
+: Traceback (most recent call last):
+:   File "<stdin>", line 1, in <module>
+:   File "/tmp/babel-95GFUO/python-1WR9UQ", line 3
+:     @staticmethod
+: IndentationError: unexpected indent
+: python.el: native completion setup loaded
+
+** class ~SigrokDriver~: utilities for session callback functions
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+  # ------------------------------------------------------------------
+  # utilities to process callback data
+
+  @classmethod
+  def isAnalogPacket(cls, packet):
+      return packet.type == sr.PacketType.ANALOG
+
+  @classmethod
+  def isLogicPacket(cls, packet):
+      return packet.type == sr.PacketType.LOGIC
+
+  @classmethod
+  def packetChannels(cls, packet):
+      return [ch.name for ch in packet.payload._channels() ]
+
+  @classmethod
+  def packetChannels(cls, packet):
+      return [ch.name for ch in packet.payload._channels() ]
+
+  @classmethod
+  def parsePacketData(cls, packet, data):
+      logging.info( f"parsePacketData: packet.type={packet.type}")
+      if cls.isAnalogPacket(packet): 
+          for i, channel in enumerate(cls.packetChannels(packet)):
+              # previosly unseen channel?
+              if channel not in data: data[channel] = []
+              logging.info( f"parsePacketData: channel {channel} {len(packet.payload.data[i])}")
+              data[channel].extend(packet.payload.data[i])
+              # data[channel].append(packet.payload.data[i][-1])
+      elif cls.isLogicPacket(packet): 
+          channel = "logic"
+          # if channel not in data: data[channel] = []
+          # logging.info( f"parsePacketData: channel {channel} {len(packet.payload.data)}")
+          # data[channel].extend(packet.payload.data)
+          # TODO: collect also logic data (sepately?)
+      return data
+
+
+#+END_SRC
+
+#+RESULTS:
+: Traceback (most recent call last):
+:   File "<stdin>", line 1, in <module>
+:   File "/tmp/babel-b6I6LH/python-A8rxsi", line 4
+:     @classmethod
+: IndentationError: unexpected indent
+
+** class ~SigrokDriver~: documentation string 
+
+from device information:
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+  # ------------------------------------------------------------------
+  # print out
+  def __str__(self):
+    return str(self.device)
+#+END_SRC
+
+
+#+RESULTS:
+: Python 3.9.16 | packaged by conda-forge | (main, Feb  1 2023, 21:39:03) 
+: [GCC 11.3.0] on linux
+: Type "help", "copyright", "credits" or "license" for more information.
+: >>> python.el: native completion setup loaded
+
+** End of module
+
+#+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle no :exports no
+print( "Module included")
+#+END_SRC
+
+
+* References
+
+- Sigrok API documentation 
+  - Python API documentation: http://sigrok.org/api/libsigrok/0.5.0/bindings/python/index.html
+  - C++ API documentation  http://sigrok.org/api/libsigrok/0.5.0/bindings/cxx/index.html
+- Unofficial re-implemntation of the sigrok-cli tool https://github.com/martinling/sigrok-cli-python 
+- Sigrok meter (a project using Sigrok Python API): https://github.com/sigrokproject/sigrok-meter
+  - Module wrapping Sigrok Python API: https://github.com/sigrokproject/sigrok-meter/blob/master/acquisition.py
+
+
+
+
+* Fin                                                              :noexport:
+
+
+** Emacs variables
+
+   #+RESULTS:
+
+   # Local Variables:
+   # time-stamp-line-limit: -8
+   # time-stamp-line-limit: 10
+   # time-stamp-start: "DATE:"
+   # time-stamp-format: " %:y-%02m-%02d"
+   # time-stamp-time-zone: nil
+   # time-stamp-end: "$"
+   # eval: (add-hook 'before-save-hook 'time-stamp)
+   # org-confirm-babel-evaluate: nil
+   # org-src-preserve-indentation: t
+   # org-edit-src-content-indentation: 0
+   # End:
+   #
+   # Muuta
+   # org-cdlatex-mode: t
+   # eval: (cdlatex-mode)
+   #
+   # Local ebib:
+   # org-ref-default-bibliography: "./sigrok-dsp5020-py.bib"
+   # org-ref-bibliography-notes: "./sigrok-dsp5020-py-notes.org"
+   # org-ref-pdf-directory: "./pdf/"
+   # org-ref-notes-directory: "."
+   # bibtex-completion-notes-path: "./sigrok-dsp5020-py-notes.org"
+   # ebib-preload-bib-files: ("./sigrok-dsp5020-py.bib")
+   # ebib-notes-file: ("./sigrok-dsp5020-py-notes.org")
+   # reftex-default-bibliography: ("./sigrok-dsp5020-py.bib")
+
+
+   Modified:2022-09-23.08:38; # time-stamp
