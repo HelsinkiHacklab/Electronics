@@ -83,8 +83,8 @@ for m in [ 'logging', 'sigrokWrapper', ]:
 #+RESULTS: reset-modules
 
 
-Using ~driveString~='demo'~ to access Sigrok demo device. In this example:
-- create SigrokDriver using ~driveString~='demo'~
+Using ~driveString='demo'~ to access Sigrok demo device. In this example:
+- create SigrokDriver using ~driveString='demo'~
 - open demo device for the ~SigrokDriver~ created
   - output device configuration keys
   - output device channel groups
