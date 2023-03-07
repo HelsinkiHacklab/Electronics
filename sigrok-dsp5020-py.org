@@ -130,14 +130,13 @@ Digital Power Supply DPS5020 as follows:
 
 #+call: wrapper-doc[ :exports results ](driverString="rdtech-dps:conn=/dev/ttyUSB0")
 
-#+RESULTS:
+#+begin_example
 : Create sigork wrapper using driverString='rdtech-dps:conn=/dev/ttyUSB0'
 : Device RDTech, model :DPS5020, version: v16 - 3 channels: V, I, P
 :    config_keys=['CONTINUOUS', 'LIMIT_SAMPLES', 'LIMIT_MSEC', 'REGULATION', 'OVER_CURRENT_PROTECTION_THRESHOLD', 'OVER_CURRENT_PROTECTION_ACTIVE', 'OVER_VOLTAGE_PROTECTION_THRESHOLD', 'OVER_VOLTAGE_PROTECTION_ACTIVE', 'ENABLED', 'CURRENT_LIMIT', 'CURRENT', 'VOLTAGE_TARGET', 'VOLTAGE']
 : Channel-groups=[]
 : Channels=['V', 'I', 'P']
-
-
+#+end_example>
 
 ** Set RDTech DPS5020 ~enabled~ state
 
