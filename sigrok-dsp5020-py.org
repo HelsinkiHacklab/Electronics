@@ -304,7 +304,7 @@ code presented above:
 
 #+call:wrapper-doc[:exports results](driverString="rigol-ds:conn=tcp-raw/192.168.120.56/5555")
 
-#+RESULTS:
+#+begin_example
 : Create sigork wrapper using driverString='rigol-ds:conn=tcp-raw/192.168.120.56/5555'
 : Device Rigol, model :DS1104Z, version: 00.04.04.SP3 - 4 channels: CH1, CH2, CH3, CH4
 :    config_keys=['LIMIT_FRAMES', 'DATA_SOURCE', 'TRIGGER_LEVEL', 'NUM_HDIV', 'TIMEBASE', 'HORIZ_TRIGGERPOS', 'TRIGGER_SOURCE', 'TRIGGER_SLOPE', 'SAMPLERATE']
@@ -314,6 +314,7 @@ code presented above:
 :   Channel -group CH3: config_keys=['PROBE_FACTOR', 'NUM_VDIV', 'COUPLING', 'VDIV']
 :   Channel -group CH4: config_keys=['PROBE_FACTOR', 'NUM_VDIV', 'COUPLING', 'VDIV']
 : Channels=['CH1', 'CH2', 'CH3', 'CH4']
+#+end_example>
 
 *** Define ~run_measurements~ function to collect measurements
 
