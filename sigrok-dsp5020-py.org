@@ -456,20 +456,20 @@ df.to_csv(CSV_FILE)
 
 *** Draw image using data in CSV -file
 
-Read data frame from CSV-file ~tmp/demo1.csv~ and create a line plot:
+Read data frame from CSV-file ~pics/demo1.csv~ and create a line plot:
 
 #+BEGIN_SRC python :eval no-export :results value file :noweb no :session *Python*  :exports both
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv( "tmp/demo1.csv", decimal=".")
+df = pd.read_csv( "pics/demo1.csv", decimal=".")
 df.plot( y="CH1")
-plt.savefig( "tmp/demo1.png", format="png" ) # , dpi=fig.dpi )
-"tmp/demo1.png"
+plt.savefig( "pics/demo1.png", format="png" ) # , dpi=fig.dpi )
+"pics/demo1.png"
 #+END_SRC
 
 #+RESULTS:
-[[file:tmp/demo1.png]]
+[[file:pics/demo1.png]]
 
 
 * Python middleware ~sigrokWrapper.py~
