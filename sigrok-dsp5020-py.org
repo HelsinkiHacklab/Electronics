@@ -21,7 +21,7 @@ wrapper, ~sigrogWrapper.py~, to simplify code in the Python demo.
 - [[#sigrok-python-api-demo][Sigrok Python API Demo]]
   - [[#document-sigrok-demo-device-configuration-keys][Document Sigrok Demo device configuration keys]]
   - [[#document-rdtech-dps5020-configuration-keys][Document RDTech DPS5020 configuration keys]]
-  - [[#set-rdtech-dps5020-enabled-state][Set RDTech DPS5020 enabled state]]
+  - [[#toggle-rdtech-dps5020-enabled-state][Toggle RDTech DPS5020 enabled state]]
   - [[#ramp-up-rdtech-dps5020-voltage][Ramp up RDTech DPS5020 voltage]]
   - [[#ramp-up-rdtech-dps5020-voltage-in-a-thread][Ramp up RDTech DPS5020 voltage in a thread]]
   - [[#ramp-up-voltage-read-measurements-using-rigol-not-working][Ramp up voltage, read measurements using Rigol NOT WORKING]]
@@ -138,7 +138,7 @@ Digital Power Supply DPS5020 as follows:
 : Channels=['V', 'I', 'P']
 #+end_example>
 
-** Set RDTech DPS5020 ~enabled~ state
+** Toggle RDTech DPS5020 ~enabled~ state
 
 #+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :var reset=reset-modules driverString="rdtech-dps:conn=/dev/ttyUSB0" :exports both
 import sigrokWrapper
