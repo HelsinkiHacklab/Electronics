@@ -46,6 +46,11 @@ class Device:
         self.device = device     # sigrok device 
         self.isOpen = False      # we are managing device state, initially 'Closed'
 
+      # Warning 'key.name' returned cannot be used for a keyName
+      # use sigrok-cli to find key names. For exampe, for the demo device
+      #
+      # sigrok-cli --driver=demo --show
+
       def config_keys( self, channel_group=None ):
            if not channel_group is None:
                try:

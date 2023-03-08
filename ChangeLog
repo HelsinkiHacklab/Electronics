@@ -1,3 +1,13 @@
+2023-03-08  jj  <jj@eero>
+
+	* sigrok-dsp5020-py.org (Python middleware ~sigrokWrapper.py~):
+	instruct 'import sigrokWrapper'
+	(Document Sigrok ~Demo~ device configuration keys): Added warning
+	(Document RDTech DPS5020 configuration keys): added a note to use
+	--show command
+	(class ~Device~: ~config_keys~, ~channel_groups~, ~channels~
+	methods): Added warning on the keyNames
+
 2023-02-21  jj  <jj@eero>
 
 	* sigrok-tst-dsp5020.org: added

@@ -1,4 +1,4 @@
-#+DATE: 2023-03-07
+#+DATE: 2023-03-08
 
 * Use ~sigrok-python~ to control DPS5020 Digital Power Supply
 :PROPERTIES:
@@ -122,6 +122,47 @@ Channel-groups=['A0', 'A1', 'A2', 'A3', 'A4', 'Analog', 'Logic']
 Channels=['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'A0', 'A1', 'A2', 'A3', 'A4']
 #+end_example
 
+*Warning* Python API seems to be returning C++ constant names, and not
+string values naming device configuration options. Use ~sigrok-cli~
+~--show~ -command for the string values. For example, for the demo
+-device
+
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+sigrok-cli --driver=demo --show
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Driver functions:
+    Demo device
+    Logic analyzer
+    Oscilloscope
+Scan options:
+    logic_channels
+    analog_channels
+    limit_frames
+demo - Demo device with 13 channels: D0 D1 D2 D3 D4 D5 D6 D7 A0 A1 A2 A3 A4
+Channel groups:
+    Logic: channels D0 D1 D2 D3 D4 D5 D6 D7
+    Analog: channels A0 A1 A2 A3 A4
+    A0: channel A0
+    A1: channel A1
+    A2: channel A2
+    A3: channel A3
+    A4: channel A4
+Supported configuration options across all channel groups:
+    continuous: on, off
+    limit_samples: 0 (current)
+    limit_time: 0 (current)
+    limit_frames: 0 (current)
+    samplerate (1 Hz - 1 GHz in steps of 1 Hz)
+    averaging: on, off (current)
+    avg_samples: 0 (current)
+    Supported triggers: 0 1 r f e 
+    captureratio: 20 (current)
+#+end_example
+
+
 ** Document RDTech DPS5020 configuration keys
 
 Using ~driverString="rdtech-dps:conn=/dev/ttyUSB0"~ for the code in
@@ -137,6 +178,39 @@ Digital Power Supply DPS5020 as follows:
 : Channel-groups=[]
 : Channels=['V', 'I', 'P']
 #+end_example>
+
+Again, Use ~sigrok-cli~ ~--show~ -command for the configuration option names. For
+example, for the DPS5020 use the command
+
+#+BEGIN_SRC bash :eval no-export :results output :exports both
+sigrok-cli --driver=rdtech-dps:conn=/dev/ttyUSB0 --show
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Driver functions:
+    Power supply
+Scan options:
+    conn
+    serialcomm
+    modbusaddr
+rdtech-dps - RDTech DPS5020 v16 with 3 channels: V I P
+Supported configuration options:
+    continuous: on, off
+    limit_samples: 0 (current)
+    limit_time: 0 (current)
+    voltage: 0.000000 (current)
+    voltage_target: 0.000000, 50.000000, 0.010000
+    current: 0.000000 (current)
+    current_limit: 0.000000, 20.000000, 0.010000
+    enabled: on, off (current)
+    regulation: CV (current)
+    ovp_active: on, off (current)
+    ovp_threshold: 51.000000 (current)
+    ocp_active: on, off (current)
+    ocp_threshold: 20.200000 (current)
+#+end_example
+
 
 ** Toggle RDTech DPS5020 ~enabled~ state
 
@@ -474,7 +548,14 @@ plt.savefig( "pics/demo1.png", format="png" ) # , dpi=fig.dpi )
 
 * Python middleware ~sigrokWrapper.py~
 
-Python code in [[file:sigrokWrapper.py]]
+Python code in [[file:sigrokWrapper.py]]. Put this file into one of the
+directies named in ~sys.path~ -list (e.g into current working
+directory) and use
+
+#+BEGIN_SRC python :eval no :results output :noweb no :session *Python*
+import sigrokWrapper
+#+END_SRC
+
 
 ** Module document string
 #+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
@@ -553,6 +634,12 @@ Methods to document device properties. Properties can be set on device
 or on channel_groups.
 
 #+BEGIN_SRC python :eval no-export :results output :noweb no :session *Python* :tangle sigrokWrapper.py
+    
+      # Warning 'key.name' returned cannot be used for a keyName
+      # use sigrok-cli to find key names. For exampe, for the demo device
+      #
+      # sigrok-cli --driver=demo --show
+
       def config_keys( self, channel_group=None ):
            if not channel_group is None:
                try:
