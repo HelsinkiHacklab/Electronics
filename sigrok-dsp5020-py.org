@@ -50,7 +50,7 @@ wrapper, ~sigrogWrapper.py~, to simplify code in the Python demo.
 
 * Sigrok Python API Demo
 
-[[https://github.com/pysigrok/][Pysigrok (Sigrok Python API)]] is a thin wrapper on top of [[http://sigrok.org/wiki/Libsigrok][libsigrok]] C++
+[[http://sigrok.org/gitweb/?p=libsigrok.git;a=tree;f=bindings/python][Sigrok Python bindings]] is a thin wrapper on top of [[http://sigrok.org/wiki/Libsigrok][libsigrok]] C++
 implementation. It has only limited support for diagnostics and just
 returns an error code without any diagnostics messages.  The number of
 classes/types exposed to user on API interface also is quite large
