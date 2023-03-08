@@ -369,6 +369,12 @@ print( f"{datetime.now()} - main return from join thread t1")
 
 *THIS DOES NOT WORK - SEEMS TO BE DROPPING PACKAGES IN CALLBACK*
 
+because driver reports error messages (ref chapter 'Run two threads
+and collect data' below)
+
+#+begin_example
+sr: rigol-ds: Read should have been completed
+#+end_example
 
 
 *** Document Rigol DS1104Z parameters using sigrokWrapper 
