@@ -1,3 +1,7 @@
+2023-05-25  hacklab  <hacklab@hack310g8>
+
+	* pc-admin/hack310g8-admin.org: compile
+
 2023-03-08  jj  <jj@eero>
 
 	* sigrok-dsp5020-py.org (Python middleware ~sigrokWrapper.py~):
