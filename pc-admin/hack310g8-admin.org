@@ -34,6 +34,10 @@ Emacs org -file for administering ~hack310g8~ PC in electronics room.
     - [[#gimp-gnu-image-manipulation-program][gimp: GNU Image Manipulation Program]]
     - [[#lxi-tools-a-tool-for-controlling-lxi-compatible-instruments][lxi-tools: a tool for controlling LXI compatible instruments]]
     - [[#sigrok-signal-analysis-software-suite][sigrok: signal analysis software suite]]
+  - [[#sigrok-from-source][sigrok from source]]
+    - [[#sigrok-cli][sigrok-cli]]
+    - [[#libsigrok-][libsigrok-]]
+  - [[#python][Python]]
   - [[#other][Other]]
     - [[#openscan-binreftscad][OpenScan ~/bin/reft.scad]]
     - [[#script--binetoolsh--directory][Script  bin/etool.sh -directory]]
@@ -44,6 +48,8 @@ Emacs org -file for administering ~hack310g8~ PC in electronics room.
   - [[#other-usefull-admin-commands][Other usefull admin commands]]
     - [[#hostname][hostname]]
     - [[#check-os-version][Check OS version]]
+- [[#admin][Admin]]
+  - [[#autoremove][autoremove]]
 - [[#issues][Issues]]
   - [[#etoolsh-exe-glxgears---error-libgl-error-failed-to-load-driver-swrast-resolved][etool.sh exe glxgears - error 'libGL error: failed to load driver: swrast' (resolved)]]
   - [[#emacs-variables][Emacs variables]]
@@ -59,7 +65,6 @@ echo GITHUB_IDENTITY=$GITHUB_IDENTITY | sed -E 's!=(.*)!=xxxxxx2!'
 
 #+RESULTS:
 : GITHUB_IDENTITY=xxxxx
-
 
 ** Initialize operating system environment
 
@@ -318,8 +323,6 @@ exists. Original version is saved into ~.ssh/config.old~.
  : ---
  : >      IdentityFile /home/hacklab/mnt/.ssh/id_jukka358
 
-
-
 ** Setup git repo
 
 *** Clone repo ~github.com/HelsinkiHacklab/Electronics~
@@ -390,8 +393,6 @@ git remote -v
 : origin	https://github.com/HelsinkiHacklab/Electronics (fetch)
 : origin	https://github.com/HelsinkiHacklab/Electronics (push)
 
-
- 
 ** Manage git repo
 
 *** Pull changes from ~origin~
@@ -541,10 +542,6 @@ After  push -operation fetch and merge changes from remote.
 #+RESULTS:
 : merge: origin/master - not something we can merge
 : STATUS=1
-
-
-
-
 
 ** Install packages
 
@@ -712,7 +709,6 @@ Reading state information... 0%Reading state information... 0%Reading state 
  For a short summary of all commands, run 'snap help --all'.
  #+end_example
 
-
 *** ~git~: free and open source distributed version control 
 
     #+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
@@ -753,8 +749,6 @@ Reading state information... 0%Reading state information... 0%Reading state 
     Setting up git (1:2.25.1-1ubuntu3.4) ...
     Processing triggers for man-db (2.9.1-1) ...
     #+end_example
-
-
 
 *** ~docker~:  OS-level virtualization to deliver software in packages called containers
 
@@ -1083,7 +1077,6 @@ Reading state information... 0%Reading state information... 0%Reading state 
   #+RESULTS:
   : hacklab adm cdrom sudo dip plugdev lpadmin sambashare docker
 
-
 *** ~docker-compose~: tool for defining and running multi-container Docker applications
     :PROPERTIES:
     :header-args+: :var  DOCKER_VERSION="2.5.0"
@@ -1132,7 +1125,6 @@ Reading state information... 0%Reading state information... 0%Reading state 
 
   #+RESULTS:
   : Docker Compose version v2.5.0
-
 
 *** ~openscad~: software for creating solid 3D CAD objects.
 
@@ -1284,7 +1276,6 @@ Reading state information... 0%Reading state information... 0%Reading state 
    -x [ --x ] arg               dxf_file deprecated, use -o
 
  #+end_example
-
 
 *** ~gimp~: GNU Image Manipulation Program
 
@@ -1477,7 +1468,6 @@ Reading state information... 0%Reading state information... 0%Reading state 
    -x [ --x ] arg               dxf_file deprecated, use -o
 
  #+end_example
-
 
 *** ~lxi-tools~: a tool for controlling LXI compatible instruments
 
@@ -1678,7 +1668,6 @@ Reading state information... 0%Reading state information... 0%Reading state 
 
  User instructions: https://wiki.helsinki.hacklab.fi/E-huoneen_mittalaitteiden_k%C3%A4ytt%C3%B6vinkkej%C3%A4
 
-
 *** ~sigrok~: signal analysis software suite
 
 **** Install sigrok package
@@ -1689,114 +1678,76 @@ Reading state information... 0%Reading state information... 0%Reading state 
 
  #+RESULTS:
  #+begin_example
-0% [Working]            Hit:1 http://archive.ubuntu.com/ubuntu focal InRelease
-0% [Connected to download.docker.com (13.32.123.81)] [Waiting for headers] [Con                                                                               Hit:2 http://ppa.launchpad.net/kicad/kicad-6.0-releases/ubuntu focal InRelease
-0% [Waiting for headers] [Connecting to packages.linuxmint.com (68.235.39.11)]                                                                                Get:3 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
-0% [Waiting for headers] [Waiting for headers] [Waiting for headers] [3 InRelea                                                                               Hit:4 https://download.docker.com/linux/ubuntu focal InRelease
-0% [Waiting for headers] [Waiting for headers] [3 InRelease 14.2 kB/114 kB 12%]                                                                               Get:5 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
-0% [Waiting for headers] [5 InRelease 1,153 B/114 kB 1%] [3 InRelease 14.2 kB/10% [Waiting for headers] [5 InRelease 18.5 kB/114 kB 16%] [3 InRelease 22.9 kB/                                                                               Hit:6 http://archive.canonical.com/ubuntu focal InRelease
-0% [Waiting for headers] [5 InRelease 27.2 kB/114 kB 24%] [3 InRelease 34.4 kB/                                                                               Ign:7 http://packages.linuxmint.com una InRelease
-                                                                               0% [5 InRelease 77.9 kB/114 kB 68%] [3 InRelease 77.9 kB/114 kB 68%]0% [Waiting for headers] [5 InRelease 104 kB/114 kB 91%] [3 InRelease 104 kB/11                                                                               0% [Waiting for headers] [5 InRelease 114 kB/114 kB 100%]                                                         0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]                                              Get:8 http://archive.ubuntu.com/ubuntu focal-backports InRelease [108 kB]
-0% [Waiting for headers] [8 InRelease 2,601 B/108 kB 2%]                                                        0% [Waiting for headers]                        Hit:9 http://packages.linuxmint.com una Release
-                        0% [Working]0% [Working]0% [Working]            Get:10 http://security.ubuntu.com/ubuntu focal-security/main amd64 DEP-11 Metadata [40.6 kB]
-0% [10 Components-amd64 2,689 B/40.6 kB 7%]                                           0% [Working]0% [10 Components-amd64 store 0 B] [Waiting for headers]                                                        0% [Waiting for headers]0% [Waiting for headers]                        Get:11 http://security.ubuntu.com/ubuntu focal-security/universe amd64 DEP-11 Metadata [77.6 kB]
-0% [Waiting for headers] [11 Components-amd64 2,688 B/77.6 kB 3%]                                                                 Get:12 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 DEP-11 Metadata [277 kB]
-0% [12 Components-amd64 2,687 B/277 kB 1%] [11 Components-amd64 69.3 kB/77.6 kB                                                                               0% [12 Components-amd64 15.7 kB/277 kB 6%]                                          Get:13 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 DEP-11 Metadata [2,468 B]
-0% [12 Components-amd64 17.2 kB/277 kB 6%] [13 Components-amd64 1,659 B/2,468 B0% [11 Components-amd64 store 0 B] [12 Components-amd64 17.2 kB/277 kB 6%] [13                                                                                0% [11 Components-amd64 store 0 B] [12 Components-amd64 20.1 kB/277 kB 7%]                                                                          0% [12 Components-amd64 101 kB/277 kB 37%]0% [13 Components-amd64 store 0 B] [12 Components-amd64 103 kB/277 kB 37%]                                                                          0% [12 Components-amd64 105 kB/277 kB 38%]0% [12 Components-amd64 255 kB/277 kB 92%]                                          0% [Working]0% [12 Components-amd64 store 0 B] [Waiting for headers]                                                        Get:14 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 DEP-11 Metadata [391 kB]
-0% [12 Components-amd64 store 0 B] [14 Components-amd64 1,239 B/391 kB 0%]87% [12 Components-amd64 store 0 B] [14 Components-amd64 249 kB/391 kB 64%]                                                                           88% [14 Components-amd64 262 kB/391 kB 67%]                                           97% [Waiting for headers]                         Get:16 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 DEP-11 Metadata [944 B]
-97% [Waiting for headers]                         Get:17 http://archive.ubuntu.com/ubuntu focal-backports/main amd64 DEP-11 Metadata [7,996 B]
-97% [14 Components-amd64 store 0 B] [17 Components-amd64 7,045 B/7,996 B 88%]                                                                             98% [14 Components-amd64 store 0 B] [Waiting for headers]                                                         Get:18 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 DEP-11 Metadata [30.5 kB]
-98% [14 Components-amd64 store 0 B] [18 Components-amd64 6,082 B/30.5 kB 20%]                                                                             100% [14 Components-amd64 store 0 B]                                    100% [Working]100% [16 Components-amd64 store 0 B]                                    100% [Working]100% [17 Components-amd64 store 0 B]                                    100% [Working]100% [18 Components-amd64 store 0 B]                                    100% [Working]              Fetched 1,164 kB in 1s (1,118 kB/s)
-Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 3%Reading package lists... 3%Reading package lists... 5%Reading package lists... 5%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 31%Reading package lists... 31%Reading package lists... 43%Reading package lists... 43%Reading package lists... 56%Reading package lists... 56%Reading package lists... 57%Reading package lists... 57%Reading package lists... 57%Reading package lists... 57%Reading package lists... 57%Reading package lists... 57%Reading package lists... 63%Reading package lists... 63%Reading package lists... 64%Reading package lists... 64%Reading package lists... 68%Reading package lists... 68%Reading package lists... 69%Reading package lists... 72%Reading package lists... 72%Reading package lists... 72%Reading package lists... 72%Reading package lists... 74%Reading package lists... 74%Reading package lists... 76%Reading package lists... 76%Reading package lists... 78%Reading package lists... 78%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 80%Reading package lists... 80%Reading package lists... 80%Reading package lists... 80%Reading package lists... 80%Reading package lists... 80%Reading package lists... 80%Reading package lists... 80%Reading package lists... 84%Reading package lists... 84%Reading package lists... 85%Reading package lists... 85%Reading package lists... 89%Reading package lists... 89%Reading package lists... 92%Reading package lists... 92%Reading package lists... 92%Reading package lists... 92%Reading package lists... 94%Reading package lists... 94%Reading package lists... 96%Reading package lists... 96%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... Done
+ 0% [Working]            Hit:1 http://ppa.launchpad.net/kicad/kicad-6.0-releases/ubuntu focal InRelease
+ 0% [Connected to download.docker.com (108.156.22.127)] [Waiting for headers] [C                                                                               Hit:2 https://download.docker.com/linux/ubuntu focal InRelease
+ 0% [Waiting for headers] [Connecting to archive.ubuntu.com (185.125.190.36)] [W                                                                               Hit:3 http://archive.canonical.com/ubuntu focal InRelease
+ 0% [Waiting for headers] [Connecting to archive.ubuntu.com (185.125.190.36)] [W                                                                               Ign:4 http://packages.linuxmint.com una InRelease
+                                                                                0% [Connecting to archive.ubuntu.com (185.125.190.36)] [Waiting for headers]0% [Waiting for headers] [Connecting to archive.ubuntu.com (185.125.190.36)] [W0% [Waiting for headers] [Connecting to archive.ubuntu.com (91.189.91.39)] [Wai                                                                               Hit:5 http://packages.linuxmint.com una Release
+                                                                                0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]0% [Waiting for headers] [Waiting for headers]                                              Hit:7 http://security.ubuntu.com/ubuntu focal-security InRelease
+                                               0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]                        Hit:8 http://archive.ubuntu.com/ubuntu focal InRelease
+                         0% [Working]0% [Waiting for headers]                        Hit:9 http://archive.ubuntu.com/ubuntu focal-updates InRelease
+                         0% [Working]0% [Waiting for headers]                        Get:10 http://archive.ubuntu.com/ubuntu focal-backports InRelease [108 kB]
+ 0% [10 InRelease 4,051 B/108 kB 4%]                                   0% [Working]100% [Working]              Fetched 108 kB in 10s (10.5 kB/s)
+ Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 3%Reading package lists... 3%Reading package lists... 4%Reading package lists... 4%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 28%Reading package lists... 28%Reading package lists... 39%Reading package lists... 39%Reading package lists... 51%Reading package lists... 51%Reading package lists... 52%Reading package lists... 52%Reading package lists... 52%Reading package lists... 52%Reading package lists... 52%Reading package lists... 52%Reading package lists... 56%Reading package lists... 58%Reading package lists... 58%Reading package lists... 60%Reading package lists... 60%Reading package lists... 64%Reading package lists... 64%Reading package lists... 69%Reading package lists... 69%Reading package lists... 69%Reading package lists... 69%Reading package lists... 71%Reading package lists... 71%Reading package lists... 74%Reading package lists... 74%Reading package lists... 76%Reading package lists... 76%Reading package lists... 76%Reading package lists... 76%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 82%Reading package lists... 82%Reading package lists... 83%Reading package lists... 83%Reading package lists... 87%Reading package lists... 87%Reading package lists... 92%Reading package lists... 92%Reading package lists... 92%Reading package lists... 92%Reading package lists... 94%Reading package lists... 94%Reading package lists... 96%Reading package lists... 96%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... Done
  #+end_example
 
 
  #+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
-  sudo apt-get install -y sigrok
+  sudo apt-get purge -y sigrok sigrok-cli libsigrok-dev libsigrok4 libsigrokcxx-dev libsigrokcxx4 libsigrokdecode-dev pulseview sigrok-firmware-fx2lafw
  #+END_SRC
 
  #+RESULTS:
  #+begin_example
-Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
-Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
-Reading state information... 0%Reading state information... 0%Reading state information... Done
+ Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+ Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+ Reading state information... 0%Reading state information... 0%Reading state information... Done
+ Package 'libsigrok-dev' is not installed, so not removed
+ Package 'libsigrokcxx-dev' is not installed, so not removed
+ Package 'sigrok' is not installed, so not removed
+ Package 'sigrok-cli' is not installed, so not removed
+ Package 'sigrok-firmware-fx2lafw' is not installed, so not removed
  The following packages were automatically installed and are no longer required:
-   lib32gcc-s1 libcuda1-340 liblxi1 libxnvctrl0 nvidia-settings
-   screen-resolution-extra
+   libbluetooth-dev libboost-serialization1.71.0 libftdi1-2 libftdi1-dev
+   libftdi1-doc libhidapi-dev libhidapi-hidraw0 libhidapi-libusb0
+   libserialport-dev libserialport0
  Use 'sudo apt autoremove' to remove them.
- The following additional packages will be installed:
-   libboost-serialization1.71.0 libftdi1-2 libhidapi-hidraw0 libserialport0
-   libsigrok4 libsigrokcxx4 libsigrokdecode4 pulseview sigrok-cli
-   sigrok-firmware-fx2lafw
- The following NEW packages will be installed:
-   libboost-serialization1.71.0 libftdi1-2 libhidapi-hidraw0 libserialport0
-   libsigrok4 libsigrokcxx4 libsigrokdecode4 pulseview sigrok sigrok-cli
-   sigrok-firmware-fx2lafw
- 0 upgraded, 11 newly installed, 0 to remove and 253 not upgraded.
- Need to get 1,826 kB of archives.
- After this operation, 8,721 kB of additional disk space will be used.
-0% [Working]            Get:1 http://archive.ubuntu.com/ubuntu focal/main amd64 libboost-serialization1.71.0 amd64 1.71.0-6ubuntu6 [302 kB]
-0% [1 libboost-serialization1.71.0 1,165 B/302 kB 0%]10% [1 libboost-serialization1.71.0 229 kB/302 kB 76%]                                                      15% [Working]             Get:2 http://archive.ubuntu.com/ubuntu focal/universe amd64 libftdi1-2 amd64 1.4-2build2 [25.6 kB]
-15% [2 libftdi1-2 2,615 B/25.6 kB 10%]                                      18% [Waiting for headers]                         Get:3 http://archive.ubuntu.com/ubuntu focal/universe amd64 libhidapi-hidraw0 amd64 0.9.0+dfsg-1 [10.7 kB]
-18% [3 libhidapi-hidraw0 2,762 B/10.7 kB 26%]                                             20% [Waiting for headers]                         Get:4 http://archive.ubuntu.com/ubuntu focal/universe amd64 libserialport0 amd64 0.1.1-3 [21.6 kB]
-20% [4 libserialport0 505 B/21.6 kB 2%]                                       23% [Waiting for headers]                         Get:5 http://archive.ubuntu.com/ubuntu focal/universe amd64 libsigrok4 amd64 0.5.2-2 [426 kB]
-23% [5 libsigrok4 1,750 B/426 kB 0%]                                    44% [Waiting for headers]                         Get:6 http://archive.ubuntu.com/ubuntu focal/universe amd64 libsigrokcxx4 amd64 0.5.2-2 [77.6 kB]
-44% [6 libsigrokcxx4 2,412 B/77.6 kB 3%]                                        49% [Waiting for headers]                         Get:7 http://archive.ubuntu.com/ubuntu focal/universe amd64 libsigrokdecode4 amd64 0.5.3-1build1 [252 kB]
-49% [7 libsigrokdecode4 1,289 B/252 kB 1%]                                          62% [Waiting for headers]                         Get:8 http://archive.ubuntu.com/ubuntu focal/universe amd64 pulseview amd64 0.4.1-1build1 [651 kB]
-62% [8 pulseview 4,294 B/651 kB 1%]                                   92% [Waiting for headers]                         Get:9 http://archive.ubuntu.com/ubuntu focal/universe amd64 sigrok-cli amd64 0.7.1-1 [45.0 kB]
-92% [9 sigrok-cli 4,489 B/45.0 kB 10%]                                      96% [Waiting for headers]                         Get:10 http://archive.ubuntu.com/ubuntu focal/universe amd64 sigrok-firmware-fx2lafw all 0.1.7-1 [12.9 kB]
-96% [10 sigrok-firmware-fx2lafw 2,616 B/12.9 kB 20%]                                                    98% [Waiting for headers]                         Get:11 http://archive.ubuntu.com/ubuntu focal/universe amd64 sigrok all 0.2-5 [2,268 B]
-98% [11 sigrok 2,268 B/2,268 B 100%]                                    100% [Working]              Fetched 1,826 kB in 1s (1,423 kB/s)
- Selecting previously unselected package libboost-serialization1.71.0:amd64.
- (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 439912 files and directories currently installed.)
- Preparing to unpack .../00-libboost-serialization1.71.0_1.71.0-6ubuntu6_amd64.deb ...
- Unpacking libboost-serialization1.71.0:amd64 (1.71.0-6ubuntu6) ...
- Selecting previously unselected package libftdi1-2:amd64.
- Preparing to unpack .../01-libftdi1-2_1.4-2build2_amd64.deb ...
- Unpacking libftdi1-2:amd64 (1.4-2build2) ...
- Selecting previously unselected package libhidapi-hidraw0:amd64.
- Preparing to unpack .../02-libhidapi-hidraw0_0.9.0+dfsg-1_amd64.deb ...
- Unpacking libhidapi-hidraw0:amd64 (0.9.0+dfsg-1) ...
- Selecting previously unselected package libserialport0:amd64.
- Preparing to unpack .../03-libserialport0_0.1.1-3_amd64.deb ...
- Unpacking libserialport0:amd64 (0.1.1-3) ...
- Selecting previously unselected package libsigrok4:amd64.
- Preparing to unpack .../04-libsigrok4_0.5.2-2_amd64.deb ...
- Unpacking libsigrok4:amd64 (0.5.2-2) ...
- Selecting previously unselected package libsigrokcxx4:amd64.
- Preparing to unpack .../05-libsigrokcxx4_0.5.2-2_amd64.deb ...
- Unpacking libsigrokcxx4:amd64 (0.5.2-2) ...
- Selecting previously unselected package libsigrokdecode4:amd64.
- Preparing to unpack .../06-libsigrokdecode4_0.5.3-1build1_amd64.deb ...
- Unpacking libsigrokdecode4:amd64 (0.5.3-1build1) ...
- Selecting previously unselected package pulseview.
- Preparing to unpack .../07-pulseview_0.4.1-1build1_amd64.deb ...
- Unpacking pulseview (0.4.1-1build1) ...
- Selecting previously unselected package sigrok-cli.
- Preparing to unpack .../08-sigrok-cli_0.7.1-1_amd64.deb ...
- Unpacking sigrok-cli (0.7.1-1) ...
- Selecting previously unselected package sigrok-firmware-fx2lafw.
- Preparing to unpack .../09-sigrok-firmware-fx2lafw_0.1.7-1_all.deb ...
- Unpacking sigrok-firmware-fx2lafw (0.1.7-1) ...
- Selecting previously unselected package sigrok.
- Preparing to unpack .../10-sigrok_0.2-5_all.deb ...
- Unpacking sigrok (0.2-5) ...
- Setting up libsigrokdecode4:amd64 (0.5.3-1build1) ...
- Setting up libhidapi-hidraw0:amd64 (0.9.0+dfsg-1) ...
- Setting up sigrok-firmware-fx2lafw (0.1.7-1) ...
- Setting up libftdi1-2:amd64 (1.4-2build2) ...
- Setting up libboost-serialization1.71.0:amd64 (1.71.0-6ubuntu6) ...
- Setting up libserialport0:amd64 (0.1.1-3) ...
- Setting up libsigrok4:amd64 (0.5.2-2) ...
- Setting up sigrok-cli (0.7.1-1) ...
- Setting up libsigrokcxx4:amd64 (0.5.2-2) ...
- Setting up pulseview (0.4.1-1build1) ...
- Setting up sigrok (0.2-5) ...
+ The following packages will be REMOVED:
+   libsigrok4* libsigrokcxx4* libsigrokdecode-dev* pulseview*
+ 0 upgraded, 0 newly installed, 4 to remove and 158 not upgraded.
+ After this operation, 4,165 kB disk space will be freed.
+ (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 452349 files and directories currently installed.)
+ Removing pulseview (0.4.1-1build1) ...
+ Removing libsigrokcxx4:amd64 (0.5.2-2) ...
+ Removing libsigrok4:amd64 (0.5.2-2) ...
+ Removing libsigrokdecode-dev:amd64 (0.5.3-1build1) ...
  Processing triggers for mime-support (3.64ubuntu1) ...
  Processing triggers for hicolor-icon-theme (0.17-2) ...
  Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
  Processing triggers for man-db (2.9.1-1) ...
  Processing triggers for desktop-file-utils (0.24+linuxmint1) ...
+ #+end_example
+
+ #+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
+  sudo apt-get --reinstall install -y sigrok
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+ Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+ Reading state information... 0%Reading state information... 0%Reading state information... Done
+ The following packages were automatically installed and are no longer required:
+   linux-headers-5.4.0-137 linux-headers-5.4.0-137-generic
+   linux-image-5.4.0-137-generic linux-modules-5.4.0-137-generic
+   linux-modules-extra-5.4.0-137-generic
+ Use 'sudo apt autoremove' to remove them.
+ 0 upgraded, 0 newly installed, 1 reinstalled, 0 to remove and 158 not upgraded.
+ Need to get 0 B/2,268 B of archives.
+ After this operation, 0 B of additional disk space will be used.
+ (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 488825 files and directories currently installed.)
+ Preparing to unpack .../archives/sigrok_0.2-5_all.deb ...
+ Unpacking sigrok (0.2-5) over (0.2-5) ...
+ Setting up sigrok (0.2-5) ...
  #+end_example
 
 
@@ -2175,6 +2126,1869 @@ Reading state information... 0%Reading state information... 0%Reading state 
      z80                  Zilog Z80 CPU
    #+end_example
 
+** sigrok from source
+
+
+
+***  sigrok-cli
+:PROPERTIES:
+:header-args+: :dir tmp/sigrok-cli
+:END:
+
+**** Insatll dependencies
+
+
+ #+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
+ sudo apt-get install -y git-core gcc make autoconf automake libtool pkg-config libglib2.0-dev
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+Reading state information... 0%Reading state information... 0%Reading state information... Done
+ Note, selecting 'git' instead of 'git-core'
+ autoconf is already the newest version (2.69-11.1).
+ automake is already the newest version (1:1.16.1-4ubuntu6).
+ gcc is already the newest version (4:9.3.0-1ubuntu2).
+ libtool is already the newest version (2.4.6-14).
+ make is already the newest version (4.2.1-1.2).
+ pkg-config is already the newest version (0.29.1-0ubuntu4).
+ git is already the newest version (1:2.25.1-1ubuntu3.11).
+ libglib2.0-dev is already the newest version (2.64.6-1~ubuntu20.04.4).
+ The following packages were automatically installed and are no longer required:
+   libbluetooth-dev libboost-serialization1.71.0 libftdi1-2 libftdi1-dev
+   libftdi1-doc libhidapi-dev libhidapi-hidraw0 libhidapi-libusb0
+   libserialport-dev libserialport0
+ Use 'sudo apt autoremove' to remove them.
+ 0 upgraded, 0 newly installed, 0 to remove and 158 not upgraded.
+ #+end_example
+
+
+**** Git clone
+
+#+BEGIN_SRC bash :eval no-export :results output :dir tmp
+pwd
+git clone git://sigrok.org/sigrok-cli
+#+END_SRC
+
+#+RESULTS:
+: /home/hacklab/Documents/jj/Electronics/pc-admin/tmp
+
+**** Compile
+#+BEGIN_SRC bash :eval no-export :results output
+pwd
+ls
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+/home/hacklab/Documents/jj/Electronics/pc-admin/tmp/sigrok-cli
+anykey.c
+AUTHORS
+autogen.sh
+configure.ac
+contrib
+COPYING
+decode.c
+device.c
+doc
+HACKING
+input.c
+m4
+main.c
+Makefile.am
+NEWS
+options.c
+output.c
+parsers.c
+README
+session.c
+show.c
+sigrok-cli.h
+#+end_example
+
+#+BEGIN_SRC bash :eval no-export :results output
+./autogen.sh
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC bash :eval no-export :results output
+./configure
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking whether make supports nested variables... (cached) yes
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking whether gcc understands -c and -o together... yes
+checking whether make supports the include directive... yes (GNU style)
+checking dependency style of gcc... gcc3
+checking for pkg-config... /usr/bin/pkg-config
+checking pkg-config is at least version 0.22... yes
+checking for libsigrokdecode... no
+checking compiler flag for C99... -std=c99
+checking which C compiler warning flags to use... -Wall -Wextra
+checking for special C compiler options needed for large files... no
+checking for _FILE_OFFSET_BITS value needed for large files... no
+checking for SIGROK_CLI... yes
+checking for srd_session_send_eof... no
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating contrib/sigrok-cli_cross.nsi
+config.status: creating config.h
+config.status: executing depfiles commands
+
+sigrok-cli configuration summary:
+ - Package version................. 0.8.0-git-9d9f7b8
+ - Prefix.......................... /usr/local
+ - Building on..................... x86_64-pc-linux-gnu
+ - Building for.................... x86_64-pc-linux-gnu
+
+Compile configuration:
+ - C compiler...................... gcc
+ - C compiler version.............. gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+ - C compiler flags................ -g -O2
+ - Additional C compiler flags..... -std=c99
+ - C compiler warnings............. -Wall -Wextra
+ - Linker flags.................... 
+
+Detected libraries (required):
+ - glib-2.0 >= 2.32.0.............. 2.64.6
+ - libsigrok >= 0.5.0.............. 0.6.0-git
+
+Detected libraries (optional):
+ - libsigrokdecode >= 0.5.0........ no
+
+#+end_example
+
+#+BEGIN_SRC bash :eval no-export :results output
+make clean
+#+END_SRC
+
+#+RESULTS:
+: test -z "sigrok-cli" || rm -f sigrok-cli
+: rm -f *.o
+
+#+BEGIN_SRC bash :eval no-export :results output
+make
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+make  all-am
+  CC       main.o
+  CC       show.o
+  CC       device.o
+  CC       session.o
+  CC       input.o
+  CC       output.o
+  CC       decode.o
+  CC       parsers.o
+  CC       anykey.o
+  CC       options.o
+  CCLD     sigrok-cli
+#+end_example
+
+#+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
+cd /home/hacklab/Documents/jj/Electronics/pc-admin/tmp/sigrok-cli/
+sudo make install
+#+END_SRC
+
+#+RESULTS:
+:  /usr/bin/mkdir -p '/usr/local/bin'
+:   /usr/bin/install -c sigrok-cli '/usr/local/bin'
+:  /usr/bin/mkdir -p '/usr/local/share/applications'
+:  /usr/bin/install -c -m 644 contrib/org.sigrok.sigrok-cli.desktop '/usr/local/share/applications'
+:  /usr/bin/mkdir -p '/usr/local/share/icons/hicolor/scalable/apps'
+:  /usr/bin/install -c -m 644 contrib/sigrok-cli.svg '/usr/local/share/icons/hicolor/scalable/apps'
+:  /usr/bin/mkdir -p '/usr/local/share/man/man1'
+:  /usr/bin/install -c -m 644 doc/sigrok-cli.1 '/usr/local/share/man/man1'
+
+**** test sigrok-cli
+
+#+BEGIN_SRC bash :eval no-export :results output
+sigrok-cli --version
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+sigrok-cli 0.8.0-git-9d9f7b8
+
+Libraries and features:
+- libsigrok 0.6.0-git/4:0:0 (rt: 0.6.0-git-a5800e90/4:0:0).
+ - Libs:
+  - glib 2.64.6 (rt: 2.64.6/6406:6)
+  - zlib 1.2.11
+  - libzip 1.5.1
+  - minilzo 2.10
+  - libserialport 0.1.1/1:0:1 (rt: 0.1.1/1:0:1)
+  - libusb-1.0 1.0.23.11397 API 0x01000107
+  - hidapi 0.9.0
+  - bluez 5.53
+  - libftdi 1.4
+  - Host: x86_64-pc-linux-gnu, little-endian.
+  - SCPI backends: TCP, RPC, serial, USBTMC.
+#+end_example
+
+
+
+*** libsigrok-
+
+ Ref:https://hackaday.io/project/21056-building-sigrok-on-linux-mint/details
+
+**** Install dependecies
+
+ #+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
+ sudo apt-get install -y git-core gcc make autoconf automake libtool
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+Reading state information... 0%Reading state information... 0%Reading state information... Done
+ Note, selecting 'git' instead of 'git-core'
+ autoconf is already the newest version (2.69-11.1).
+ automake is already the newest version (1:1.16.1-4ubuntu6).
+ gcc is already the newest version (4:9.3.0-1ubuntu2).
+ libtool is already the newest version (2.4.6-14).
+ make is already the newest version (4.2.1-1.2).
+ The following packages were automatically installed and are no longer required:
+   linux-headers-5.4.0-137 linux-headers-5.4.0-137-generic
+   linux-image-5.4.0-137-generic linux-modules-5.4.0-137-generic
+   linux-modules-extra-5.4.0-137-generic
+ Use 'sudo apt autoremove' to remove them.
+ Suggested packages:
+   git-daemon-run | git-daemon-sysvinit git-doc git-el git-email git-gui gitk
+   gitweb git-cvs git-mediawiki git-svn
+ The following packages will be upgraded:
+   git
+ 1 upgraded, 0 newly installed, 0 to remove and 149 not upgraded.
+ Need to get 4,605 kB of archives.
+ After this operation, 258 kB of additional disk space will be used.
+0% [Working]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]                        Get:1 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 git amd64 1:2.25.1-1ubuntu3.11 [4,605 kB]
+0% [1 git 11.3 kB/4,605 kB 0%]10% [1 git 596 kB/4,605 kB 13%]23% [1 git 1,307 kB/4,605 kB 28%]                                  211 kB/s 15s36% [1 git 2,050 kB/4,605 kB 45%]                                  211 kB/s 12s49% [1 git 2,845 kB/4,605 kB 62%]                                   211 kB/s 8s62% [1 git 3,563 kB/4,605 kB 77%]                                   211 kB/s 4s73% [1 git 4,215 kB/4,605 kB 92%]                                   211 kB/s 1s100% [Working]                                                      211 kB/s 0s                                                                               Fetched 4,605 kB in 8s (542 kB/s)
+ (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 484546 files and directories currently installed.)
+ Preparing to unpack .../git_1%3a2.25.1-1ubuntu3.11_amd64.deb ...
+ Unpacking git (1:2.25.1-1ubuntu3.11) over (1:2.25.1-1ubuntu3.10) ...
+ Setting up git (1:2.25.1-1ubuntu3.11) ...
+ #+end_example
+
+ #+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
+ sudo apt-get install -y git-core gcc g++ make autoconf autoconf-archive \
+   automake libtool pkg-config libglib2.0-dev libglibmm-2.4-dev libzip-dev \
+   libusb-1.0-0-dev libftdi-dev check doxygen python-numpy\
+   python-dev python-gi-dev python-setuptools swig default-jdk
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+Reading state information... 0%Reading state information... 0%Reading state information... Done
+ Note, selecting 'git' instead of 'git-core'
+ Note, selecting 'python-dev-is-python2' instead of 'python-dev'
+ autoconf is already the newest version (2.69-11.1).
+ automake is already the newest version (1:1.16.1-4ubuntu6).
+ g++ is already the newest version (4:9.3.0-1ubuntu2).
+ g++ set to manually installed.
+ gcc is already the newest version (4:9.3.0-1ubuntu2).
+ libtool is already the newest version (2.4.6-14).
+ libusb-1.0-0-dev is already the newest version (2:1.0.23-2build1).
+ libusb-1.0-0-dev set to manually installed.
+ make is already the newest version (4.2.1-1.2).
+ pkg-config is already the newest version (0.29.1-0ubuntu4).
+ autoconf-archive is already the newest version (20190106-2.1ubuntu1).
+ libzip-dev is already the newest version (1.5.1-0ubuntu1).
+ libzip-dev set to manually installed.
+ git is already the newest version (1:2.25.1-1ubuntu3.11).
+ libglib2.0-dev is already the newest version (2.64.6-1~ubuntu20.04.4).
+ libglib2.0-dev set to manually installed.
+ The following packages were automatically installed and are no longer required:
+   linux-headers-5.4.0-137 linux-headers-5.4.0-137-generic
+   linux-image-5.4.0-137-generic linux-modules-5.4.0-137-generic
+   linux-modules-extra-5.4.0-137-generic
+ Use 'sudo apt autoremove' to remove them.
+ The following additional packages will be installed:
+   default-jdk-headless libclang1-10 libftdi1 libice-dev libllvm10
+   libpthread-stubs0-dev libpython2-dev libpython2-stdlib libpython2.7
+   libpython2.7-dev libpython2.7-minimal libpython2.7-stdlib libsigc++-2.0-dev
+   libsm-dev libsubunit-dev libsubunit0 libusb-0.1-4 libusb-dev libx11-dev
+   libxau-dev libxcb1-dev libxdmcp-dev libxt-dev openjdk-11-jdk
+   openjdk-11-jdk-headless python-is-python2 python-pkg-resources python2
+   python2-dev python2-minimal python2.7 python2.7-dev python2.7-minimal
+   swig4.0 x11proto-core-dev x11proto-dev xorg-sgml-doctools xtrans-dev
+ Suggested packages:
+   doxygen-latex doxygen-doc doxygen-gui graphviz libglibmm-2.4-doc
+   libgtkmm-3.0-dev libice-doc libsigc++-2.0-doc libsm-doc libx11-doc
+   libxcb-doc libxt-doc openjdk-11-demo openjdk-11-source visualvm gfortran
+   python-pytest python-numpy-dbg python-numpy-doc python-setuptools-doc
+   python2-doc python-tk python2.7-doc binfmt-support swig-doc swig-examples
+   swig4.0-examples swig4.0-doc
+ The following NEW packages will be installed:
+   check default-jdk default-jdk-headless doxygen libclang1-10 libftdi-dev
+   libftdi1 libglibmm-2.4-dev libice-dev libllvm10 libpthread-stubs0-dev
+   libpython2-dev libpython2-stdlib libpython2.7 libpython2.7-dev
+   libpython2.7-minimal libpython2.7-stdlib libsigc++-2.0-dev libsm-dev
+   libsubunit-dev libsubunit0 libusb-0.1-4 libusb-dev libx11-dev libxau-dev
+   libxcb1-dev libxdmcp-dev libxt-dev openjdk-11-jdk openjdk-11-jdk-headless
+   python-dev-is-python2 python-gi-dev python-is-python2 python-numpy
+   python-pkg-resources python-setuptools python2 python2-dev python2-minimal
+   python2.7 python2.7-dev python2.7-minimal swig swig4.0 x11proto-core-dev
+   x11proto-dev xorg-sgml-doctools xtrans-dev
+ 0 upgraded, 48 newly installed, 0 to remove and 149 not upgraded.
+ Need to get 272 MB of archives.
+ After this operation, 456 MB of additional disk space will be used.
+0% [Working]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]0% [Waiting for headers]                        Get:1 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 libpython2.7-minimal amd64 2.7.18-1~20.04.3 [336 kB]
+0% [1 libpython2.7-minimal 2,613 B/336 kB 1%]                                             1% [Working]            Get:2 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 python2.7-minimal amd64 2.7.18-1~20.04.3 [1,280 kB]
+1% [2 python2.7-minimal 4,059 B/1,280 kB 0%]1% [2 python2.7-minimal 855 kB/1,280 kB 67%]                 188 kB/s 23min 59s1% [Waiting for headers]                                     188 kB/s 23min 56s                                                                               Get:3 http://archive.ubuntu.com/ubuntu focal/universe amd64 python2-minimal amd64 2.7.17-2ubuntu4 [27.5 kB]
+1% [3 python2-minimal 5,511 B/27.5 kB 20%]                   188 kB/s 23min 56s2% [Waiting for headers]                                     188 kB/s 23min 56s                                                                               Get:4 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 libpython2.7-stdlib amd64 2.7.18-1~20.04.3 [1,888 kB]
+2% [4 libpython2.7-stdlib 5,238 B/1,888 kB 0%]               188 kB/s 23min 56s2% [4 libpython2.7-stdlib 797 kB/1,888 kB 42%]               188 kB/s 23min 52s2% [4 libpython2.7-stdlib 1,657 kB/1,888 kB 88%]             188 kB/s 23min 47s3% [Waiting for headers]                                     188 kB/s 23min 46s                                                                               Get:5 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 python2.7 amd64 2.7.18-1~20.04.3 [248 kB]
+3% [5 python2.7 7,051 B/248 kB 3%]                           188 kB/s 23min 46s3% [Waiting for headers]                                     188 kB/s 23min 45s                                                                               Get:6 http://archive.ubuntu.com/ubuntu focal/universe amd64 libpython2-stdlib amd64 2.7.17-2ubuntu4 [7,072 B]
+3% [6 libpython2-stdlib 7,072 B/7,072 B 100%]                188 kB/s 23min 45s4% [Working]                                                 188 kB/s 23min 45s                                                                               Get:7 http://archive.ubuntu.com/ubuntu focal/universe amd64 python2 amd64 2.7.17-2ubuntu4 [26.5 kB]
+4% [7 python2 13.3 kB/26.5 kB 50%]                           188 kB/s 23min 45s4% [Waiting for headers]                                     188 kB/s 23min 45s                                                                               Get:8 http://archive.ubuntu.com/ubuntu focal/main amd64 libsubunit0 amd64 1.4.0-0ubuntu1 [6,408 B]
+4% [8 libsubunit0 6,408 B/6,408 B 100%]                      188 kB/s 23min 45s4% [Working]                                                 188 kB/s 23min 45s                                                                               Get:9 http://archive.ubuntu.com/ubuntu focal/main amd64 libsubunit-dev amd64 1.4.0-0ubuntu1 [6,048 B]
+4% [9 libsubunit-dev 6,048 B/6,048 B 100%]                   188 kB/s 23min 45s5% [Waiting for headers]                                     188 kB/s 23min 45s                                                                               Get:10 http://archive.ubuntu.com/ubuntu focal/universe amd64 check amd64 0.10.0-3build2 [166 kB]
+5% [10 check 28.2 kB/166 kB 17%]                             188 kB/s 23min 44s5% [Waiting for headers]                                     188 kB/s 23min 44s                                                                               Get:11 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 openjdk-11-jdk-headless amd64 11.0.18+10-0ubuntu1~20.04.1 [224 MB]
+5% [11 openjdk-11-jdk-headless 2,848 B/224 MB 0%]            188 kB/s 23min 44s6% [11 openjdk-11-jdk-headless 799 kB/224 MB 0%]             188 kB/s 23min 39s6% [11 openjdk-11-jdk-headless 1,601 kB/224 MB 1%]           188 kB/s 23min 35s6% [11 openjdk-11-jdk-headless 1,819 kB/224 MB 1%]           188 kB/s 23min 34s6% [11 openjdk-11-jdk-headless 1,919 kB/224 MB 1%]           188 kB/s 23min 34s6% [11 openjdk-11-jdk-headless 2,026 kB/224 MB 1%]           188 kB/s 23min 33s6% [11 openjdk-11-jdk-headless 2,314 kB/224 MB 1%]           188 kB/s 23min 31s6% [11 openjdk-11-jdk-headless 2,925 kB/224 MB 1%]           188 kB/s 23min 28s6% [11 openjdk-11-jdk-headless 3,617 kB/224 MB 2%]           188 kB/s 23min 25s7% [11 openjdk-11-jdk-headless 4,189 kB/224 MB 2%]          1,137 kB/s 3min 52s7% [11 openjdk-11-jdk-headless 4,980 kB/224 MB 2%]          1,137 kB/s 3min 51s7% [11 openjdk-11-jdk-headless 5,682 kB/224 MB 3%]          1,137 kB/s 3min 50s7% [11 openjdk-11-jdk-headless 6,609 kB/224 MB 3%]          1,137 kB/s 3min 49s8% [11 openjdk-11-jdk-headless 7,832 kB/224 MB 4%]          1,137 kB/s 3min 48s8% [11 openjdk-11-jdk-headless 8,784 kB/224 MB 4%]          1,137 kB/s 3min 48s8% [11 openjdk-11-jdk-headless 9,813 kB/224 MB 4%]          1,137 kB/s 3min 47s9% [11 openjdk-11-jdk-headless 11.2 MB/224 MB 5%]           1,137 kB/s 3min 45s9% [11 openjdk-11-jdk-headless 11.9 MB/224 MB 5%]           1,137 kB/s 3min 45s9% [11 openjdk-11-jdk-headless 12.8 MB/224 MB 6%]           1,137 kB/s 3min 44s9% [11 openjdk-11-jdk-headless 13.4 MB/224 MB 6%]           1,137 kB/s 3min 43s9% [11 openjdk-11-jdk-headless 14.1 MB/224 MB 6%]           1,137 kB/s 3min 43s10% [11 openjdk-11-jdk-headless 14.8 MB/224 MB 7%]          1,770 kB/s 2min 23s10% [11 openjdk-11-jdk-headless 15.4 MB/224 MB 7%]          1,770 kB/s 2min 22s10% [11 openjdk-11-jdk-headless 15.9 MB/224 MB 7%]          1,770 kB/s 2min 22s10% [11 openjdk-11-jdk-headless 16.5 MB/224 MB 7%]          1,770 kB/s 2min 22s10% [11 openjdk-11-jdk-headless 17.0 MB/224 MB 8%]          1,770 kB/s 2min 21s10% [11 openjdk-11-jdk-headless 17.4 MB/224 MB 8%]          1,770 kB/s 2min 21s11% [11 openjdk-11-jdk-headless 18.0 MB/224 MB 8%]          1,770 kB/s 2min 21s11% [11 openjdk-11-jdk-headless 18.6 MB/224 MB 8%]          1,770 kB/s 2min 20s11% [11 openjdk-11-jdk-headless 19.2 MB/224 MB 9%]          1,770 kB/s 2min 20s11% [11 openjdk-11-jdk-headless 20.0 MB/224 MB 9%]          1,770 kB/s 2min 20s11% [11 openjdk-11-jdk-headless 20.7 MB/224 MB 9%]          1,770 kB/s 2min 19s12% [11 openjdk-11-jdk-headless 21.6 MB/224 MB 10%]         1,770 kB/s 2min 19s12% [11 openjdk-11-jdk-headless 22.1 MB/224 MB 10%]         1,208 kB/s 3min 23s12% [11 openjdk-11-jdk-headless 22.6 MB/224 MB 10%]         1,208 kB/s 3min 23s12% [11 openjdk-11-jdk-headless 23.4 MB/224 MB 10%]         1,208 kB/s 3min 22s13% [11 openjdk-11-jdk-headless 24.5 MB/224 MB 11%]         1,208 kB/s 3min 21s13% [11 openjdk-11-jdk-headless 25.3 MB/224 MB 11%]         1,208 kB/s 3min 20s13% [11 openjdk-11-jdk-headless 26.3 MB/224 MB 12%]         1,208 kB/s 3min 19s14% [11 openjdk-11-jdk-headless 27.9 MB/224 MB 12%]         1,208 kB/s 3min 18s14% [11 openjdk-11-jdk-headless 29.5 MB/224 MB 13%]         1,208 kB/s 3min 17s14% [11 openjdk-11-jdk-headless 30.7 MB/224 MB 14%]         1,208 kB/s 3min 16s15% [11 openjdk-11-jdk-headless 31.6 MB/224 MB 14%]         1,208 kB/s 3min 15s15% [11 openjdk-11-jdk-headless 32.0 MB/224 MB 14%]         1,208 kB/s 3min 15s15% [11 openjdk-11-jdk-headless 32.4 MB/224 MB 14%]         1,208 kB/s 3min 14s15% [11 openjdk-11-jdk-headless 32.9 MB/224 MB 15%]         1,794 kB/s 2min 11s15% [11 openjdk-11-jdk-headless 33.4 MB/224 MB 15%]         1,794 kB/s 2min 10s15% [11 openjdk-11-jdk-headless 34.0 MB/224 MB 15%]         1,794 kB/s 2min 10s16% [11 openjdk-11-jdk-headless 34.6 MB/224 MB 15%]         1,794 kB/s 2min 10s16% [11 openjdk-11-jdk-headless 35.1 MB/224 MB 16%]          1,794 kB/s 2min 9s16% [11 openjdk-11-jdk-headless 35.7 MB/224 MB 16%]          1,794 kB/s 2min 9s16% [11 openjdk-11-jdk-headless 36.4 MB/224 MB 16%]          1,794 kB/s 2min 9s16% [11 openjdk-11-jdk-headless 37.1 MB/224 MB 17%]          1,794 kB/s 2min 8s16% [11 openjdk-11-jdk-headless 37.3 MB/224 MB 17%]          1,794 kB/s 2min 8s16% [11 openjdk-11-jdk-headless 37.8 MB/224 MB 17%]          1,794 kB/s 2min 8s17% [11 openjdk-11-jdk-headless 38.2 MB/224 MB 17%]          1,794 kB/s 2min 8s17% [11 openjdk-11-jdk-headless 38.6 MB/224 MB 17%]          1,794 kB/s 2min 7s17% [11 openjdk-11-jdk-headless 39.2 MB/224 MB 18%]         1,061 kB/s 3min 35s17% [11 openjdk-11-jdk-headless 40.0 MB/224 MB 18%]         1,061 kB/s 3min 34s17% [11 openjdk-11-jdk-headless 40.8 MB/224 MB 18%]         1,061 kB/s 3min 34s18% [11 openjdk-11-jdk-headless 41.3 MB/224 MB 18%]         1,061 kB/s 3min 33s18% [11 openjdk-11-jdk-headless 41.9 MB/224 MB 19%]         1,061 kB/s 3min 32s18% [11 openjdk-11-jdk-headless 42.5 MB/224 MB 19%]         1,061 kB/s 3min 32s18% [11 openjdk-11-jdk-headless 43.1 MB/224 MB 19%]         1,061 kB/s 3min 31s18% [11 openjdk-11-jdk-headless 43.6 MB/224 MB 19%]         1,061 kB/s 3min 31s18% [11 openjdk-11-jdk-headless 44.6 MB/224 MB 20%]         1,061 kB/s 3min 30s19% [11 openjdk-11-jdk-headless 45.3 MB/224 MB 20%]         1,061 kB/s 3min 29s19% [11 openjdk-11-jdk-headless 46.0 MB/224 MB 21%]         1,061 kB/s 3min 29s19% [11 openjdk-11-jdk-headless 46.5 MB/224 MB 21%]         1,061 kB/s 3min 28s19% [11 openjdk-11-jdk-headless 47.1 MB/224 MB 21%]         1,304 kB/s 2min 49s19% [11 openjdk-11-jdk-headless 47.6 MB/224 MB 21%]         1,304 kB/s 2min 48s19% [11 openjdk-11-jdk-headless 48.1 MB/224 MB 22%]         1,304 kB/s 2min 48s20% [11 openjdk-11-jdk-headless 48.6 MB/224 MB 22%]         1,304 kB/s 2min 48s20% [11 openjdk-11-jdk-headless 49.1 MB/224 MB 22%]         1,304 kB/s 2min 47s20% [11 openjdk-11-jdk-headless 49.8 MB/224 MB 22%]         1,304 kB/s 2min 47s20% [11 openjdk-11-jdk-headless 50.4 MB/224 MB 23%]         1,304 kB/s 2min 46s20% [11 openjdk-11-jdk-headless 50.9 MB/224 MB 23%]         1,304 kB/s 2min 46s20% [11 openjdk-11-jdk-headless 51.5 MB/224 MB 23%]         1,304 kB/s 2min 45s21% [11 openjdk-11-jdk-headless 52.3 MB/224 MB 23%]         1,304 kB/s 2min 45s21% [11 openjdk-11-jdk-headless 53.0 MB/224 MB 24%]         1,304 kB/s 2min 44s21% [11 openjdk-11-jdk-headless 53.8 MB/224 MB 24%]         1,304 kB/s 2min 44s21% [11 openjdk-11-jdk-headless 54.5 MB/224 MB 24%]         1,232 kB/s 2min 53s22% [11 openjdk-11-jdk-headless 55.1 MB/224 MB 25%]         1,232 kB/s 2min 52s22% [11 openjdk-11-jdk-headless 56.0 MB/224 MB 25%]         1,232 kB/s 2min 51s22% [11 openjdk-11-jdk-headless 56.6 MB/224 MB 25%]         1,232 kB/s 2min 51s22% [11 openjdk-11-jdk-headless 57.2 MB/224 MB 26%]         1,232 kB/s 2min 51s22% [11 openjdk-11-jdk-headless 57.7 MB/224 MB 26%]         1,232 kB/s 2min 50s22% [11 openjdk-11-jdk-headless 58.3 MB/224 MB 26%]         1,232 kB/s 2min 50s23% [11 openjdk-11-jdk-headless 58.8 MB/224 MB 26%]         1,232 kB/s 2min 49s23% [11 openjdk-11-jdk-headless 59.2 MB/224 MB 26%]         1,232 kB/s 2min 49s23% [11 openjdk-11-jdk-headless 59.6 MB/224 MB 27%]         1,232 kB/s 2min 49s23% [11 openjdk-11-jdk-headless 60.0 MB/224 MB 27%]         1,232 kB/s 2min 48s23% [11 openjdk-11-jdk-headless 60.7 MB/224 MB 27%]         1,232 kB/s 2min 48s23% [11 openjdk-11-jdk-headless 61.0 MB/224 MB 27%]         1,084 kB/s 3min 11s23% [11 openjdk-11-jdk-headless 61.5 MB/224 MB 28%]         1,084 kB/s 3min 10s24% [11 openjdk-11-jdk-headless 62.0 MB/224 MB 28%]         1,084 kB/s 3min 10s24% [11 openjdk-11-jdk-headless 62.5 MB/224 MB 28%]          1,084 kB/s 3min 9s24% [11 openjdk-11-jdk-headless 62.9 MB/224 MB 28%]          1,084 kB/s 3min 9s24% [11 openjdk-11-jdk-headless 63.5 MB/224 MB 28%]          1,084 kB/s 3min 8s24% [11 openjdk-11-jdk-headless 63.9 MB/224 MB 29%]          1,084 kB/s 3min 8s24% [11 openjdk-11-jdk-headless 64.3 MB/224 MB 29%]          1,084 kB/s 3min 7s24% [11 openjdk-11-jdk-headless 64.8 MB/224 MB 29%]          1,084 kB/s 3min 7s24% [11 openjdk-11-jdk-headless 65.1 MB/224 MB 29%]          1,084 kB/s 3min 7s25% [11 openjdk-11-jdk-headless 65.5 MB/224 MB 29%]          1,084 kB/s 3min 6s25% [11 openjdk-11-jdk-headless 66.1 MB/224 MB 30%]          1,084 kB/s 3min 6s25% [11 openjdk-11-jdk-headless 66.4 MB/224 MB 30%]           899 kB/s 3min 44s25% [11 openjdk-11-jdk-headless 66.8 MB/224 MB 30%]           899 kB/s 3min 43s25% [11 openjdk-11-jdk-headless 67.1 MB/224 MB 30%]           899 kB/s 3min 43s25% [11 openjdk-11-jdk-headless 67.4 MB/224 MB 30%]           899 kB/s 3min 43s25% [11 openjdk-11-jdk-headless 67.7 MB/224 MB 30%]           899 kB/s 3min 42s25% [11 openjdk-11-jdk-headless 68.3 MB/224 MB 31%]           899 kB/s 3min 42s26% [11 openjdk-11-jdk-headless 68.6 MB/224 MB 31%]           899 kB/s 3min 41s26% [11 openjdk-11-jdk-headless 68.9 MB/224 MB 31%]           899 kB/s 3min 41s26% [11 openjdk-11-jdk-headless 69.2 MB/224 MB 31%]           899 kB/s 3min 41s26% [11 openjdk-11-jdk-headless 69.6 MB/224 MB 31%]           899 kB/s 3min 40s26% [11 openjdk-11-jdk-headless 69.9 MB/224 MB 31%]           899 kB/s 3min 40s26% [11 openjdk-11-jdk-headless 70.2 MB/224 MB 31%]           899 kB/s 3min 39s26% [11 openjdk-11-jdk-headless 70.5 MB/224 MB 31%]           678 kB/s 4min 51s26% [11 openjdk-11-jdk-headless 70.7 MB/224 MB 32%]           678 kB/s 4min 50s26% [11 openjdk-11-jdk-headless 70.9 MB/224 MB 32%]           678 kB/s 4min 50s26% [11 openjdk-11-jdk-headless 71.3 MB/224 MB 32%]           678 kB/s 4min 49s26% [11 openjdk-11-jdk-headless 71.8 MB/224 MB 32%]           678 kB/s 4min 49s27% [11 openjdk-11-jdk-headless 72.1 MB/224 MB 32%]           678 kB/s 4min 48s27% [11 openjdk-11-jdk-headless 72.6 MB/224 MB 32%]           678 kB/s 4min 48s27% [11 openjdk-11-jdk-headless 73.0 MB/224 MB 33%]           678 kB/s 4min 47s27% [11 openjdk-11-jdk-headless 73.3 MB/224 MB 33%]           678 kB/s 4min 47s27% [11 openjdk-11-jdk-headless 73.6 MB/224 MB 33%]           678 kB/s 4min 46s27% [11 openjdk-11-jdk-headless 74.0 MB/224 MB 33%]           678 kB/s 4min 45s27% [11 openjdk-11-jdk-headless 74.4 MB/224 MB 33%]           678 kB/s 4min 45s27% [11 openjdk-11-jdk-headless 74.9 MB/224 MB 33%]           742 kB/s 4min 20s28% [11 openjdk-11-jdk-headless 75.4 MB/224 MB 34%]           742 kB/s 4min 19s28% [11 openjdk-11-jdk-headless 75.8 MB/224 MB 34%]           742 kB/s 4min 19s28% [11 openjdk-11-jdk-headless 76.2 MB/224 MB 34%]           742 kB/s 4min 18s28% [11 openjdk-11-jdk-headless 76.6 MB/224 MB 34%]           742 kB/s 4min 18s28% [11 openjdk-11-jdk-headless 77.3 MB/224 MB 35%]           742 kB/s 4min 17s28% [11 openjdk-11-jdk-headless 77.7 MB/224 MB 35%]           742 kB/s 4min 16s28% [11 openjdk-11-jdk-headless 78.2 MB/224 MB 35%]           742 kB/s 4min 15s29% [11 openjdk-11-jdk-headless 78.8 MB/224 MB 35%]           742 kB/s 4min 15s29% [11 openjdk-11-jdk-headless 79.2 MB/224 MB 35%]           742 kB/s 4min 14s29% [11 openjdk-11-jdk-headless 80.0 MB/224 MB 36%]           742 kB/s 4min 13s29% [11 openjdk-11-jdk-headless 80.5 MB/224 MB 36%]           742 kB/s 4min 12s29% [11 openjdk-11-jdk-headless 81.0 MB/224 MB 36%]          1,014 kB/s 3min 4s29% [11 openjdk-11-jdk-headless 81.6 MB/224 MB 36%]          1,014 kB/s 3min 3s29% [11 openjdk-11-jdk-headless 82.0 MB/224 MB 37%]          1,014 kB/s 3min 3s30% [11 openjdk-11-jdk-headless 82.4 MB/224 MB 37%]          1,014 kB/s 3min 2s30% [11 openjdk-11-jdk-headless 82.8 MB/224 MB 37%]          1,014 kB/s 3min 2s30% [11 openjdk-11-jdk-headless 83.2 MB/224 MB 37%]          1,014 kB/s 3min 2s30% [11 openjdk-11-jdk-headless 83.5 MB/224 MB 37%]          1,014 kB/s 3min 1s30% [11 openjdk-11-jdk-headless 83.8 MB/224 MB 37%]          1,014 kB/s 3min 1s30% [11 openjdk-11-jdk-headless 84.2 MB/224 MB 38%]          1,014 kB/s 3min 1s30% [11 openjdk-11-jdk-headless 84.7 MB/224 MB 38%]          1,014 kB/s 3min 0s30% [11 openjdk-11-jdk-headless 85.2 MB/224 MB 38%]          1,014 kB/s 3min 0s31% [11 openjdk-11-jdk-headless 85.5 MB/224 MB 38%]         1,014 kB/s 2min 59s31% [11 openjdk-11-jdk-headless 85.9 MB/224 MB 38%]           815 kB/s 3min 43s31% [11 openjdk-11-jdk-headless 86.4 MB/224 MB 39%]           815 kB/s 3min 42s31% [11 openjdk-11-jdk-headless 87.1 MB/224 MB 39%]           815 kB/s 3min 41s31% [11 openjdk-11-jdk-headless 87.6 MB/224 MB 39%]           815 kB/s 3min 41s31% [11 openjdk-11-jdk-headless 87.8 MB/224 MB 39%]           815 kB/s 3min 40s31% [11 openjdk-11-jdk-headless 88.2 MB/224 MB 39%]           815 kB/s 3min 40s31% [11 openjdk-11-jdk-headless 88.7 MB/224 MB 40%]           815 kB/s 3min 39s32% [11 openjdk-11-jdk-headless 89.5 MB/224 MB 40%]           815 kB/s 3min 38s32% [11 openjdk-11-jdk-headless 90.1 MB/224 MB 40%]           815 kB/s 3min 38s32% [11 openjdk-11-jdk-headless 90.5 MB/224 MB 40%]           815 kB/s 3min 37s32% [11 openjdk-11-jdk-headless 91.1 MB/224 MB 41%]           815 kB/s 3min 36s32% [11 openjdk-11-jdk-headless 91.5 MB/224 MB 41%]           815 kB/s 3min 36s33% [11 openjdk-11-jdk-headless 92.7 MB/224 MB 41%]         1,123 kB/s 2min 36s33% [11 openjdk-11-jdk-headless 93.1 MB/224 MB 42%]         1,123 kB/s 2min 35s33% [11 openjdk-11-jdk-headless 93.5 MB/224 MB 42%]         1,123 kB/s 2min 35s33% [11 openjdk-11-jdk-headless 94.0 MB/224 MB 42%]         1,123 kB/s 2min 34s33% [11 openjdk-11-jdk-headless 94.3 MB/224 MB 42%]         1,123 kB/s 2min 34s33% [11 openjdk-11-jdk-headless 94.7 MB/224 MB 42%]         1,123 kB/s 2min 34s33% [11 openjdk-11-jdk-headless 95.2 MB/224 MB 43%]         1,123 kB/s 2min 33s33% [11 openjdk-11-jdk-headless 95.7 MB/224 MB 43%]         1,123 kB/s 2min 33s34% [11 openjdk-11-jdk-headless 96.0 MB/224 MB 43%]         1,123 kB/s 2min 33s34% [11 openjdk-11-jdk-headless 96.5 MB/224 MB 43%]         1,123 kB/s 2min 32s34% [11 openjdk-11-jdk-headless 96.9 MB/224 MB 43%]         1,123 kB/s 2min 32s34% [11 openjdk-11-jdk-headless 97.4 MB/224 MB 44%]         1,123 kB/s 2min 31s34% [11 openjdk-11-jdk-headless 98.0 MB/224 MB 44%]           883 kB/s 3min 12s34% [11 openjdk-11-jdk-headless 98.5 MB/224 MB 44%]           883 kB/s 3min 11s34% [11 openjdk-11-jdk-headless 99.0 MB/224 MB 44%]           883 kB/s 3min 11s35% [11 openjdk-11-jdk-headless 99.7 MB/224 MB 45%]           883 kB/s 3min 10s35% [11 openjdk-11-jdk-headless 100 MB/224 MB 45%]            883 kB/s 3min 10s35% [11 openjdk-11-jdk-headless 100 MB/224 MB 45%]             883 kB/s 3min 9s35% [11 openjdk-11-jdk-headless 101 MB/224 MB 45%]             883 kB/s 3min 9s35% [11 openjdk-11-jdk-headless 102 MB/224 MB 45%]             883 kB/s 3min 8s35% [11 openjdk-11-jdk-headless 102 MB/224 MB 46%]             883 kB/s 3min 8s35% [11 openjdk-11-jdk-headless 102 MB/224 MB 46%]             883 kB/s 3min 7s35% [11 openjdk-11-jdk-headless 103 MB/224 MB 46%]             883 kB/s 3min 7s36% [11 openjdk-11-jdk-headless 103 MB/224 MB 46%]             883 kB/s 3min 6s36% [11 openjdk-11-jdk-headless 103 MB/224 MB 46%]             912 kB/s 3min 0s36% [11 openjdk-11-jdk-headless 104 MB/224 MB 46%]            912 kB/s 2min 59s36% [11 openjdk-11-jdk-headless 104 MB/224 MB 47%]            912 kB/s 2min 59s36% [11 openjdk-11-jdk-headless 105 MB/224 MB 47%]            912 kB/s 2min 58s36% [11 openjdk-11-jdk-headless 106 MB/224 MB 47%]            912 kB/s 2min 58s37% [11 openjdk-11-jdk-headless 106 MB/224 MB 47%]            912 kB/s 2min 57s37% [11 openjdk-11-jdk-headless 107 MB/224 MB 48%]            912 kB/s 2min 56s37% [11 openjdk-11-jdk-headless 107 MB/224 MB 48%]            912 kB/s 2min 56s37% [11 openjdk-11-jdk-headless 108 MB/224 MB 48%]            912 kB/s 2min 55s37% [11 openjdk-11-jdk-headless 108 MB/224 MB 48%]            912 kB/s 2min 55s37% [11 openjdk-11-jdk-headless 109 MB/224 MB 49%]            912 kB/s 2min 54s37% [11 openjdk-11-jdk-headless 109 MB/224 MB 49%]            912 kB/s 2min 54s38% [11 openjdk-11-jdk-headless 110 MB/224 MB 49%]          1,013 kB/s 2min 36s38% [11 openjdk-11-jdk-headless 110 MB/224 MB 49%]          1,013 kB/s 2min 35s38% [11 openjdk-11-jdk-headless 110 MB/224 MB 49%]          1,013 kB/s 2min 35s38% [11 openjdk-11-jdk-headless 111 MB/224 MB 50%]          1,013 kB/s 2min 35s38% [11 openjdk-11-jdk-headless 111 MB/224 MB 50%]          1,013 kB/s 2min 34s38% [11 openjdk-11-jdk-headless 112 MB/224 MB 50%]          1,013 kB/s 2min 34s38% [11 openjdk-11-jdk-headless 112 MB/224 MB 50%]          1,013 kB/s 2min 33s38% [11 openjdk-11-jdk-headless 113 MB/224 MB 50%]          1,013 kB/s 2min 33s39% [11 openjdk-11-jdk-headless 113 MB/224 MB 51%]          1,013 kB/s 2min 32s39% [11 openjdk-11-jdk-headless 114 MB/224 MB 51%]          1,013 kB/s 2min 31s39% [11 openjdk-11-jdk-headless 115 MB/224 MB 51%]          1,013 kB/s 2min 31s39% [11 openjdk-11-jdk-headless 115 MB/224 MB 51%]          1,013 kB/s 2min 31s39% [11 openjdk-11-jdk-headless 115 MB/224 MB 52%]            952 kB/s 2min 40s39% [11 openjdk-11-jdk-headless 116 MB/224 MB 52%]            952 kB/s 2min 39s39% [11 openjdk-11-jdk-headless 116 MB/224 MB 52%]            952 kB/s 2min 39s40% [11 openjdk-11-jdk-headless 116 MB/224 MB 52%]            952 kB/s 2min 39s40% [11 openjdk-11-jdk-headless 117 MB/224 MB 52%]            952 kB/s 2min 38s40% [11 openjdk-11-jdk-headless 117 MB/224 MB 52%]            952 kB/s 2min 38s40% [11 openjdk-11-jdk-headless 118 MB/224 MB 53%]            952 kB/s 2min 37s40% [11 openjdk-11-jdk-headless 118 MB/224 MB 53%]            952 kB/s 2min 37s40% [11 openjdk-11-jdk-headless 119 MB/224 MB 53%]            952 kB/s 2min 36s40% [11 openjdk-11-jdk-headless 119 MB/224 MB 53%]            952 kB/s 2min 36s41% [11 openjdk-11-jdk-headless 120 MB/224 MB 53%]            952 kB/s 2min 35s41% [11 openjdk-11-jdk-headless 120 MB/224 MB 54%]            952 kB/s 2min 35s41% [11 openjdk-11-jdk-headless 121 MB/224 MB 54%]            922 kB/s 2min 39s41% [11 openjdk-11-jdk-headless 121 MB/224 MB 54%]            922 kB/s 2min 39s41% [11 openjdk-11-jdk-headless 122 MB/224 MB 54%]            922 kB/s 2min 38s41% [11 openjdk-11-jdk-headless 122 MB/224 MB 55%]            922 kB/s 2min 37s42% [11 openjdk-11-jdk-headless 123 MB/224 MB 55%]            922 kB/s 2min 37s42% [11 openjdk-11-jdk-headless 124 MB/224 MB 55%]            922 kB/s 2min 36s42% [11 openjdk-11-jdk-headless 124 MB/224 MB 55%]            922 kB/s 2min 35s42% [11 openjdk-11-jdk-headless 125 MB/224 MB 56%]            922 kB/s 2min 35s42% [11 openjdk-11-jdk-headless 125 MB/224 MB 56%]            922 kB/s 2min 34s42% [11 openjdk-11-jdk-headless 126 MB/224 MB 56%]            922 kB/s 2min 34s42% [11 openjdk-11-jdk-headless 126 MB/224 MB 56%]            922 kB/s 2min 33s43% [11 openjdk-11-jdk-headless 127 MB/224 MB 57%]            922 kB/s 2min 33s43% [11 openjdk-11-jdk-headless 127 MB/224 MB 57%]          1,044 kB/s 2min 14s43% [11 openjdk-11-jdk-headless 128 MB/224 MB 57%]          1,044 kB/s 2min 14s43% [11 openjdk-11-jdk-headless 128 MB/224 MB 57%]          1,044 kB/s 2min 14s43% [11 openjdk-11-jdk-headless 128 MB/224 MB 57%]          1,044 kB/s 2min 13s43% [11 openjdk-11-jdk-headless 129 MB/224 MB 58%]          1,044 kB/s 2min 13s43% [11 openjdk-11-jdk-headless 129 MB/224 MB 58%]          1,044 kB/s 2min 13s43% [11 openjdk-11-jdk-headless 130 MB/224 MB 58%]          1,044 kB/s 2min 12s44% [11 openjdk-11-jdk-headless 130 MB/224 MB 58%]          1,044 kB/s 2min 12s44% [11 openjdk-11-jdk-headless 130 MB/224 MB 58%]          1,044 kB/s 2min 11s44% [11 openjdk-11-jdk-headless 131 MB/224 MB 58%]          1,044 kB/s 2min 11s44% [11 openjdk-11-jdk-headless 131 MB/224 MB 59%]          1,044 kB/s 2min 10s44% [11 openjdk-11-jdk-headless 132 MB/224 MB 59%]          1,044 kB/s 2min 10s44% [11 openjdk-11-jdk-headless 133 MB/224 MB 59%]            928 kB/s 2min 25s45% [11 openjdk-11-jdk-headless 133 MB/224 MB 60%]            928 kB/s 2min 25s45% [11 openjdk-11-jdk-headless 134 MB/224 MB 60%]            928 kB/s 2min 24s45% [11 openjdk-11-jdk-headless 135 MB/224 MB 60%]            928 kB/s 2min 23s45% [11 openjdk-11-jdk-headless 135 MB/224 MB 60%]            928 kB/s 2min 22s45% [11 openjdk-11-jdk-headless 136 MB/224 MB 61%]            928 kB/s 2min 22s45% [11 openjdk-11-jdk-headless 136 MB/224 MB 61%]            928 kB/s 2min 22s46% [11 openjdk-11-jdk-headless 137 MB/224 MB 61%]            928 kB/s 2min 21s46% [11 openjdk-11-jdk-headless 137 MB/224 MB 61%]            928 kB/s 2min 21s46% [11 openjdk-11-jdk-headless 138 MB/224 MB 62%]            928 kB/s 2min 20s46% [11 openjdk-11-jdk-headless 138 MB/224 MB 62%]            928 kB/s 2min 19s46% [11 openjdk-11-jdk-headless 139 MB/224 MB 62%]            928 kB/s 2min 19s46% [11 openjdk-11-jdk-headless 140 MB/224 MB 63%]          1,210 kB/s 1min 45s47% [11 openjdk-11-jdk-headless 140 MB/224 MB 63%]          1,210 kB/s 1min 45s47% [11 openjdk-11-jdk-headless 141 MB/224 MB 63%]          1,210 kB/s 1min 45s47% [11 openjdk-11-jdk-headless 141 MB/224 MB 63%]          1,210 kB/s 1min 44s47% [11 openjdk-11-jdk-headless 142 MB/224 MB 64%]          1,210 kB/s 1min 44s47% [11 openjdk-11-jdk-headless 143 MB/224 MB 64%]          1,210 kB/s 1min 43s48% [11 openjdk-11-jdk-headless 143 MB/224 MB 64%]          1,210 kB/s 1min 42s48% [11 openjdk-11-jdk-headless 144 MB/224 MB 64%]          1,210 kB/s 1min 42s48% [11 openjdk-11-jdk-headless 144 MB/224 MB 64%]          1,210 kB/s 1min 42s48% [11 openjdk-11-jdk-headless 145 MB/224 MB 65%]          1,210 kB/s 1min 41s48% [11 openjdk-11-jdk-headless 145 MB/224 MB 65%]          1,210 kB/s 1min 41s48% [11 openjdk-11-jdk-headless 146 MB/224 MB 65%]          1,210 kB/s 1min 40s48% [11 openjdk-11-jdk-headless 147 MB/224 MB 66%]          1,112 kB/s 1min 49s49% [11 openjdk-11-jdk-headless 147 MB/224 MB 66%]          1,112 kB/s 1min 48s49% [11 openjdk-11-jdk-headless 148 MB/224 MB 66%]          1,112 kB/s 1min 48s49% [11 openjdk-11-jdk-headless 148 MB/224 MB 66%]          1,112 kB/s 1min 47s49% [11 openjdk-11-jdk-headless 149 MB/224 MB 66%]          1,112 kB/s 1min 47s49% [11 openjdk-11-jdk-headless 149 MB/224 MB 67%]          1,112 kB/s 1min 47s49% [11 openjdk-11-jdk-headless 149 MB/224 MB 67%]          1,112 kB/s 1min 46s49% [11 openjdk-11-jdk-headless 150 MB/224 MB 67%]          1,112 kB/s 1min 46s50% [11 openjdk-11-jdk-headless 150 MB/224 MB 67%]          1,112 kB/s 1min 45s50% [11 openjdk-11-jdk-headless 151 MB/224 MB 67%]          1,112 kB/s 1min 45s50% [11 openjdk-11-jdk-headless 151 MB/224 MB 68%]          1,112 kB/s 1min 45s50% [11 openjdk-11-jdk-headless 152 MB/224 MB 68%]          1,112 kB/s 1min 44s50% [11 openjdk-11-jdk-headless 152 MB/224 MB 68%]             961 kB/s 2min 0s50% [11 openjdk-11-jdk-headless 153 MB/224 MB 68%]            961 kB/s 1min 59s50% [11 openjdk-11-jdk-headless 153 MB/224 MB 69%]            961 kB/s 1min 59s51% [11 openjdk-11-jdk-headless 154 MB/224 MB 69%]            961 kB/s 1min 58s51% [11 openjdk-11-jdk-headless 155 MB/224 MB 69%]            961 kB/s 1min 58s51% [11 openjdk-11-jdk-headless 155 MB/224 MB 69%]            961 kB/s 1min 57s51% [11 openjdk-11-jdk-headless 156 MB/224 MB 70%]            961 kB/s 1min 56s51% [11 openjdk-11-jdk-headless 156 MB/224 MB 70%]            961 kB/s 1min 56s51% [11 openjdk-11-jdk-headless 157 MB/224 MB 70%]            961 kB/s 1min 55s52% [11 openjdk-11-jdk-headless 157 MB/224 MB 70%]            961 kB/s 1min 55s52% [11 openjdk-11-jdk-headless 158 MB/224 MB 71%]            961 kB/s 1min 54s52% [11 openjdk-11-jdk-headless 158 MB/224 MB 71%]            961 kB/s 1min 53s52% [11 openjdk-11-jdk-headless 159 MB/224 MB 71%]          1,111 kB/s 1min 38s52% [11 openjdk-11-jdk-headless 160 MB/224 MB 71%]          1,111 kB/s 1min 37s52% [11 openjdk-11-jdk-headless 160 MB/224 MB 72%]          1,111 kB/s 1min 37s53% [11 openjdk-11-jdk-headless 161 MB/224 MB 72%]          1,111 kB/s 1min 36s53% [11 openjdk-11-jdk-headless 161 MB/224 MB 72%]          1,111 kB/s 1min 36s53% [11 openjdk-11-jdk-headless 162 MB/224 MB 72%]          1,111 kB/s 1min 35s53% [11 openjdk-11-jdk-headless 162 MB/224 MB 73%]          1,111 kB/s 1min 35s53% [11 openjdk-11-jdk-headless 163 MB/224 MB 73%]          1,111 kB/s 1min 34s53% [11 openjdk-11-jdk-headless 163 MB/224 MB 73%]          1,111 kB/s 1min 34s54% [11 openjdk-11-jdk-headless 164 MB/224 MB 73%]          1,111 kB/s 1min 33s54% [11 openjdk-11-jdk-headless 165 MB/224 MB 74%]          1,111 kB/s 1min 32s54% [11 openjdk-11-jdk-headless 166 MB/224 MB 74%]          1,111 kB/s 1min 32s54% [11 openjdk-11-jdk-headless 166 MB/224 MB 74%]          1,190 kB/s 1min 25s54% [11 openjdk-11-jdk-headless 167 MB/224 MB 74%]          1,190 kB/s 1min 25s55% [11 openjdk-11-jdk-headless 167 MB/224 MB 75%]          1,190 kB/s 1min 24s55% [11 openjdk-11-jdk-headless 168 MB/224 MB 75%]          1,190 kB/s 1min 24s55% [11 openjdk-11-jdk-headless 168 MB/224 MB 75%]          1,190 kB/s 1min 24s55% [11 openjdk-11-jdk-headless 168 MB/224 MB 75%]          1,190 kB/s 1min 23s55% [11 openjdk-11-jdk-headless 169 MB/224 MB 76%]          1,190 kB/s 1min 23s55% [11 openjdk-11-jdk-headless 170 MB/224 MB 76%]          1,190 kB/s 1min 22s55% [11 openjdk-11-jdk-headless 170 MB/224 MB 76%]          1,190 kB/s 1min 21s56% [11 openjdk-11-jdk-headless 171 MB/224 MB 76%]          1,190 kB/s 1min 21s56% [11 openjdk-11-jdk-headless 172 MB/224 MB 77%]          1,190 kB/s 1min 21s56% [11 openjdk-11-jdk-headless 172 MB/224 MB 77%]          1,190 kB/s 1min 20s56% [11 openjdk-11-jdk-headless 173 MB/224 MB 77%]          1,070 kB/s 1min 29s56% [11 openjdk-11-jdk-headless 173 MB/224 MB 77%]          1,070 kB/s 1min 28s56% [11 openjdk-11-jdk-headless 174 MB/224 MB 78%]          1,070 kB/s 1min 28s57% [11 openjdk-11-jdk-headless 174 MB/224 MB 78%]          1,070 kB/s 1min 27s57% [11 openjdk-11-jdk-headless 175 MB/224 MB 78%]          1,070 kB/s 1min 27s57% [11 openjdk-11-jdk-headless 175 MB/224 MB 78%]          1,070 kB/s 1min 26s57% [11 openjdk-11-jdk-headless 176 MB/224 MB 79%]          1,070 kB/s 1min 26s57% [11 openjdk-11-jdk-headless 176 MB/224 MB 79%]          1,070 kB/s 1min 25s57% [11 openjdk-11-jdk-headless 177 MB/224 MB 79%]          1,070 kB/s 1min 25s58% [11 openjdk-11-jdk-headless 177 MB/224 MB 79%]          1,070 kB/s 1min 24s58% [11 openjdk-11-jdk-headless 178 MB/224 MB 80%]          1,070 kB/s 1min 24s58% [11 openjdk-11-jdk-headless 179 MB/224 MB 80%]          1,070 kB/s 1min 23s58% [11 openjdk-11-jdk-headless 179 MB/224 MB 80%]          1,094 kB/s 1min 21s58% [11 openjdk-11-jdk-headless 180 MB/224 MB 80%]          1,094 kB/s 1min 20s58% [11 openjdk-11-jdk-headless 181 MB/224 MB 81%]          1,094 kB/s 1min 19s59% [11 openjdk-11-jdk-headless 181 MB/224 MB 81%]          1,094 kB/s 1min 19s59% [11 openjdk-11-jdk-headless 181 MB/224 MB 81%]          1,094 kB/s 1min 19s59% [11 openjdk-11-jdk-headless 182 MB/224 MB 81%]          1,094 kB/s 1min 18s59% [11 openjdk-11-jdk-headless 183 MB/224 MB 82%]          1,094 kB/s 1min 18s59% [11 openjdk-11-jdk-headless 183 MB/224 MB 82%]          1,094 kB/s 1min 17s59% [11 openjdk-11-jdk-headless 184 MB/224 MB 82%]          1,094 kB/s 1min 17s59% [11 openjdk-11-jdk-headless 184 MB/224 MB 82%]          1,094 kB/s 1min 16s60% [11 openjdk-11-jdk-headless 184 MB/224 MB 82%]          1,094 kB/s 1min 16s60% [11 openjdk-11-jdk-headless 185 MB/224 MB 83%]          1,094 kB/s 1min 15s60% [11 openjdk-11-jdk-headless 185 MB/224 MB 83%]          1,039 kB/s 1min 19s60% [11 openjdk-11-jdk-headless 186 MB/224 MB 83%]          1,039 kB/s 1min 19s60% [11 openjdk-11-jdk-headless 186 MB/224 MB 83%]          1,039 kB/s 1min 18s60% [11 openjdk-11-jdk-headless 187 MB/224 MB 83%]          1,039 kB/s 1min 18s60% [11 openjdk-11-jdk-headless 187 MB/224 MB 84%]          1,039 kB/s 1min 17s60% [11 openjdk-11-jdk-headless 187 MB/224 MB 84%]          1,039 kB/s 1min 17s61% [11 openjdk-11-jdk-headless 188 MB/224 MB 84%]          1,039 kB/s 1min 16s61% [11 openjdk-11-jdk-headless 189 MB/224 MB 84%]          1,039 kB/s 1min 16s61% [11 openjdk-11-jdk-headless 189 MB/224 MB 85%]          1,039 kB/s 1min 15s61% [11 openjdk-11-jdk-headless 190 MB/224 MB 85%]          1,039 kB/s 1min 15s61% [11 openjdk-11-jdk-headless 190 MB/224 MB 85%]          1,039 kB/s 1min 14s61% [11 openjdk-11-jdk-headless 190 MB/224 MB 85%]          1,039 kB/s 1min 14s61% [11 openjdk-11-jdk-headless 191 MB/224 MB 85%]            912 kB/s 1min 24s62% [11 openjdk-11-jdk-headless 191 MB/224 MB 86%]            912 kB/s 1min 23s62% [11 openjdk-11-jdk-headless 192 MB/224 MB 86%]            912 kB/s 1min 23s62% [11 openjdk-11-jdk-headless 193 MB/224 MB 86%]            912 kB/s 1min 22s62% [11 openjdk-11-jdk-headless 193 MB/224 MB 86%]            912 kB/s 1min 21s62% [11 openjdk-11-jdk-headless 194 MB/224 MB 87%]            912 kB/s 1min 21s62% [11 openjdk-11-jdk-headless 194 MB/224 MB 87%]            912 kB/s 1min 20s63% [11 openjdk-11-jdk-headless 195 MB/224 MB 87%]            912 kB/s 1min 20s63% [11 openjdk-11-jdk-headless 195 MB/224 MB 87%]            912 kB/s 1min 19s63% [11 openjdk-11-jdk-headless 196 MB/224 MB 88%]            912 kB/s 1min 18s63% [11 openjdk-11-jdk-headless 197 MB/224 MB 88%]            912 kB/s 1min 18s63% [11 openjdk-11-jdk-headless 197 MB/224 MB 88%]            912 kB/s 1min 17s64% [11 openjdk-11-jdk-headless 198 MB/224 MB 89%]               1,263 kB/s 55s64% [11 openjdk-11-jdk-headless 199 MB/224 MB 89%]               1,263 kB/s 54s64% [11 openjdk-11-jdk-headless 199 MB/224 MB 89%]               1,263 kB/s 54s64% [11 openjdk-11-jdk-headless 200 MB/224 MB 89%]               1,263 kB/s 53s64% [11 openjdk-11-jdk-headless 200 MB/224 MB 90%]               1,263 kB/s 53s64% [11 openjdk-11-jdk-headless 201 MB/224 MB 90%]               1,263 kB/s 52s65% [11 openjdk-11-jdk-headless 202 MB/224 MB 90%]               1,263 kB/s 52s65% [11 openjdk-11-jdk-headless 202 MB/224 MB 90%]               1,263 kB/s 52s65% [11 openjdk-11-jdk-headless 203 MB/224 MB 91%]               1,263 kB/s 51s65% [11 openjdk-11-jdk-headless 203 MB/224 MB 91%]               1,263 kB/s 51s65% [11 openjdk-11-jdk-headless 203 MB/224 MB 91%]               1,263 kB/s 51s65% [11 openjdk-11-jdk-headless 204 MB/224 MB 91%]               1,263 kB/s 50s66% [11 openjdk-11-jdk-headless 205 MB/224 MB 91%]           1,020 kB/s 1min 2s66% [11 openjdk-11-jdk-headless 205 MB/224 MB 92%]           1,020 kB/s 1min 1s66% [11 openjdk-11-jdk-headless 205 MB/224 MB 92%]           1,020 kB/s 1min 1s66% [11 openjdk-11-jdk-headless 206 MB/224 MB 92%]               1,020 kB/s 60s66% [11 openjdk-11-jdk-headless 206 MB/224 MB 92%]               1,020 kB/s 60s66% [11 openjdk-11-jdk-headless 207 MB/224 MB 92%]               1,020 kB/s 59s66% [11 openjdk-11-jdk-headless 207 MB/224 MB 93%]               1,020 kB/s 59s66% [11 openjdk-11-jdk-headless 208 MB/224 MB 93%]               1,020 kB/s 59s67% [11 openjdk-11-jdk-headless 208 MB/224 MB 93%]               1,020 kB/s 58s67% [11 openjdk-11-jdk-headless 209 MB/224 MB 93%]               1,020 kB/s 58s67% [11 openjdk-11-jdk-headless 209 MB/224 MB 93%]               1,020 kB/s 57s67% [11 openjdk-11-jdk-headless 210 MB/224 MB 94%]               1,020 kB/s 57s67% [11 openjdk-11-jdk-headless 210 MB/224 MB 94%]             901 kB/s 1min 4s67% [11 openjdk-11-jdk-headless 211 MB/224 MB 94%]             901 kB/s 1min 3s67% [11 openjdk-11-jdk-headless 211 MB/224 MB 94%]             901 kB/s 1min 3s67% [11 openjdk-11-jdk-headless 211 MB/224 MB 94%]             901 kB/s 1min 3s68% [11 openjdk-11-jdk-headless 212 MB/224 MB 95%]             901 kB/s 1min 2s68% [11 openjdk-11-jdk-headless 212 MB/224 MB 95%]             901 kB/s 1min 2s68% [11 openjdk-11-jdk-headless 213 MB/224 MB 95%]             901 kB/s 1min 1s68% [11 openjdk-11-jdk-headless 213 MB/224 MB 95%]             901 kB/s 1min 1s68% [11 openjdk-11-jdk-headless 213 MB/224 MB 95%]                 901 kB/s 60s68% [11 openjdk-11-jdk-headless 214 MB/224 MB 96%]                 901 kB/s 60s68% [11 openjdk-11-jdk-headless 214 MB/224 MB 96%]                 901 kB/s 59s68% [11 openjdk-11-jdk-headless 215 MB/224 MB 96%]                 901 kB/s 59s69% [11 openjdk-11-jdk-headless 215 MB/224 MB 96%]             825 kB/s 1min 4s69% [11 openjdk-11-jdk-headless 215 MB/224 MB 96%]             825 kB/s 1min 3s69% [11 openjdk-11-jdk-headless 216 MB/224 MB 96%]             825 kB/s 1min 3s69% [11 openjdk-11-jdk-headless 216 MB/224 MB 97%]             825 kB/s 1min 3s69% [11 openjdk-11-jdk-headless 216 MB/224 MB 97%]             825 kB/s 1min 2s69% [11 openjdk-11-jdk-headless 217 MB/224 MB 97%]             825 kB/s 1min 2s69% [11 openjdk-11-jdk-headless 217 MB/224 MB 97%]             825 kB/s 1min 1s69% [11 openjdk-11-jdk-headless 218 MB/224 MB 97%]             825 kB/s 1min 1s70% [11 openjdk-11-jdk-headless 218 MB/224 MB 97%]                 825 kB/s 60s70% [11 openjdk-11-jdk-headless 219 MB/224 MB 98%]                 825 kB/s 59s70% [11 openjdk-11-jdk-headless 219 MB/224 MB 98%]                 825 kB/s 59s70% [11 openjdk-11-jdk-headless 220 MB/224 MB 98%]                 825 kB/s 58s70% [11 openjdk-11-jdk-headless 220 MB/224 MB 98%]                 891 kB/s 53s70% [11 openjdk-11-jdk-headless 221 MB/224 MB 99%]                 891 kB/s 52s70% [11 openjdk-11-jdk-headless 221 MB/224 MB 99%]                 891 kB/s 52s71% [11 openjdk-11-jdk-headless 222 MB/224 MB 99%]                 891 kB/s 51s71% [11 openjdk-11-jdk-headless 223 MB/224 MB 99%]                 891 kB/s 50s71% [11 openjdk-11-jdk-headless 223 MB/224 MB 100%]                891 kB/s 50s71% [11 openjdk-11-jdk-headless 223 MB/224 MB 100%]                891 kB/s 49s72% [Working]                                                      891 kB/s 49s72% [Connecting to archive.ubuntu.com (91.189.91.38)]              891 kB/s 49s72% [Waiting for headers]                                          891 kB/s 49s72% [Waiting for headers]                                          891 kB/s 49s72% [Waiting for headers]                                          891 kB/s 49s72% [Waiting for headers]                                          891 kB/s 49s72% [Waiting for headers]                                     533 kB/s 1min 22s72% [Waiting for headers]                                     533 kB/s 1min 22s72% [Waiting for headers]                                     533 kB/s 1min 22s72% [Waiting for headers]                                     533 kB/s 1min 22s72% [Waiting for headers]                                     533 kB/s 1min 22s72% [Waiting for headers]                                     533 kB/s 1min 22s72% [Waiting for headers]                                     533 kB/s 1min 22s                                                                               Get:12 http://archive.ubuntu.com/ubuntu focal/main amd64 default-jdk-headless amd64 2:1.11-72 [1,140 B]
+72% [12 default-jdk-headless 1,140 B/1,140 B 100%]            533 kB/s 1min 22s72% [Working]                                                 533 kB/s 1min 22s                                                                               Get:13 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 openjdk-11-jdk amd64 11.0.18+10-0ubuntu1~20.04.1 [1,559 kB]
+72% [13 openjdk-11-jdk 4,059 B/1,559 kB 0%]                   533 kB/s 1min 22s72% [13 openjdk-11-jdk 1,527 kB/1,559 kB 98%]                 533 kB/s 1min 20s73% [Waiting for headers]                                     533 kB/s 1min 20s                                                                               Get:14 http://archive.ubuntu.com/ubuntu focal/main amd64 default-jdk amd64 2:1.11-72 [1,096 B]
+73% [14 default-jdk 1,096 B/1,096 B 100%]                     533 kB/s 1min 20s73% [Waiting for headers]                                     533 kB/s 1min 20s                                                                               Get:15 http://archive.ubuntu.com/ubuntu focal/main amd64 libllvm10 amd64 1:10.0.0-4ubuntu1 [15.3 MB]
+73% [15 libllvm10 10.1 kB/15.3 MB 0%]                         533 kB/s 1min 20s74% [15 libllvm10 3,484 kB/15.3 MB 23%]                       533 kB/s 1min 13s75% [15 libllvm10 6,655 kB/15.3 MB 43%]                        533 kB/s 1min 7s76% [15 libllvm10 8,483 kB/15.3 MB 55%]                        533 kB/s 1min 4s76% [15 libllvm10 8,544 kB/15.3 MB 56%]                          1,683 kB/s 20s76% [15 libllvm10 9,074 kB/15.3 MB 59%]                          1,683 kB/s 19s77% [15 libllvm10 11.8 MB/15.3 MB 77%]                           1,683 kB/s 18s77% [15 libllvm10 12.0 MB/15.3 MB 78%]                           1,683 kB/s 18s77% [15 libllvm10 12.0 MB/15.3 MB 79%]                           1,683 kB/s 18s77% [15 libllvm10 13.0 MB/15.3 MB 85%]                           1,683 kB/s 17s77% [15 libllvm10 14.1 MB/15.3 MB 92%]                           1,683 kB/s 17s78% [15 libllvm10 15.2 MB/15.3 MB 99%]                           1,683 kB/s 16s78% [Waiting for headers]                                        1,683 kB/s 16s                                                                               Get:16 http://archive.ubuntu.com/ubuntu focal/universe amd64 libclang1-10 amd64 1:10.0.0-4ubuntu1 [7,571 kB]
+78% [16 libclang1-10 32.4 kB/7,571 kB 0%]                        1,683 kB/s 16s79% [16 libclang1-10 2,144 kB/7,571 kB 28%]                      1,683 kB/s 14s79% [16 libclang1-10 2,545 kB/7,571 kB 34%]                      1,683 kB/s 14s80% [16 libclang1-10 4,685 kB/7,571 kB 62%]                      1,683 kB/s 13s80% [16 libclang1-10 5,555 kB/7,571 kB 73%]                      1,683 kB/s 12s80% [16 libclang1-10 5,923 kB/7,571 kB 78%]                      2,068 kB/s 10s81% [Waiting for headers]                                         2,068 kB/s 9s                                                                               Get:17 http://archive.ubuntu.com/ubuntu focal/universe amd64 doxygen amd64 1.8.17-0ubuntu2 [9,630 kB]
+81% [17 doxygen 8,416 B/9,630 kB 0%]                              2,068 kB/s 9s81% [17 doxygen 1,010 kB/9,630 kB 10%]                            2,068 kB/s 9s81% [17 doxygen 1,141 kB/9,630 kB 12%]                            2,068 kB/s 9s81% [17 doxygen 1,206 kB/9,630 kB 13%]                            2,068 kB/s 8s81% [17 doxygen 1,273 kB/9,630 kB 13%]                            2,068 kB/s 8s81% [17 doxygen 1,352 kB/9,630 kB 14%]                            2,068 kB/s 8s81% [17 doxygen 1,412 kB/9,630 kB 15%]                            2,068 kB/s 8s81% [17 doxygen 1,455 kB/9,630 kB 15%]                            2,068 kB/s 8s81% [17 doxygen 1,494 kB/9,630 kB 16%]                            2,068 kB/s 8s81% [17 doxygen 1,526 kB/9,630 kB 16%]                            2,068 kB/s 8s81% [17 doxygen 1,562 kB/9,630 kB 16%]                            2,068 kB/s 8s81% [17 doxygen 1,606 kB/9,630 kB 17%]                            2,068 kB/s 8s81% [17 doxygen 1,698 kB/9,630 kB 18%]                             518 kB/s 34s81% [17 doxygen 1,947 kB/9,630 kB 20%]                             518 kB/s 34s82% [17 doxygen 2,441 kB/9,630 kB 25%]                             518 kB/s 33s82% [17 doxygen 3,132 kB/9,630 kB 33%]                             518 kB/s 32s82% [17 doxygen 5,066 kB/9,630 kB 53%]                             518 kB/s 28s83% [17 doxygen 8,067 kB/9,630 kB 84%]                             518 kB/s 22s84% [Waiting for headers]                                          518 kB/s 19s                                                                               Get:18 http://archive.ubuntu.com/ubuntu focal/main amd64 libusb-0.1-4 amd64 2:0.1.12-32 [17.4 kB]
+84% [18 libusb-0.1-4 17.4 kB/17.4 kB 100%]                         518 kB/s 19s85% [Working]                                                      518 kB/s 19s                                                                               Get:19 http://archive.ubuntu.com/ubuntu focal/universe amd64 libftdi1 amd64 0.20-4build8 [14.8 kB]
+85% [19 libftdi1 14.8 kB/14.8 kB 100%]                             518 kB/s 19s85% [Waiting for headers]                                          518 kB/s 19s                                                                               Get:20 http://archive.ubuntu.com/ubuntu focal/main amd64 libusb-dev amd64 2:0.1.12-32 [30.3 kB]
+85% [20 libusb-dev 30.3 kB/30.3 kB 100%]                           518 kB/s 19s85% [Working]                                                      518 kB/s 19s                                                                               Get:21 http://archive.ubuntu.com/ubuntu focal/universe amd64 libftdi-dev amd64 0.20-4build8 [178 kB]
+85% [21 libftdi-dev 4,035 B/178 kB 2%]                             518 kB/s 19s86% [Waiting for headers]                                          518 kB/s 19s                                                                               Get:22 http://archive.ubuntu.com/ubuntu focal/main amd64 libsigc++-2.0-dev amd64 2.10.2-1build1 [65.1 kB]
+86% [22 libsigc++-2.0-dev 22.4 kB/65.1 kB 34%]                     518 kB/s 19s86% [Working]                                                      518 kB/s 19s86% [Connecting to archive.ubuntu.com (185.125.190.39)]            518 kB/s 19s86% [Waiting for headers]                                          518 kB/s 19s86% [Waiting for headers]                                          518 kB/s 19s86% [Waiting for headers]                                          518 kB/s 19s86% [Waiting for headers]                                          518 kB/s 19s86% [Waiting for headers]                                          518 kB/s 19s86% [Waiting for headers]                                         1,312 kB/s 7s86% [Waiting for headers]                                         1,312 kB/s 7s86% [Waiting for headers]                                         1,312 kB/s 7s86% [Waiting for headers]                                         1,312 kB/s 7s86% [Waiting for headers]                                         1,312 kB/s 7s                                                                               Get:23 http://archive.ubuntu.com/ubuntu focal/main amd64 libglibmm-2.4-dev amd64 2.64.2-1 [446 kB]
+86% [23 libglibmm-2.4-dev 1,165 B/446 kB 0%]                      1,312 kB/s 7s86% [23 libglibmm-2.4-dev 136 kB/446 kB 30%]                      1,312 kB/s 7s86% [23 libglibmm-2.4-dev 239 kB/446 kB 54%]                      1,312 kB/s 7s86% [23 libglibmm-2.4-dev 310 kB/446 kB 69%]                      1,312 kB/s 7s86% [23 libglibmm-2.4-dev 347 kB/446 kB 78%]                      1,312 kB/s 7s86% [23 libglibmm-2.4-dev 392 kB/446 kB 88%]                      1,312 kB/s 7s87% [Working]                                                     1,312 kB/s 7s                                                                               Get:24 http://archive.ubuntu.com/ubuntu focal/main amd64 xorg-sgml-doctools all 1:1.11-1 [12.9 kB]
+87% [24 xorg-sgml-doctools 2,615 B/12.9 kB 20%]                   1,312 kB/s 7s87% [Waiting for headers]                                         1,312 kB/s 7s                                                                               Get:25 http://archive.ubuntu.com/ubuntu focal/main amd64 x11proto-dev all 2019.2-1ubuntu1 [594 kB]
+87% [25 x11proto-dev 990 B/594 kB 0%]                             1,312 kB/s 7s87% [25 x11proto-dev 98.0 kB/594 kB 17%]                     91.4 kB/s 1min 41s87% [25 x11proto-dev 224 kB/594 kB 38%]                      91.4 kB/s 1min 40s87% [25 x11proto-dev 359 kB/594 kB 60%]                      91.4 kB/s 1min 38s87% [25 x11proto-dev 456 kB/594 kB 77%]                      91.4 kB/s 1min 37s87% [25 x11proto-dev 561 kB/594 kB 95%]                      91.4 kB/s 1min 36s88% [Waiting for headers]                                    91.4 kB/s 1min 36s                                                                               Get:26 http://archive.ubuntu.com/ubuntu focal/main amd64 x11proto-core-dev all 2019.2-1ubuntu1 [2,620 B]
+88% [26 x11proto-core-dev 2,247 B/2,620 B 86%]               91.4 kB/s 1min 36s88% [Waiting for headers]                                    91.4 kB/s 1min 36s                                                                               Get:27 http://archive.ubuntu.com/ubuntu focal/main amd64 libice-dev amd64 2:1.0.10-0ubuntu1 [47.8 kB]
+88% [27 libice-dev 3,690 B/47.8 kB 8%]                       91.4 kB/s 1min 36s89% [Waiting for headers]                                    91.4 kB/s 1min 35s                                                                               Get:28 http://archive.ubuntu.com/ubuntu focal/main amd64 libpthread-stubs0-dev amd64 0.4-1 [5,384 B]
+89% [28 libpthread-stubs0-dev 1,946 B/5,384 B 36%]           91.4 kB/s 1min 35s89% [Waiting for headers]                                    91.4 kB/s 1min 35s                                                                               Get:29 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 libpython2.7 amd64 2.7.18-1~20.04.3 [1,037 kB]
+89% [29 libpython2.7 2,070 B/1,037 kB 0%]                    91.4 kB/s 1min 35s89% [29 libpython2.7 99.1 kB/1,037 kB 10%]                   91.4 kB/s 1min 34s89% [29 libpython2.7 196 kB/1,037 kB 19%]                    91.4 kB/s 1min 33s89% [29 libpython2.7 319 kB/1,037 kB 31%]                    91.4 kB/s 1min 32s89% [29 libpython2.7 416 kB/1,037 kB 40%]                    91.4 kB/s 1min 31s89% [29 libpython2.7 523 kB/1,037 kB 50%]                    91.4 kB/s 1min 30s89% [29 libpython2.7 636 kB/1,037 kB 61%]                    91.4 kB/s 1min 28s89% [29 libpython2.7 755 kB/1,037 kB 73%]                          215 kB/s 37s89% [29 libpython2.7 885 kB/1,037 kB 85%]                          215 kB/s 36s89% [29 libpython2.7 1,008 kB/1,037 kB 97%]                        215 kB/s 35s90% [Waiting for headers]                                          215 kB/s 35s                                                                               Get:30 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 libpython2.7-dev amd64 2.7.18-1~20.04.3 [2,466 kB]
+90% [30 libpython2.7-dev 1,145 B/2,466 kB 0%]                      215 kB/s 35s90% [30 libpython2.7-dev 163 kB/2,466 kB 7%]                       215 kB/s 35s90% [30 libpython2.7-dev 415 kB/2,466 kB 17%]                      215 kB/s 33s90% [30 libpython2.7-dev 831 kB/2,466 kB 34%]                      215 kB/s 31s90% [30 libpython2.7-dev 1,548 kB/2,466 kB 63%]                    215 kB/s 28s91% [Working]                                                      215 kB/s 24s                                                                               Get:31 http://archive.ubuntu.com/ubuntu focal/universe amd64 libpython2-dev amd64 2.7.17-2ubuntu4 [7,140 B]
+91% [31 libpython2-dev 7,140 B/7,140 B 100%]                       215 kB/s 24s91% [Working]                                                      215 kB/s 24s                                                                               Get:32 http://archive.ubuntu.com/ubuntu focal/main amd64 libsm-dev amd64 2:1.2.3-1 [17.0 kB]
+91% [32 libsm-dev 6,028 B/17.0 kB 35%]                             215 kB/s 24s92% [Waiting for headers]                                          215 kB/s 24s                                                                               Get:33 http://archive.ubuntu.com/ubuntu focal/main amd64 libxau-dev amd64 1:1.0.9-0ubuntu1 [9,552 B]
+92% [33 libxau-dev 3,161 B/9,552 B 33%]                            215 kB/s 24s92% [Working]                                                      215 kB/s 24s92% [Connecting to archive.ubuntu.com (91.189.91.39)]              215 kB/s 24s92% [Connecting to archive.ubuntu.com (185.125.190.39)]            215 kB/s 24s92% [Connecting to archive.ubuntu.com (185.125.190.39)]            215 kB/s 24s92% [Connecting to archive.ubuntu.com (185.125.190.39)]            215 kB/s 24s92% [Connecting to archive.ubuntu.com (185.125.190.39)]            437 kB/s 11s92% [Connecting to archive.ubuntu.com (185.125.190.39)]            437 kB/s 11s92% [Connecting to archive.ubuntu.com (185.125.190.39)]            437 kB/s 11s92% [Connecting to archive.ubuntu.com (185.125.190.39)]            437 kB/s 11s92% [Connecting to archive.ubuntu.com (185.125.190.39)]            437 kB/s 11s92% [Connecting to archive.ubuntu.com (185.125.190.39)]            437 kB/s 11s92% [Connecting to archive.ubuntu.com (185.125.190.39)]            437 kB/s 11s92% [Connecting to archive.ubuntu.com (185.125.190.39)]            437 kB/s 11s92% [Connecting to archive.ubuntu.com (185.125.190.39)]            437 kB/s 11s92% [Connecting to archive.ubuntu.com (185.125.190.39)]            437 kB/s 11s92% [Waiting for headers]                                          437 kB/s 11s92% [Waiting for headers]                                          437 kB/s 11s                                                                               92% [Waiting for headers]92% [Waiting for headers]92% [Waiting for headers]92% [Waiting for headers]92% [Waiting for headers]92% [Waiting for headers]92% [Waiting for headers]92% [Waiting for headers]92% [Waiting for headers]                         Get:34 http://archive.ubuntu.com/ubuntu focal/main amd64 libxdmcp-dev amd64 1:1.1.3-0ubuntu1 [25.3 kB]
+92% [34 libxdmcp-dev 1,167 B/25.3 kB 5%]                                        93% [Working]93% [Connecting to archive.ubuntu.com (185.125.190.36)]                                                       93% [Connecting to archive.ubuntu.com (91.189.91.38)]93% [Connecting to archive.ubuntu.com (91.189.91.38)]93% [Waiting for headers]                                   3,997 B/s 21min 37s93% [Waiting for headers]                                   3,997 B/s 21min 37s93% [Waiting for headers]                                   3,997 B/s 21min 37s93% [Waiting for headers]                                   3,997 B/s 21min 37s93% [Waiting for headers]                                   3,997 B/s 21min 37s93% [Waiting for headers]                                   3,997 B/s 21min 37s93% [Waiting for headers]                                   3,997 B/s 21min 37s93% [Waiting for headers]                                   3,997 B/s 21min 37s93% [Waiting for headers]                                   3,997 B/s 21min 37s93% [Waiting for headers]                                   3,997 B/s 21min 37s93% [Waiting for headers]                                   3,997 B/s 21min 37s                                                                               Get:35 http://archive.ubuntu.com/ubuntu focal/main amd64 xtrans-dev all 1.4.0-1 [68.9 kB]
+93% [35 xtrans-dev 1,166 B/68.9 kB 2%]                      3,997 B/s 21min 37s93% [Working]                                               3,997 B/s 21min 20s                                                                               Get:36 http://archive.ubuntu.com/ubuntu focal/main amd64 libxcb1-dev amd64 1.14-2 [80.5 kB]
+93% [36 libxcb1-dev 2,614 B/80.5 kB 3%]                     3,997 B/s 21min 20s94% [Working]                                                3,997 B/s 21min 0s                                                                               Get:37 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libx11-dev amd64 2:1.6.9-2ubuntu1.2 [647 kB]
+94% [37 libx11-dev 1,165 B/647 kB 0%]                        25.0 kB/s 3min 21s94% [37 libx11-dev 253 kB/647 kB 39%]                        25.0 kB/s 3min 11s94% [37 libx11-dev 347 kB/647 kB 54%]                         25.0 kB/s 3min 7s94% [37 libx11-dev 465 kB/647 kB 72%]                         25.0 kB/s 3min 2s94% [37 libx11-dev 580 kB/647 kB 90%]                        25.0 kB/s 2min 58s94% [Working]                                                25.0 kB/s 2min 55s                                                                               Get:38 http://archive.ubuntu.com/ubuntu focal/main amd64 libxt-dev amd64 1:1.1.5-1 [395 kB]
+94% [38 libxt-dev 2,613 B/395 kB 1%]                         25.0 kB/s 2min 55s94% [38 libxt-dev 173 kB/395 kB 44%]                         25.0 kB/s 2min 48s95% [Working]                                                25.0 kB/s 2min 39s                                                                               Get:39 http://archive.ubuntu.com/ubuntu focal/universe amd64 python-is-python2 all 2.7.17-4 [2,496 B]
+95% [39 python-is-python2 2,496 B/2,496 B 100%]              25.0 kB/s 2min 39s95% [Working]                                                25.0 kB/s 2min 39s                                                                               Get:40 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 python2.7-dev amd64 2.7.18-1~20.04.3 [293 kB]
+95% [40 python2.7-dev 2,613 B/293 kB 1%]                     25.0 kB/s 2min 39s96% [Working]                                                25.0 kB/s 2min 27s                                                                               Get:41 http://archive.ubuntu.com/ubuntu focal/universe amd64 python2-dev amd64 2.7.17-2ubuntu4 [1,268 B]
+96% [41 python2-dev 1,268 B/1,268 B 100%]                    25.0 kB/s 2min 27s96% [Working]                                                25.0 kB/s 2min 27s                                                                               Get:42 http://archive.ubuntu.com/ubuntu focal/universe amd64 python-dev-is-python2 all 2.7.17-4 [1,396 B]
+96% [42 python-dev-is-python2 1,396 B/1,396 B 100%]          25.0 kB/s 2min 27s96% [Working]                                                25.0 kB/s 2min 27s                                                                               Get:43 http://archive.ubuntu.com/ubuntu focal/universe amd64 python-gi-dev amd64 3.36.0-1 [8,564 B]
+96% [43 python-gi-dev 2,616 B/8,564 B 31%]                   25.0 kB/s 2min 27s97% [Working]                                                25.0 kB/s 2min 27s                                                                               Get:44 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 python-pkg-resources all 44.0.0-2ubuntu0.1 [130 kB]
+97% [44 python-pkg-resources 2,613 B/130 kB 2%]              25.0 kB/s 2min 27s97% [Working]                                                25.0 kB/s 2min 22s                                                                               Get:45 http://archive.ubuntu.com/ubuntu focal/universe amd64 python-numpy amd64 1:1.16.5-2ubuntu7 [2,144 kB]
+97% [45 python-numpy 2,592 B/2,144 kB 0%]                    25.0 kB/s 2min 22s97% [45 python-numpy 522 kB/2,144 kB 24%]                     25.0 kB/s 2min 1s98% [45 python-numpy 1,320 kB/2,144 kB 62%]                  25.0 kB/s 1min 29s98% [Working]                                                       592 kB/s 2s98% [Connecting to archive.ubuntu.com (91.189.91.39)]               592 kB/s 2s98% [Connecting to archive.ubuntu.com (185.125.190.39)]             592 kB/s 2s98% [Connecting to archive.ubuntu.com (185.125.190.39)]             592 kB/s 2s98% [Waiting for headers]                                           592 kB/s 2s98% [Waiting for headers]                                           592 kB/s 2s98% [Waiting for headers]                                           592 kB/s 2s98% [Waiting for headers]                                           592 kB/s 2s98% [Waiting for headers]                                           592 kB/s 2s98% [Waiting for headers]                                           592 kB/s 2s98% [Waiting for headers]                                           592 kB/s 2s98% [Waiting for headers]                                           592 kB/s 2s                                                                               98% [Waiting for headers]98% [Waiting for headers]98% [Waiting for headers]98% [Waiting for headers]98% [Waiting for headers]98% [Waiting for headers]98% [Waiting for headers]98% [Waiting for headers]98% [Waiting for headers]98% [Waiting for headers]98% [Waiting for headers]98% [Waiting for headers]                         Get:46 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 python-setuptools all 44.0.0-2ubuntu0.1 [330 kB]
+98% [46 python-setuptools 2,613 B/330 kB 1%]99% [Working]                                                     52.8 kB/s 20s                                                                               Get:47 http://archive.ubuntu.com/ubuntu focal/universe amd64 swig4.0 amd64 4.0.1-5build1 [1,081 kB]
+99% [47 swig4.0 1,163 B/1,081 kB 0%]                              52.8 kB/s 20s99% [47 swig4.0 882 kB/1,081 kB 82%]                               52.8 kB/s 3s100% [Working]                                                     52.8 kB/s 0s                                                                               Get:48 http://archive.ubuntu.com/ubuntu focal/universe amd64 swig all 4.0.1-5build1 [5,528 B]
+100% [48 swig 2,616 B/5,528 B 47%]                                 52.8 kB/s 0s100% [Working]                                                     52.8 kB/s 0s                                                                               Fetched 272 MB in 5min 4s (895 kB/s)
+ Selecting previously unselected package libpython2.7-minimal:amd64.
+ (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 484546 files and directories currently installed.)
+ Preparing to unpack .../0-libpython2.7-minimal_2.7.18-1~20.04.3_amd64.deb ...
+ Unpacking libpython2.7-minimal:amd64 (2.7.18-1~20.04.3) ...
+ Selecting previously unselected package python2.7-minimal.
+ Preparing to unpack .../1-python2.7-minimal_2.7.18-1~20.04.3_amd64.deb ...
+ Unpacking python2.7-minimal (2.7.18-1~20.04.3) ...
+ Selecting previously unselected package python2-minimal.
+ Preparing to unpack .../2-python2-minimal_2.7.17-2ubuntu4_amd64.deb ...
+ Unpacking python2-minimal (2.7.17-2ubuntu4) ...
+ Selecting previously unselected package libpython2.7-stdlib:amd64.
+ Preparing to unpack .../3-libpython2.7-stdlib_2.7.18-1~20.04.3_amd64.deb ...
+ Unpacking libpython2.7-stdlib:amd64 (2.7.18-1~20.04.3) ...
+ Selecting previously unselected package python2.7.
+ Preparing to unpack .../4-python2.7_2.7.18-1~20.04.3_amd64.deb ...
+ Unpacking python2.7 (2.7.18-1~20.04.3) ...
+ Selecting previously unselected package libpython2-stdlib:amd64.
+ Preparing to unpack .../5-libpython2-stdlib_2.7.17-2ubuntu4_amd64.deb ...
+ Unpacking libpython2-stdlib:amd64 (2.7.17-2ubuntu4) ...
+ Setting up libpython2.7-minimal:amd64 (2.7.18-1~20.04.3) ...
+ Setting up python2.7-minimal (2.7.18-1~20.04.3) ...
+ Linking and byte-compiling packages for runtime python2.7...
+ Setting up python2-minimal (2.7.17-2ubuntu4) ...
+ Selecting previously unselected package python2.
+ (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 485293 files and directories currently installed.)
+ Preparing to unpack .../00-python2_2.7.17-2ubuntu4_amd64.deb ...
+ Unpacking python2 (2.7.17-2ubuntu4) ...
+ Selecting previously unselected package libsubunit0:amd64.
+ Preparing to unpack .../01-libsubunit0_1.4.0-0ubuntu1_amd64.deb ...
+ Unpacking libsubunit0:amd64 (1.4.0-0ubuntu1) ...
+ Selecting previously unselected package libsubunit-dev:amd64.
+ Preparing to unpack .../02-libsubunit-dev_1.4.0-0ubuntu1_amd64.deb ...
+ Unpacking libsubunit-dev:amd64 (1.4.0-0ubuntu1) ...
+ Selecting previously unselected package check:amd64.
+ Preparing to unpack .../03-check_0.10.0-3build2_amd64.deb ...
+ Unpacking check:amd64 (0.10.0-3build2) ...
+ Selecting previously unselected package openjdk-11-jdk-headless:amd64.
+ Preparing to unpack .../04-openjdk-11-jdk-headless_11.0.18+10-0ubuntu1~20.04.1_amd64.deb ...
+ Unpacking openjdk-11-jdk-headless:amd64 (11.0.18+10-0ubuntu1~20.04.1) ...
+ Selecting previously unselected package default-jdk-headless.
+ Preparing to unpack .../05-default-jdk-headless_2%3a1.11-72_amd64.deb ...
+ Unpacking default-jdk-headless (2:1.11-72) ...
+ Selecting previously unselected package openjdk-11-jdk:amd64.
+ Preparing to unpack .../06-openjdk-11-jdk_11.0.18+10-0ubuntu1~20.04.1_amd64.deb ...
+ Unpacking openjdk-11-jdk:amd64 (11.0.18+10-0ubuntu1~20.04.1) ...
+ Selecting previously unselected package default-jdk.
+ Preparing to unpack .../07-default-jdk_2%3a1.11-72_amd64.deb ...
+ Unpacking default-jdk (2:1.11-72) ...
+ Selecting previously unselected package libllvm10:amd64.
+ Preparing to unpack .../08-libllvm10_1%3a10.0.0-4ubuntu1_amd64.deb ...
+ Unpacking libllvm10:amd64 (1:10.0.0-4ubuntu1) ...
+ Selecting previously unselected package libclang1-10.
+ Preparing to unpack .../09-libclang1-10_1%3a10.0.0-4ubuntu1_amd64.deb ...
+ Unpacking libclang1-10 (1:10.0.0-4ubuntu1) ...
+ Selecting previously unselected package doxygen.
+ Preparing to unpack .../10-doxygen_1.8.17-0ubuntu2_amd64.deb ...
+ Unpacking doxygen (1.8.17-0ubuntu2) ...
+ Selecting previously unselected package libusb-0.1-4:amd64.
+ Preparing to unpack .../11-libusb-0.1-4_2%3a0.1.12-32_amd64.deb ...
+ Unpacking libusb-0.1-4:amd64 (2:0.1.12-32) ...
+ Selecting previously unselected package libftdi1:amd64.
+ Preparing to unpack .../12-libftdi1_0.20-4build8_amd64.deb ...
+ Unpacking libftdi1:amd64 (0.20-4build8) ...
+ Selecting previously unselected package libusb-dev.
+ Preparing to unpack .../13-libusb-dev_2%3a0.1.12-32_amd64.deb ...
+ Unpacking libusb-dev (2:0.1.12-32) ...
+ Selecting previously unselected package libftdi-dev.
+ Preparing to unpack .../14-libftdi-dev_0.20-4build8_amd64.deb ...
+ Unpacking libftdi-dev (0.20-4build8) ...
+ Selecting previously unselected package libsigc++-2.0-dev:amd64.
+ Preparing to unpack .../15-libsigc++-2.0-dev_2.10.2-1build1_amd64.deb ...
+ Unpacking libsigc++-2.0-dev:amd64 (2.10.2-1build1) ...
+ Selecting previously unselected package libglibmm-2.4-dev:amd64.
+ Preparing to unpack .../16-libglibmm-2.4-dev_2.64.2-1_amd64.deb ...
+ Unpacking libglibmm-2.4-dev:amd64 (2.64.2-1) ...
+ Selecting previously unselected package xorg-sgml-doctools.
+ Preparing to unpack .../17-xorg-sgml-doctools_1%3a1.11-1_all.deb ...
+ Unpacking xorg-sgml-doctools (1:1.11-1) ...
+ Selecting previously unselected package x11proto-dev.
+ Preparing to unpack .../18-x11proto-dev_2019.2-1ubuntu1_all.deb ...
+ Unpacking x11proto-dev (2019.2-1ubuntu1) ...
+ Selecting previously unselected package x11proto-core-dev.
+ Preparing to unpack .../19-x11proto-core-dev_2019.2-1ubuntu1_all.deb ...
+ Unpacking x11proto-core-dev (2019.2-1ubuntu1) ...
+ Selecting previously unselected package libice-dev:amd64.
+ Preparing to unpack .../20-libice-dev_2%3a1.0.10-0ubuntu1_amd64.deb ...
+ Unpacking libice-dev:amd64 (2:1.0.10-0ubuntu1) ...
+ Selecting previously unselected package libpthread-stubs0-dev:amd64.
+ Preparing to unpack .../21-libpthread-stubs0-dev_0.4-1_amd64.deb ...
+ Unpacking libpthread-stubs0-dev:amd64 (0.4-1) ...
+ Selecting previously unselected package libpython2.7:amd64.
+ Preparing to unpack .../22-libpython2.7_2.7.18-1~20.04.3_amd64.deb ...
+ Unpacking libpython2.7:amd64 (2.7.18-1~20.04.3) ...
+ Selecting previously unselected package libpython2.7-dev:amd64.
+ Preparing to unpack .../23-libpython2.7-dev_2.7.18-1~20.04.3_amd64.deb ...
+ Unpacking libpython2.7-dev:amd64 (2.7.18-1~20.04.3) ...
+ Selecting previously unselected package libpython2-dev:amd64.
+ Preparing to unpack .../24-libpython2-dev_2.7.17-2ubuntu4_amd64.deb ...
+ Unpacking libpython2-dev:amd64 (2.7.17-2ubuntu4) ...
+ Selecting previously unselected package libsm-dev:amd64.
+ Preparing to unpack .../25-libsm-dev_2%3a1.2.3-1_amd64.deb ...
+ Unpacking libsm-dev:amd64 (2:1.2.3-1) ...
+ Selecting previously unselected package libxau-dev:amd64.
+ Preparing to unpack .../26-libxau-dev_1%3a1.0.9-0ubuntu1_amd64.deb ...
+ Unpacking libxau-dev:amd64 (1:1.0.9-0ubuntu1) ...
+ Selecting previously unselected package libxdmcp-dev:amd64.
+ Preparing to unpack .../27-libxdmcp-dev_1%3a1.1.3-0ubuntu1_amd64.deb ...
+ Unpacking libxdmcp-dev:amd64 (1:1.1.3-0ubuntu1) ...
+ Selecting previously unselected package xtrans-dev.
+ Preparing to unpack .../28-xtrans-dev_1.4.0-1_all.deb ...
+ Unpacking xtrans-dev (1.4.0-1) ...
+ Selecting previously unselected package libxcb1-dev:amd64.
+ Preparing to unpack .../29-libxcb1-dev_1.14-2_amd64.deb ...
+ Unpacking libxcb1-dev:amd64 (1.14-2) ...
+ Selecting previously unselected package libx11-dev:amd64.
+ Preparing to unpack .../30-libx11-dev_2%3a1.6.9-2ubuntu1.2_amd64.deb ...
+ Unpacking libx11-dev:amd64 (2:1.6.9-2ubuntu1.2) ...
+ Selecting previously unselected package libxt-dev:amd64.
+ Preparing to unpack .../31-libxt-dev_1%3a1.1.5-1_amd64.deb ...
+ Unpacking libxt-dev:amd64 (1:1.1.5-1) ...
+ Selecting previously unselected package python-is-python2.
+ Preparing to unpack .../32-python-is-python2_2.7.17-4_all.deb ...
+ Unpacking python-is-python2 (2.7.17-4) ...
+ Selecting previously unselected package python2.7-dev.
+ Preparing to unpack .../33-python2.7-dev_2.7.18-1~20.04.3_amd64.deb ...
+ Unpacking python2.7-dev (2.7.18-1~20.04.3) ...
+ Selecting previously unselected package python2-dev.
+ Preparing to unpack .../34-python2-dev_2.7.17-2ubuntu4_amd64.deb ...
+ Unpacking python2-dev (2.7.17-2ubuntu4) ...
+ Selecting previously unselected package python-dev-is-python2.
+ Preparing to unpack .../35-python-dev-is-python2_2.7.17-4_all.deb ...
+ Unpacking python-dev-is-python2 (2.7.17-4) ...
+ Selecting previously unselected package python-gi-dev.
+ Preparing to unpack .../36-python-gi-dev_3.36.0-1_amd64.deb ...
+ Unpacking python-gi-dev (3.36.0-1) ...
+ Selecting previously unselected package python-pkg-resources.
+ Preparing to unpack .../37-python-pkg-resources_44.0.0-2ubuntu0.1_all.deb ...
+ Unpacking python-pkg-resources (44.0.0-2ubuntu0.1) ...
+ Selecting previously unselected package python-numpy.
+ Preparing to unpack .../38-python-numpy_1%3a1.16.5-2ubuntu7_amd64.deb ...
+ Unpacking python-numpy (1:1.16.5-2ubuntu7) ...
+ Selecting previously unselected package python-setuptools.
+ Preparing to unpack .../39-python-setuptools_44.0.0-2ubuntu0.1_all.deb ...
+ Unpacking python-setuptools (44.0.0-2ubuntu0.1) ...
+ Selecting previously unselected package swig4.0.
+ Preparing to unpack .../40-swig4.0_4.0.1-5build1_amd64.deb ...
+ Unpacking swig4.0 (4.0.1-5build1) ...
+ Selecting previously unselected package swig.
+ Preparing to unpack .../41-swig_4.0.1-5build1_all.deb ...
+ Unpacking swig (4.0.1-5build1) ...
+ Setting up python-gi-dev (3.36.0-1) ...
+ Setting up openjdk-11-jdk-headless:amd64 (11.0.18+10-0ubuntu1~20.04.1) ...
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jar to provide /usr/bin/jar (jar) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jarsigner to provide /usr/bin/jarsigner (jarsigner) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/javac to provide /usr/bin/javac (javac) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/javadoc to provide /usr/bin/javadoc (javadoc) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/javap to provide /usr/bin/javap (javap) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jcmd to provide /usr/bin/jcmd (jcmd) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jdb to provide /usr/bin/jdb (jdb) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jdeprscan to provide /usr/bin/jdeprscan (jdeprscan) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jdeps to provide /usr/bin/jdeps (jdeps) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jfr to provide /usr/bin/jfr (jfr) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jimage to provide /usr/bin/jimage (jimage) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jinfo to provide /usr/bin/jinfo (jinfo) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jlink to provide /usr/bin/jlink (jlink) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jmap to provide /usr/bin/jmap (jmap) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jmod to provide /usr/bin/jmod (jmod) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jps to provide /usr/bin/jps (jps) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jrunscript to provide /usr/bin/jrunscript (jrunscript) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jshell to provide /usr/bin/jshell (jshell) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jstack to provide /usr/bin/jstack (jstack) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jstat to provide /usr/bin/jstat (jstat) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jstatd to provide /usr/bin/jstatd (jstatd) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/rmic to provide /usr/bin/rmic (rmic) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/serialver to provide /usr/bin/serialver (serialver) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jaotc to provide /usr/bin/jaotc (jaotc) in auto mode
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jhsdb to provide /usr/bin/jhsdb (jhsdb) in auto mode
+ Setting up libsubunit0:amd64 (1.4.0-0ubuntu1) ...
+ Setting up libpthread-stubs0-dev:amd64 (0.4-1) ...
+ Setting up libusb-0.1-4:amd64 (2:0.1.12-32) ...
+ Setting up libpython2.7-stdlib:amd64 (2.7.18-1~20.04.3) ...
+ Setting up libllvm10:amd64 (1:10.0.0-4ubuntu1) ...
+ Setting up libsigc++-2.0-dev:amd64 (2.10.2-1build1) ...
+ Setting up xtrans-dev (1.4.0-1) ...
+ Setting up default-jdk-headless (2:1.11-72) ...
+ Setting up libclang1-10 (1:10.0.0-4ubuntu1) ...
+ Setting up libglibmm-2.4-dev:amd64 (2.64.2-1) ...
+ Setting up openjdk-11-jdk:amd64 (11.0.18+10-0ubuntu1~20.04.1) ...
+ update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jconsole to provide /usr/bin/jconsole (jconsole) in auto mode
+ Setting up xorg-sgml-doctools (1:1.11-1) ...
+ Setting up swig4.0 (4.0.1-5build1) ...
+ Setting up libpython2.7:amd64 (2.7.18-1~20.04.3) ...
+ Setting up libpython2.7-dev:amd64 (2.7.18-1~20.04.3) ...
+ Setting up swig (4.0.1-5build1) ...
+ Setting up python2.7 (2.7.18-1~20.04.3) ...
+ Setting up libpython2-stdlib:amd64 (2.7.17-2ubuntu4) ...
+ Setting up libsubunit-dev:amd64 (1.4.0-0ubuntu1) ...
+ Setting up libftdi1:amd64 (0.20-4build8) ...
+ Setting up default-jdk (2:1.11-72) ...
+ Setting up libusb-dev (2:0.1.12-32) ...
+ Setting up python2 (2.7.17-2ubuntu4) ...
+ Setting up doxygen (1.8.17-0ubuntu2) ...
+ Setting up check:amd64 (0.10.0-3build2) ...
+ Setting up libpython2-dev:amd64 (2.7.17-2ubuntu4) ...
+ Setting up python-is-python2 (2.7.17-4) ...
+ Setting up python2.7-dev (2.7.18-1~20.04.3) ...
+ Setting up python2-dev (2.7.17-2ubuntu4) ...
+ Setting up python-pkg-resources (44.0.0-2ubuntu0.1) ...
+ Setting up libftdi-dev (0.20-4build8) ...
+ Setting up python-dev-is-python2 (2.7.17-4) ...
+ Setting up python-setuptools (44.0.0-2ubuntu0.1) ...
+ Setting up python-numpy (1:1.16.5-2ubuntu7) ...
+ Processing triggers for man-db (2.9.1-1) ...
+ Processing triggers for sgml-base (1.29.1) ...
+ Processing triggers for install-info (6.7.0.dfsg.2-5) ...
+ Setting up x11proto-dev (2019.2-1ubuntu1) ...
+ Processing triggers for desktop-file-utils (0.24+linuxmint1) ...
+ Processing triggers for mime-support (3.64ubuntu1) ...
+ Setting up libxau-dev:amd64 (1:1.0.9-0ubuntu1) ...
+ Processing triggers for doc-base (0.10.9) ...
+ Processing 2 added doc-base files...
+ Setting up libice-dev:amd64 (2:1.0.10-0ubuntu1) ...
+ Setting up libsm-dev:amd64 (2:1.2.3-1) ...
+ Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
+ Setting up libxdmcp-dev:amd64 (1:1.1.3-0ubuntu1) ...
+ Setting up x11proto-core-dev (2019.2-1ubuntu1) ...
+ Setting up libxcb1-dev:amd64 (1.14-2) ...
+ Setting up libx11-dev:amd64 (2:1.6.9-2ubuntu1.2) ...
+ Setting up libxt-dev:amd64 (1:1.1.5-1) ...
+ #+end_example
+
+
+ #+BEGIN_SRC bash :eval no-export :results output :dir tmp
+ pwd
+ ls
+ #+END_SRC
+
+ #+RESULTS:
+ : /home/hacklab/Documents/jj/Electronics/pc-admin/tmp
+
+****  Compile
+     :PROPERTIES:
+     :header-args+: :dir tmp/libsigrok
+     :END:
+
+
+  #+BEGIN_SRC bash :eval no-export :results output :dir tmp
+  git clone git://sigrok.org/libsigrok
+  #+END_SRC
+
+
+
+  #+RESULTS:
+ 
+  #+BEGIN_SRC bash :eval no-export :results output :dir tmp/libsigrok
+  pwd
+  ls
+  #+END_SRC
+
+  #+RESULTS:
+  #+begin_example
+  /home/hacklab/Documents/jj/Electronics/pc-admin/tmp/libsigrok
+  AUTHORS
+  autogen.sh
+  bindings
+  ChangeLog
+  configure.ac
+  contrib
+  COPYING
+  Doxyfile
+  Doxyfile_internal
+  HACKING
+  include
+  libsigrok.pc.in
+  m4
+  Makefile.am
+  NEWS
+  README
+  README.devices
+  src
+  tests
+  #+end_example
+
+ #+BEGIN_SRC bash :eval no-export :results output
+  pwd
+ ./autogen.sh
+ #+END_SRC
+
+ #+RESULTS:
+ : /home/hacklab/Documents/jj/Electronics/pc-admin/tmp/libsigrok
+ : libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'autostuff'.
+ : libtoolize: copying file 'autostuff/ltmain.sh'
+ : libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
+ : libtoolize: copying file 'm4/libtool.m4'
+ : libtoolize: copying file 'm4/ltoptions.m4'
+ : libtoolize: copying file 'm4/ltsugar.m4'
+ : libtoolize: copying file 'm4/ltversion.m4'
+ : libtoolize: copying file 'm4/lt~obsolete.m4'
+
+ #+BEGIN_SRC bash :eval no-export :results output
+  pwd
+  export PYTHON=python3
+  # MY_TARGET=$HOME/.local/tst
+ ./configure
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ /home/hacklab/Documents/jj/Electronics/pc-admin/tmp/libsigrok
+ checking for a BSD-compatible install... /usr/bin/install -c
+ checking whether build environment is sane... yes
+ checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+ checking for gawk... gawk
+ checking whether make sets $(MAKE)... yes
+ checking whether make supports nested variables... yes
+ checking whether make supports nested variables... (cached) yes
+ checking whether make supports the include directive... yes (GNU style)
+ checking for gcc... gcc
+ checking whether the C compiler works... yes
+ checking for C compiler default output file name... a.out
+ checking for suffix of executables... 
+ checking whether we are cross compiling... no
+ checking for suffix of object files... o
+ checking whether we are using the GNU C compiler... yes
+ checking whether gcc accepts -g... yes
+ checking for gcc option to accept ISO C89... none needed
+ checking whether gcc understands -c and -o together... yes
+ checking dependency style of gcc... gcc3
+ checking for ar... ar
+ checking the archiver (ar) interface... ar
+ checking build system type... x86_64-pc-linux-gnu
+ checking host system type... x86_64-pc-linux-gnu
+ checking for gcc... (cached) gcc
+ checking whether we are using the GNU C compiler... (cached) yes
+ checking whether gcc accepts -g... (cached) yes
+ checking for gcc option to accept ISO C89... (cached) none needed
+ checking whether gcc understands -c and -o together... (cached) yes
+ checking dependency style of gcc... (cached) gcc3
+ checking for g++... g++
+ checking whether we are using the GNU C++ compiler... yes
+ checking whether g++ accepts -g... yes
+ checking dependency style of g++... gcc3
+ checking whether ln -s works... yes
+ checking whether make supports order-only prerequisites... yes
+ checking how to print strings... printf
+ checking for a sed that does not truncate output... /usr/bin/sed
+ checking for grep that handles long lines and -e... /usr/bin/grep
+ checking for egrep... /usr/bin/grep -E
+ checking for fgrep... /usr/bin/grep -F
+ checking for ld used by gcc... /usr/bin/ld
+ checking if the linker (/usr/bin/ld) is GNU ld... yes
+ checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+ checking the name lister (/usr/bin/nm -B) interface... BSD nm
+ checking the maximum length of command line arguments... 1879296
+ checking how to convert x86_64-pc-linux-gnu file names to x86_64-pc-linux-gnu format... func_convert_file_noop
+ checking how to convert x86_64-pc-linux-gnu file names to toolchain format... func_convert_file_noop
+ checking for /usr/bin/ld option to reload object files... -r
+ checking for objdump... objdump
+ checking how to recognize dependent libraries... pass_all
+ checking for dlltool... no
+ checking how to associate runtime and link libraries... printf %s\n
+ checking for archiver @FILE support... @
+ checking for strip... strip
+ checking for ranlib... ranlib
+ checking command to parse /usr/bin/nm -B output from gcc object... ok
+ checking for sysroot... no
+ checking for a working dd... /usr/bin/dd
+ checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
+ checking for mt... mt
+ checking if mt is a manifest tool... no
+ checking how to run the C preprocessor... gcc -E
+ checking for ANSI C header files... yes
+ checking for sys/types.h... yes
+ checking for sys/stat.h... yes
+ checking for stdlib.h... yes
+ checking for string.h... yes
+ checking for memory.h... yes
+ checking for strings.h... yes
+ checking for inttypes.h... yes
+ checking for stdint.h... yes
+ checking for unistd.h... yes
+ checking for dlfcn.h... yes
+ checking for objdir... .libs
+ checking if gcc supports -fno-rtti -fno-exceptions... no
+ checking for gcc option to produce PIC... -fPIC -DPIC
+ checking if gcc PIC flag -fPIC -DPIC works... yes
+ checking if gcc static flag -static works... yes
+ checking if gcc supports -c -o file.o... yes
+ checking if gcc supports -c -o file.o... (cached) yes
+ checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+ checking whether -lc should be explicitly linked in... no
+ checking dynamic linker characteristics... GNU/Linux ld.so
+ checking how to hardcode library paths into programs... immediate
+ checking whether stripping libraries is possible... yes
+ checking if libtool supports shared libraries... yes
+ checking whether to build shared libraries... yes
+ checking whether to build static libraries... yes
+ checking how to run the C++ preprocessor... g++ -E
+ checking for ld used by g++... /usr/bin/ld -m elf_x86_64
+ checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
+ checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+ checking for g++ option to produce PIC... -fPIC -DPIC
+ checking if g++ PIC flag -fPIC -DPIC works... yes
+ checking if g++ static flag -static works... yes
+ checking if g++ supports -c -o file.o... yes
+ checking if g++ supports -c -o file.o... (cached) yes
+ checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+ checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+ checking how to hardcode library paths into programs... immediate
+ checking for pkg-config... /usr/bin/pkg-config
+ checking pkg-config is at least version 0.22... yes
+ checking for zlib... yes
+ checking for libserialport... yes
+ checking for libftdi... yes
+ checking for libhidapi... yes
+ checking for libbluez... yes
+ checking for libnettle... no
+ checking for libusb... yes
+ checking for librevisa... no
+ checking for libgpib... no
+ checking for libieee1284... no
+ checking for libgio... yes
+ checking compiler flag for C99... -std=c99
+ checking compiler flag for visibility... -fvisibility=hidden
+ checking which C compiler warning flags to use... -Wall -Wextra -Wmissing-prototypes
+ checking for special C compiler options needed for large files... no
+ checking for _FILE_OFFSET_BITS value needed for large files... no
+ checking whether byte ordering is bigendian... no
+ checking sys/mman.h usability... yes
+ checking sys/mman.h presence... yes
+ checking for sys/mman.h... yes
+ checking sys/ioctl.h usability... yes
+ checking sys/ioctl.h presence... yes
+ checking for sys/ioctl.h... yes
+ checking sys/timerfd.h usability... yes
+ checking sys/timerfd.h presence... yes
+ checking for sys/timerfd.h... yes
+ checking for library containing pow... -lm
+ checking for SunRPC support... yes
+ checking for TIRPC... no
+ checking for __int128_t... yes
+ checking for __uint128_t... yes
+ checking for ptrdiff_t... yes
+ checking for size_t... yes
+ checking size of short... 2
+ checking size of int... 4
+ checking size of long... 8
+ checking size of long long... 8
+ checking size of __int64... 0
+ checking size of void *... 8
+ checking size of size_t... 8
+ checking size of ptrdiff_t... 8
+ checking for an ANSI C-conforming const... yes
+ checking for memcmp... yes
+ checking for memcpy... yes
+ checking for memmove... yes
+ checking for memset... yes
+ checking which C++ compiler warning flags to use... -Wall -Wextra
+ checking whether g++ supports C++17 features with -std=c++17... yes
+ checking for doxygen... yes
+ checking for library containing __cxa_throw... none required
+ checking whether python3 version is >= 2.7... yes
+ checking for python3 version... 3.8
+ checking for python3 platform... linux
+ checking for python3 script directory... ${prefix}/lib/python3.8/site-packages
+ checking for python3 extension module directory... ${exec_prefix}/lib/python3.8/site-packages
+ checking for stoi and stod... yes
+ checking for stoul... yes
+ checking python3 module: setuptools... yes
+ checking python3 module: numpy... yes
+ checking for swig... swig
+ checking for swig version... 4.0.1
+ checking for ruby... no
+ checking for javac... yes
+ checking for gcj... no
+ checking for guavac... no
+ checking for jikes... no
+ checking for javac... javac
+ checking if javac works... yes
+ checking for javac... /usr/bin/javac
+ checking symlink for /usr/bin/javac... /etc/alternatives/javac
+ checking symlink for /etc/alternatives/javac... /usr/lib/jvm/java-11-openjdk-amd64/bin/javac
+ checking jni headers... /usr/lib/jvm/java-11-openjdk-amd64/include
+ checking jni.h usability... yes
+ checking jni.h presence... yes
+ checking for jni.h... yes
+ checking for LIBSIGROK... yes
+ checking for TESTS... yes
+ checking for LIBSIGROKCXX... yes
+ checking for PYSIGROK... yes
+ checking for RBSIGROK... yes
+ checking for libusb_os_handle... no
+ checking for zip_discard... yes
+ checking for ftdi_tciflush... no
+ checking for ftdi_tcoflush... no
+ checking for ftdi_tcioflush... no
+ checking that generated files are newer than configure... done
+ configure: creating ./config.status
+ config.status: creating Makefile
+ config.status: creating libsigrok.pc
+ config.status: creating bindings/cxx/libsigrokcxx.pc
+ config.status: creating config.h
+ config.status: config.h is unchanged
+ config.status: creating include/libsigrok/version.h
+ config.status: include/libsigrok/version.h is unchanged
+ config.status: executing depfiles commands
+ config.status: executing libtool commands
+
+ libsigrok configuration summary:
+  - Package version................. 0.6.0-git
+  - Version string suffix .......... -a5800e90
+  - Library ABI version............. 4:0:0
+  - Prefix.......................... /usr/local
+  - Building on..................... x86_64-pc-linux-gnu
+  - Building for.................... x86_64-pc-linux-gnu
+  - Building shared / static........ yes / yes
+
+ Compile configuration:
+  - C compiler...................... gcc
+  - C compiler version.............. gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+  - C compiler flags................ -g -O2
+  - Additional C compiler flags..... -std=c99 -fvisibility=hidden
+  - C compiler warnings............. -Wall -Wextra -Wmissing-prototypes
+  - C++ compiler.................... g++ -std=c++17
+  - C++ compiler version............ g++ (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+  - C++ compiler flags.............. -g -O2
+  - C++ compiler warnings........... -Wall -Wextra
+  - Linker flags.................... 
+
+ Detected libraries (required):
+  - glib-2.0 >= 2.32.0.............. 2.64.6
+  - libzip >= 0.10.................. 1.5.1
+
+ Detected libraries (optional):
+  - zlib............................ 1.2.11
+  - libserialport >= 0.1.1.......... 0.1.1
+  - libftdi1 >= 1.0................. 1.4
+  - hidapi >= 0.8.0................. no
+  - hidapi-hidraw >= 0.8.0.......... 0.9.0
+  - bluez >= 4.0.................... 5.53
+  - nettle.......................... no
+  - libusb-1.0 >= 1.0.16............ 1.0.23
+  - librevisa >= 0.0.20130412....... no
+  - libgpib......................... no
+  - libieee1284..................... no
+  - gio-2.0 >= 2.24.0............... 2.64.6
+  - check >= 0.9.4.................. 0.10.0
+  - glibmm-2.4 >= 2.32.0............ 2.64.2
+  - python = 3.8.................... no
+  - python3 = 3.8................... 3.8
+  - pygobject-3.0 >= 3.0.0.......... 3.36.0
+  - ruby >= 2.5.0................... no
+  - ruby-. >= 2.5.0................. no
+
+ Enabled hardware drivers:
+  - agilent-dmm..................... yes
+  - appa-55ii....................... yes
+  - arachnid-labs-re-load-pro....... yes
+  - asix-sigma...................... yes
+  - asix-omega-rtm-cli.............. yes
+  - atorch.......................... yes
+  - atten-pps3xxx................... yes
+  - baylibre-acme................... yes
+  - beaglelogic..................... yes
+  - cem-dt-885x..................... yes
+  - center-3xx...................... yes
+  - chronovu-la..................... yes
+  - colead-slm...................... yes
+  - conrad-digi-35-cpu.............. yes
+  - dcttech-usbrelay................ yes
+  - demo............................ yes
+  - dreamsourcelab-dslogic.......... yes
+  - fluke-45........................ yes
+  - fluke-dmm....................... yes
+  - ftdi-la......................... yes
+  - fx2lafw......................... yes
+  - gmc-mh-1x-2x.................... yes
+  - gwinstek-gds-800................ yes
+  - gwinstek-gpd.................... yes
+  - hameg-hmo....................... yes
+  - hantek-4032l.................... yes
+  - hantek-6xxx..................... yes
+  - hantek-dso...................... yes
+  - hp-3457a........................ yes
+  - hp-3478a........................ no (missing: libgpib)
+  - hp-59306a....................... yes
+  - hung-chang-dso-2100............. no (missing: libieee1284)
+  - icstation-usbrelay.............. yes
+  - ikalogic-scanalogic2............ yes
+  - ikalogic-scanaplus.............. yes
+  - ipdbg-la........................ yes
+  - itech-it8500.................... yes
+  - kecheng-kc-330b................. yes
+  - kern-scale...................... yes
+  - kingst-la2016................... yes
+  - korad-kaxxxxp................... yes
+  - lascar-el-usb................... yes
+  - lecroy-logicstudio.............. yes
+  - lecroy-xstream.................. yes
+  - manson-hcs-3xxx................. yes
+  - mastech-ms6514.................. yes
+  - maynuo-m97...................... yes
+  - mic-985xx....................... yes
+  - microchip-pickit2............... yes
+  - mooshimeter-dmm................. yes
+  - motech-lps-30x.................. yes
+  - norma-dmm....................... yes
+  - openbench-logic-sniffer......... yes
+  - pce-322a........................ yes
+  - pipistrello-ols................. yes
+  - rdtech-dps...................... yes
+  - rdtech-um....................... yes
+  - rdtech-tc....................... no (missing: libnettle)
+  - rigol-ds........................ yes
+  - rigol-dg........................ yes
+  - rohde-schwarz-sme-0x............ yes
+  - saleae-logic16.................. yes
+  - saleae-logic-pro................ yes
+  - scpi-dmm........................ yes
+  - scpi-pps........................ yes
+  - serial-dmm...................... yes
+  - serial-lcr...................... yes
+  - siglent-sds..................... yes
+  - sysclk-lwla..................... yes
+  - sysclk-sla5032.................. yes
+  - teleinfo........................ yes
+  - testo........................... yes
+  - tondaj-sl-814................... yes
+  - uni-t-dmm....................... yes
+  - uni-t-ut181a.................... yes
+  - uni-t-ut32x..................... yes
+  - yokogawa-dlm.................... yes
+  - zeroplus-logic-cube............. yes
+  - zketech-ebd-usb................. yes
+
+ Enabled serial communication transports:
+   - serial comm ................... yes
+   - libserialport ................. yes
+   - hidapi ........................ yes
+   - bluetooth ..................... yes
+   - bluez ......................... yes
+
+ Enabled SCPI backends:
+  - TCP............................. yes
+  - SunRPC ......................... yes
+  - TI-RPC ......................... no
+  - RPC............................. yes
+  - serial.......................... yes
+  - VISA............................ no
+  - GPIB............................ no
+  - USBTMC.......................... yes
+
+ Enabled language bindings:
+  - C++............................. yes
+  - Python.......................... yes
+  - Ruby............................ no (missing: Ruby, Headers)
+  - Java............................ yes
+
+ #+end_example
+
+
+  #+BEGIN_SRC bash :eval no-export :results output
+  make clean
+  #+END_SRC
+
+  #+RESULTS:
+  #+begin_example
+   rm -f tests/main
+  test -z "libsigrok.la bindings/cxx/libsigrokcxx.la" || rm -f libsigrok.la bindings/cxx/libsigrokcxx.la
+  rm -f bindings/cxx/so_locations ./so_locations
+  rm -rf .libs _libs
+  rm -rf bindings/cxx/.libs bindings/cxx/_libs
+  rm -rf src/.libs src/_libs
+  rm -rf src/bt/.libs src/bt/_libs
+  rm -rf src/dmm/.libs src/dmm/_libs
+  rm -rf src/hardware/agilent-dmm/.libs src/hardware/agilent-dmm/_libs
+  rm -rf src/hardware/appa-55ii/.libs src/hardware/appa-55ii/_libs
+  rm -rf src/hardware/arachnid-labs-re-load-pro/.libs src/hardware/arachnid-labs-re-load-pro/_libs
+  rm -rf src/hardware/asix-omega-rtm-cli/.libs src/hardware/asix-omega-rtm-cli/_libs
+  rm -rf src/hardware/asix-sigma/.libs src/hardware/asix-sigma/_libs
+  rm -rf src/hardware/atorch/.libs src/hardware/atorch/_libs
+  rm -rf src/hardware/atten-pps3xxx/.libs src/hardware/atten-pps3xxx/_libs
+  rm -rf src/hardware/baylibre-acme/.libs src/hardware/baylibre-acme/_libs
+  rm -rf src/hardware/beaglelogic/.libs src/hardware/beaglelogic/_libs
+  rm -rf src/hardware/cem-dt-885x/.libs src/hardware/cem-dt-885x/_libs
+  rm -rf src/hardware/center-3xx/.libs src/hardware/center-3xx/_libs
+  rm -rf src/hardware/chronovu-la/.libs src/hardware/chronovu-la/_libs
+  rm -rf src/hardware/colead-slm/.libs src/hardware/colead-slm/_libs
+  rm -rf src/hardware/conrad-digi-35-cpu/.libs src/hardware/conrad-digi-35-cpu/_libs
+  rm -rf src/hardware/dcttech-usbrelay/.libs src/hardware/dcttech-usbrelay/_libs
+  rm -rf src/hardware/demo/.libs src/hardware/demo/_libs
+  rm -rf src/hardware/dreamsourcelab-dslogic/.libs src/hardware/dreamsourcelab-dslogic/_libs
+  rm -rf src/hardware/fluke-45/.libs src/hardware/fluke-45/_libs
+  rm -rf src/hardware/fluke-dmm/.libs src/hardware/fluke-dmm/_libs
+  rm -rf src/hardware/ftdi-la/.libs src/hardware/ftdi-la/_libs
+  rm -rf src/hardware/fx2lafw/.libs src/hardware/fx2lafw/_libs
+  rm -rf src/hardware/gmc-mh-1x-2x/.libs src/hardware/gmc-mh-1x-2x/_libs
+  rm -rf src/hardware/gwinstek-gds-800/.libs src/hardware/gwinstek-gds-800/_libs
+  rm -rf src/hardware/gwinstek-gpd/.libs src/hardware/gwinstek-gpd/_libs
+  rm -rf src/hardware/hameg-hmo/.libs src/hardware/hameg-hmo/_libs
+  rm -rf src/hardware/hantek-4032l/.libs src/hardware/hantek-4032l/_libs
+  rm -rf src/hardware/hantek-6xxx/.libs src/hardware/hantek-6xxx/_libs
+  rm -rf src/hardware/hantek-dso/.libs src/hardware/hantek-dso/_libs
+  rm -rf src/hardware/hp-3457a/.libs src/hardware/hp-3457a/_libs
+  rm -rf src/hardware/hp-3478a/.libs src/hardware/hp-3478a/_libs
+  rm -rf src/hardware/hp-59306a/.libs src/hardware/hp-59306a/_libs
+  rm -rf src/hardware/hung-chang-dso-2100/.libs src/hardware/hung-chang-dso-2100/_libs
+  rm -rf src/hardware/icstation-usbrelay/.libs src/hardware/icstation-usbrelay/_libs
+  rm -rf src/hardware/ikalogic-scanalogic2/.libs src/hardware/ikalogic-scanalogic2/_libs
+  rm -rf src/hardware/ikalogic-scanaplus/.libs src/hardware/ikalogic-scanaplus/_libs
+  rm -rf src/hardware/ipdbg-la/.libs src/hardware/ipdbg-la/_libs
+  rm -rf src/hardware/itech-it8500/.libs src/hardware/itech-it8500/_libs
+  rm -rf src/hardware/kecheng-kc-330b/.libs src/hardware/kecheng-kc-330b/_libs
+  rm -rf src/hardware/kern-scale/.libs src/hardware/kern-scale/_libs
+  rm -rf src/hardware/kingst-la2016/.libs src/hardware/kingst-la2016/_libs
+  rm -rf src/hardware/korad-kaxxxxp/.libs src/hardware/korad-kaxxxxp/_libs
+  rm -rf src/hardware/lascar-el-usb/.libs src/hardware/lascar-el-usb/_libs
+  rm -rf src/hardware/lecroy-logicstudio/.libs src/hardware/lecroy-logicstudio/_libs
+  rm -rf src/hardware/lecroy-xstream/.libs src/hardware/lecroy-xstream/_libs
+  rm -rf src/hardware/manson-hcs-3xxx/.libs src/hardware/manson-hcs-3xxx/_libs
+  rm -rf src/hardware/mastech-ms6514/.libs src/hardware/mastech-ms6514/_libs
+  rm -rf src/hardware/maynuo-m97/.libs src/hardware/maynuo-m97/_libs
+  rm -rf src/hardware/mic-985xx/.libs src/hardware/mic-985xx/_libs
+  rm -rf src/hardware/microchip-pickit2/.libs src/hardware/microchip-pickit2/_libs
+  rm -rf src/hardware/mooshimeter-dmm/.libs src/hardware/mooshimeter-dmm/_libs
+  rm -rf src/hardware/motech-lps-30x/.libs src/hardware/motech-lps-30x/_libs
+  rm -rf src/hardware/norma-dmm/.libs src/hardware/norma-dmm/_libs
+  rm -rf src/hardware/openbench-logic-sniffer/.libs src/hardware/openbench-logic-sniffer/_libs
+  rm -rf src/hardware/pce-322a/.libs src/hardware/pce-322a/_libs
+  rm -rf src/hardware/pipistrello-ols/.libs src/hardware/pipistrello-ols/_libs
+  rm -rf src/hardware/rdtech-dps/.libs src/hardware/rdtech-dps/_libs
+  rm -rf src/hardware/rdtech-tc/.libs src/hardware/rdtech-tc/_libs
+  rm -rf src/hardware/rdtech-um/.libs src/hardware/rdtech-um/_libs
+  rm -rf src/hardware/rigol-dg/.libs src/hardware/rigol-dg/_libs
+  rm -rf src/hardware/rigol-ds/.libs src/hardware/rigol-ds/_libs
+  rm -rf src/hardware/rohde-schwarz-sme-0x/.libs src/hardware/rohde-schwarz-sme-0x/_libs
+  rm -rf src/hardware/saleae-logic-pro/.libs src/hardware/saleae-logic-pro/_libs
+  rm -rf src/hardware/saleae-logic16/.libs src/hardware/saleae-logic16/_libs
+  rm -rf src/hardware/scpi-dmm/.libs src/hardware/scpi-dmm/_libs
+  rm -rf src/hardware/scpi-pps/.libs src/hardware/scpi-pps/_libs
+  rm -rf src/hardware/serial-dmm/.libs src/hardware/serial-dmm/_libs
+  rm -rf src/hardware/serial-lcr/.libs src/hardware/serial-lcr/_libs
+  rm -rf src/hardware/siglent-sds/.libs src/hardware/siglent-sds/_libs
+  rm -rf src/hardware/sysclk-lwla/.libs src/hardware/sysclk-lwla/_libs
+  rm -rf src/hardware/sysclk-sla5032/.libs src/hardware/sysclk-sla5032/_libs
+  rm -rf src/hardware/teleinfo/.libs src/hardware/teleinfo/_libs
+  rm -rf src/hardware/testo/.libs src/hardware/testo/_libs
+  rm -rf src/hardware/tondaj-sl-814/.libs src/hardware/tondaj-sl-814/_libs
+  rm -rf src/hardware/uni-t-dmm/.libs src/hardware/uni-t-dmm/_libs
+  rm -rf src/hardware/uni-t-ut181a/.libs src/hardware/uni-t-ut181a/_libs
+  rm -rf src/hardware/uni-t-ut32x/.libs src/hardware/uni-t-ut32x/_libs
+  rm -rf src/hardware/yokogawa-dlm/.libs src/hardware/yokogawa-dlm/_libs
+  rm -rf src/hardware/zeroplus-logic-cube/.libs src/hardware/zeroplus-logic-cube/_libs
+  rm -rf src/hardware/zketech-ebd-usb/.libs src/hardware/zketech-ebd-usb/_libs
+  rm -rf src/input/.libs src/input/_libs
+  rm -rf src/lcr/.libs src/lcr/_libs
+  rm -rf src/minilzo/.libs src/minilzo/_libs
+  rm -rf src/modbus/.libs src/modbus/_libs
+  rm -rf src/output/.libs src/output/_libs
+  rm -rf src/scale/.libs src/scale/_libs
+  rm -rf src/scpi/.libs src/scpi/_libs
+  rm -rf src/transform/.libs src/transform/_libs
+  rm -rf tests/.libs tests/_libs
+  rm -f ./include/libsigrok/git-version.h
+  rm -rf doxy/
+  rm -rf bindings/cxx/doxy/
+  rm -f bindings/swig/enums.i
+  rm -f bindings/cxx/enums.cpp
+  rm -f bindings/cxx/include/libsigrokcxx/enums.hpp
+  rm -f bindings/cxx/enums.timestamp
+  test -z "src/libdrivers.la src/libdrivers_head.la src/libdrivers_tail.la" || rm -f src/libdrivers.la src/libdrivers_head.la src/libdrivers_tail.la
+  rm -f src/so_locations
+  rm -f *.o
+  rm -f bindings/cxx/*.o
+  rm -f bindings/cxx/*.lo
+  rm -f src/*.o
+  rm -f src/*.lo
+  rm -f src/bt/*.o
+  rm -f src/bt/*.lo
+  rm -f src/dmm/*.o
+  rm -f src/dmm/*.lo
+  rm -f src/hardware/agilent-dmm/*.o
+  rm -f src/hardware/agilent-dmm/*.lo
+  rm -f src/hardware/appa-55ii/*.o
+  rm -f src/hardware/appa-55ii/*.lo
+  rm -f src/hardware/arachnid-labs-re-load-pro/*.o
+  rm -f src/hardware/arachnid-labs-re-load-pro/*.lo
+  rm -f src/hardware/asix-omega-rtm-cli/*.o
+  rm -f src/hardware/asix-omega-rtm-cli/*.lo
+  rm -f src/hardware/asix-sigma/*.o
+  rm -f src/hardware/asix-sigma/*.lo
+  rm -f src/hardware/atorch/*.o
+  rm -f src/hardware/atorch/*.lo
+  rm -f src/hardware/atten-pps3xxx/*.o
+  rm -f src/hardware/atten-pps3xxx/*.lo
+  rm -f src/hardware/baylibre-acme/*.o
+  rm -f src/hardware/baylibre-acme/*.lo
+  rm -f src/hardware/beaglelogic/*.o
+  rm -f src/hardware/beaglelogic/*.lo
+  rm -f src/hardware/cem-dt-885x/*.o
+  rm -f src/hardware/cem-dt-885x/*.lo
+  rm -f src/hardware/center-3xx/*.o
+  rm -f src/hardware/center-3xx/*.lo
+  rm -f src/hardware/chronovu-la/*.o
+  rm -f src/hardware/chronovu-la/*.lo
+  rm -f src/hardware/colead-slm/*.o
+  rm -f src/hardware/colead-slm/*.lo
+  rm -f src/hardware/conrad-digi-35-cpu/*.o
+  rm -f src/hardware/conrad-digi-35-cpu/*.lo
+  rm -f src/hardware/dcttech-usbrelay/*.o
+  rm -f src/hardware/dcttech-usbrelay/*.lo
+  rm -f src/hardware/demo/*.o
+  rm -f src/hardware/demo/*.lo
+  rm -f src/hardware/dreamsourcelab-dslogic/*.o
+  rm -f src/hardware/dreamsourcelab-dslogic/*.lo
+  rm -f src/hardware/fluke-45/*.o
+  rm -f src/hardware/fluke-45/*.lo
+  rm -f src/hardware/fluke-dmm/*.o
+  rm -f src/hardware/fluke-dmm/*.lo
+  rm -f src/hardware/ftdi-la/*.o
+  rm -f src/hardware/ftdi-la/*.lo
+  rm -f src/hardware/fx2lafw/*.o
+  rm -f src/hardware/fx2lafw/*.lo
+  rm -f src/hardware/gmc-mh-1x-2x/*.o
+  rm -f src/hardware/gmc-mh-1x-2x/*.lo
+  rm -f src/hardware/gwinstek-gds-800/*.o
+  rm -f src/hardware/gwinstek-gds-800/*.lo
+  rm -f src/hardware/gwinstek-gpd/*.o
+  rm -f src/hardware/gwinstek-gpd/*.lo
+  rm -f src/hardware/hameg-hmo/*.o
+  rm -f src/hardware/hameg-hmo/*.lo
+  rm -f src/hardware/hantek-4032l/*.o
+  rm -f src/hardware/hantek-4032l/*.lo
+  rm -f src/hardware/hantek-6xxx/*.o
+  rm -f src/hardware/hantek-6xxx/*.lo
+  rm -f src/hardware/hantek-dso/*.o
+  rm -f src/hardware/hantek-dso/*.lo
+  rm -f src/hardware/hp-3457a/*.o
+  rm -f src/hardware/hp-3457a/*.lo
+  rm -f src/hardware/hp-3478a/*.o
+  rm -f src/hardware/hp-3478a/*.lo
+  rm -f src/hardware/hp-59306a/*.o
+  rm -f src/hardware/hp-59306a/*.lo
+  rm -f src/hardware/hung-chang-dso-2100/*.o
+  rm -f src/hardware/hung-chang-dso-2100/*.lo
+  rm -f src/hardware/icstation-usbrelay/*.o
+  rm -f src/hardware/icstation-usbrelay/*.lo
+  rm -f src/hardware/ikalogic-scanalogic2/*.o
+  rm -f src/hardware/ikalogic-scanalogic2/*.lo
+  rm -f src/hardware/ikalogic-scanaplus/*.o
+  rm -f src/hardware/ikalogic-scanaplus/*.lo
+  rm -f src/hardware/ipdbg-la/*.o
+  rm -f src/hardware/ipdbg-la/*.lo
+  rm -f src/hardware/itech-it8500/*.o
+  rm -f src/hardware/itech-it8500/*.lo
+  rm -f src/hardware/kecheng-kc-330b/*.o
+  rm -f src/hardware/kecheng-kc-330b/*.lo
+  rm -f src/hardware/kern-scale/*.o
+  rm -f src/hardware/kern-scale/*.lo
+  rm -f src/hardware/kingst-la2016/*.o
+  rm -f src/hardware/kingst-la2016/*.lo
+  rm -f src/hardware/korad-kaxxxxp/*.o
+  rm -f src/hardware/korad-kaxxxxp/*.lo
+  rm -f src/hardware/lascar-el-usb/*.o
+  rm -f src/hardware/lascar-el-usb/*.lo
+  rm -f src/hardware/lecroy-logicstudio/*.o
+  rm -f src/hardware/lecroy-logicstudio/*.lo
+  rm -f src/hardware/lecroy-xstream/*.o
+  rm -f src/hardware/lecroy-xstream/*.lo
+  rm -f src/hardware/manson-hcs-3xxx/*.o
+  rm -f src/hardware/manson-hcs-3xxx/*.lo
+  rm -f src/hardware/mastech-ms6514/*.o
+  rm -f src/hardware/mastech-ms6514/*.lo
+  rm -f src/hardware/maynuo-m97/*.o
+  rm -f src/hardware/maynuo-m97/*.lo
+  rm -f src/hardware/mic-985xx/*.o
+  rm -f src/hardware/mic-985xx/*.lo
+  rm -f src/hardware/microchip-pickit2/*.o
+  rm -f src/hardware/microchip-pickit2/*.lo
+  rm -f src/hardware/mooshimeter-dmm/*.o
+  rm -f src/hardware/mooshimeter-dmm/*.lo
+  rm -f src/hardware/motech-lps-30x/*.o
+  rm -f src/hardware/motech-lps-30x/*.lo
+  rm -f src/hardware/norma-dmm/*.o
+  rm -f src/hardware/norma-dmm/*.lo
+  rm -f src/hardware/openbench-logic-sniffer/*.o
+  rm -f src/hardware/openbench-logic-sniffer/*.lo
+  rm -f src/hardware/pce-322a/*.o
+  rm -f src/hardware/pce-322a/*.lo
+  rm -f src/hardware/pipistrello-ols/*.o
+  rm -f src/hardware/pipistrello-ols/*.lo
+  rm -f src/hardware/rdtech-dps/*.o
+  rm -f src/hardware/rdtech-dps/*.lo
+  rm -f src/hardware/rdtech-tc/*.o
+  rm -f src/hardware/rdtech-tc/*.lo
+  rm -f src/hardware/rdtech-um/*.o
+  rm -f src/hardware/rdtech-um/*.lo
+  rm -f src/hardware/rigol-dg/*.o
+  rm -f src/hardware/rigol-dg/*.lo
+  rm -f src/hardware/rigol-ds/*.o
+  rm -f src/hardware/rigol-ds/*.lo
+  rm -f src/hardware/rohde-schwarz-sme-0x/*.o
+  rm -f src/hardware/rohde-schwarz-sme-0x/*.lo
+  rm -f src/hardware/saleae-logic-pro/*.o
+  rm -f src/hardware/saleae-logic-pro/*.lo
+  rm -f src/hardware/saleae-logic16/*.o
+  rm -f src/hardware/saleae-logic16/*.lo
+  rm -f src/hardware/scpi-dmm/*.o
+  rm -f src/hardware/scpi-dmm/*.lo
+  rm -f src/hardware/scpi-pps/*.o
+  rm -f src/hardware/scpi-pps/*.lo
+  rm -f src/hardware/serial-dmm/*.o
+  rm -f src/hardware/serial-dmm/*.lo
+  rm -f src/hardware/serial-lcr/*.o
+  rm -f src/hardware/serial-lcr/*.lo
+  rm -f src/hardware/siglent-sds/*.o
+  rm -f src/hardware/siglent-sds/*.lo
+  rm -f src/hardware/sysclk-lwla/*.o
+  rm -f src/hardware/sysclk-lwla/*.lo
+  rm -f src/hardware/sysclk-sla5032/*.o
+  rm -f src/hardware/sysclk-sla5032/*.lo
+  rm -f src/hardware/teleinfo/*.o
+  rm -f src/hardware/teleinfo/*.lo
+  rm -f src/hardware/testo/*.o
+  rm -f src/hardware/testo/*.lo
+  rm -f src/hardware/tondaj-sl-814/*.o
+  rm -f src/hardware/tondaj-sl-814/*.lo
+  rm -f src/hardware/uni-t-dmm/*.o
+  rm -f src/hardware/uni-t-dmm/*.lo
+  rm -f src/hardware/uni-t-ut181a/*.o
+  rm -f src/hardware/uni-t-ut181a/*.lo
+  rm -f src/hardware/uni-t-ut32x/*.o
+  rm -f src/hardware/uni-t-ut32x/*.lo
+  rm -f src/hardware/yokogawa-dlm/*.o
+  rm -f src/hardware/yokogawa-dlm/*.lo
+  rm -f src/hardware/zeroplus-logic-cube/*.o
+  rm -f src/hardware/zeroplus-logic-cube/*.lo
+  rm -f src/hardware/zketech-ebd-usb/*.o
+  rm -f src/hardware/zketech-ebd-usb/*.lo
+  rm -f src/input/*.o
+  rm -f src/input/*.lo
+  rm -f src/lcr/*.o
+  rm -f src/lcr/*.lo
+  rm -f src/minilzo/*.o
+  rm -f src/minilzo/*.lo
+  rm -f src/modbus/*.o
+  rm -f src/modbus/*.lo
+  rm -f src/output/*.o
+  rm -f src/output/*.lo
+  rm -f src/scale/*.o
+  rm -f src/scale/*.lo
+  rm -f src/scpi/*.o
+  rm -f src/scpi/*.lo
+  rm -f src/transform/*.o
+  rm -f src/transform/*.lo
+  rm -f tests/*.o
+  test -z "tests/main.log" || rm -f tests/main.log
+  test -z "tests/main.trs" || rm -f tests/main.trs
+  test -z "test-suite.log" || rm -f test-suite.log
+  rm -f *.lo
+  #+end_example
+
+ #+BEGIN_SRC bash :eval no-export :results output
+ pwd
+ make 
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ /home/hacklab/Documents/jj/Electronics/pc-admin/tmp/libsigrok
+ make  all-am
+   CC       src/backend.lo
+   CC       src/binary_helpers.lo
+   CC       src/conversion.lo
+   CC       src/crc.lo
+   CC       src/device.lo
+   CC       src/session.lo
+   CC       src/session_file.lo
+   CC       src/session_driver.lo
+   CC       src/hwdriver.lo
+   CC       src/trigger.lo
+   CC       src/soft-trigger.lo
+   CC       src/analog.lo
+   CC       src/fallback.lo
+   CC       src/resource.lo
+   CC       src/strutil.lo
+   CC       src/log.lo
+   GEN      include/libsigrok/git-version.h
+   CC       src/version.lo
+   CC       src/error.lo
+   CC       src/std.lo
+   CC       src/sw_limits.lo
+   CC       src/minilzo/minilzo.lo
+   CC       src/input/input.lo
+   CC       src/input/feed_queue.lo
+   CC       src/input/binary.lo
+   CC       src/input/chronovu_la8.lo
+   CC       src/input/csv.lo
+   CC       src/input/logicport.lo
+   CC       src/input/raw_analog.lo
+   CC       src/input/saleae.lo
+   CC       src/input/trace32_ad.lo
+   CC       src/input/vcd.lo
+   CC       src/input/wav.lo
+   CC       src/input/null.lo
+   CC       src/input/stf.lo
+   CC       src/output/output.lo
+   CC       src/output/analog.lo
+   CC       src/output/ascii.lo
+   CC       src/output/bits.lo
+   CC       src/output/binary.lo
+   CC       src/output/csv.lo
+   CC       src/output/chronovu_la8.lo
+   CC       src/output/wav.lo
+   CC       src/output/hex.lo
+   CC       src/output/ols.lo
+   CC       src/output/srzip.lo
+   CC       src/output/vcd.lo
+   CC       src/output/wavedrom.lo
+   CC       src/output/null.lo
+   CC       src/transform/transform.lo
+   CC       src/transform/nop.lo
+   CC       src/transform/scale.lo
+   CC       src/transform/invert.lo
+   CC       src/scpi/scpi.lo
+   CC       src/scpi/scpi_tcp.lo
+   CC       src/scpi/scpi_vxi.lo
+   CC       src/scpi/vxi_clnt.lo
+   CC       src/scpi/vxi_xdr.lo
+   CC       src/bt/bt_bluez.lo
+   CC       src/serial.lo
+   CC       src/serial_bt.lo
+   CC       src/serial_hid.lo
+   CC       src/serial_hid_bu86x.lo
+   CC       src/serial_hid_ch9325.lo
+   CC       src/serial_hid_cp2110.lo
+   CC       src/serial_hid_victor.lo
+   CC       src/serial_libsp.lo
+   CC       src/scpi/scpi_serial.lo
+   CC       src/ezusb.lo
+   CC       src/usb.lo
+   CC       src/scpi/scpi_usbtmc_libusb.lo
+   CC       src/modbus/modbus.lo
+   CC       src/modbus/modbus_serial_rtu.lo
+   CC       src/dmm/asycii.lo
+   CC       src/dmm/bm25x.lo
+   CC       src/dmm/bm52x.lo
+   CC       src/dmm/bm85x.lo
+   CC       src/dmm/bm86x.lo
+   CC       src/dmm/dtm0660.lo
+   CC       src/dmm/eev121gw.lo
+   CC       src/dmm/es519xx.lo
+   CC       src/dmm/fs9721.lo
+   CC       src/dmm/fs9922.lo
+   CC       src/dmm/m2110.lo
+   CC       src/dmm/metex14.lo
+   CC       src/dmm/mm38xr.lo
+   CC       src/dmm/ms2115b.lo
+   CC       src/dmm/ms8250d.lo
+   CC       src/dmm/rs9lcd.lo
+   CC       src/dmm/ut372.lo
+   CC       src/dmm/ut71x.lo
+   CC       src/dmm/vc870.lo
+   CC       src/dmm/vc96.lo
+   CC       src/lcr/es51919.lo
+   CC       src/lcr/vc4080.lo
+   CC       src/scale/kern.lo
+   CC       src/drivers.lo
+   CC       src/hardware/agilent-dmm/protocol.lo
+   CC       src/hardware/agilent-dmm/api.lo
+   CC       src/hardware/appa-55ii/protocol.lo
+   CC       src/hardware/appa-55ii/api.lo
+   CC       src/hardware/arachnid-labs-re-load-pro/protocol.lo
+   CC       src/hardware/arachnid-labs-re-load-pro/api.lo
+   CC       src/hardware/asix-omega-rtm-cli/protocol.lo
+   CC       src/hardware/asix-omega-rtm-cli/api.lo
+   CC       src/hardware/asix-sigma/protocol.lo
+   CC       src/hardware/asix-sigma/api.lo
+   CC       src/hardware/atorch/protocol.lo
+   CC       src/hardware/atorch/api.lo
+   CC       src/hardware/atten-pps3xxx/protocol.lo
+   CC       src/hardware/atten-pps3xxx/api.lo
+   CC       src/hardware/baylibre-acme/protocol.lo
+   CC       src/hardware/baylibre-acme/api.lo
+   CC       src/hardware/baylibre-acme/gpio.lo
+   CC       src/hardware/beaglelogic/protocol.lo
+   CC       src/hardware/beaglelogic/api.lo
+   CC       src/hardware/beaglelogic/beaglelogic_native.lo
+   CC       src/hardware/beaglelogic/beaglelogic_tcp.lo
+   CC       src/hardware/cem-dt-885x/protocol.lo
+   CC       src/hardware/cem-dt-885x/api.lo
+   CC       src/hardware/center-3xx/protocol.lo
+   CC       src/hardware/center-3xx/api.lo
+   CC       src/hardware/chronovu-la/protocol.lo
+   CC       src/hardware/chronovu-la/api.lo
+   CC       src/hardware/colead-slm/protocol.lo
+   CC       src/hardware/colead-slm/api.lo
+   CC       src/hardware/conrad-digi-35-cpu/protocol.lo
+   CC       src/hardware/conrad-digi-35-cpu/api.lo
+   CC       src/hardware/dcttech-usbrelay/protocol.lo
+   CC       src/hardware/dcttech-usbrelay/api.lo
+   CC       src/hardware/demo/protocol.lo
+   CC       src/hardware/demo/api.lo
+   CC       src/hardware/dreamsourcelab-dslogic/protocol.lo
+   CC       src/hardware/dreamsourcelab-dslogic/api.lo
+   CC       src/hardware/fluke-45/protocol.lo
+   CC       src/hardware/fluke-45/api.lo
+   CC       src/hardware/fluke-dmm/protocol.lo
+   CC       src/hardware/fluke-dmm/api.lo
+   CC       src/hardware/ftdi-la/protocol.lo
+   CC       src/hardware/ftdi-la/api.lo
+   CC       src/hardware/fx2lafw/protocol.lo
+   CC       src/hardware/fx2lafw/api.lo
+   CC       src/hardware/gmc-mh-1x-2x/protocol.lo
+   CC       src/hardware/gmc-mh-1x-2x/api.lo
+   CC       src/hardware/gwinstek-gds-800/protocol.lo
+   CC       src/hardware/gwinstek-gds-800/api.lo
+   CC       src/hardware/gwinstek-gpd/protocol.lo
+   CC       src/hardware/gwinstek-gpd/api.lo
+   CC       src/hardware/hameg-hmo/protocol.lo
+   CC       src/hardware/hameg-hmo/api.lo
+   CC       src/hardware/hantek-4032l/protocol.lo
+   CC       src/hardware/hantek-4032l/api.lo
+   CC       src/hardware/hantek-6xxx/protocol.lo
+   CC       src/hardware/hantek-6xxx/api.lo
+   CC       src/hardware/hantek-dso/protocol.lo
+   CC       src/hardware/hantek-dso/api.lo
+   CC       src/hardware/hp-3457a/protocol.lo
+   CC       src/hardware/hp-3457a/api.lo
+   CC       src/hardware/hp-59306a/protocol.lo
+   CC       src/hardware/hp-59306a/api.lo
+   CC       src/hardware/icstation-usbrelay/protocol.lo
+   CC       src/hardware/icstation-usbrelay/api.lo
+   CC       src/hardware/ikalogic-scanalogic2/protocol.lo
+   CC       src/hardware/ikalogic-scanalogic2/api.lo
+   CC       src/hardware/ikalogic-scanaplus/protocol.lo
+   CC       src/hardware/ikalogic-scanaplus/api.lo
+   CC       src/hardware/ipdbg-la/protocol.lo
+   CC       src/hardware/ipdbg-la/api.lo
+   CC       src/hardware/itech-it8500/protocol.lo
+   CC       src/hardware/itech-it8500/api.lo
+   CC       src/hardware/kecheng-kc-330b/protocol.lo
+   CC       src/hardware/kecheng-kc-330b/api.lo
+   CC       src/hardware/kern-scale/protocol.lo
+   CC       src/hardware/kern-scale/api.lo
+   CC       src/hardware/kingst-la2016/protocol.lo
+   CC       src/hardware/kingst-la2016/api.lo
+   CC       src/hardware/korad-kaxxxxp/protocol.lo
+   CC       src/hardware/korad-kaxxxxp/api.lo
+   CC       src/hardware/lascar-el-usb/protocol.lo
+   CC       src/hardware/lascar-el-usb/api.lo
+   CC       src/hardware/lecroy-logicstudio/protocol.lo
+   CC       src/hardware/lecroy-logicstudio/api.lo
+   CC       src/hardware/lecroy-xstream/protocol.lo
+   CC       src/hardware/lecroy-xstream/api.lo
+   CC       src/hardware/manson-hcs-3xxx/protocol.lo
+   CC       src/hardware/manson-hcs-3xxx/api.lo
+   CC       src/hardware/mastech-ms6514/protocol.lo
+   CC       src/hardware/mastech-ms6514/api.lo
+   CC       src/hardware/maynuo-m97/protocol.lo
+   CC       src/hardware/maynuo-m97/api.lo
+   CC       src/hardware/microchip-pickit2/protocol.lo
+   CC       src/hardware/microchip-pickit2/api.lo
+   CC       src/hardware/mic-985xx/protocol.lo
+   CC       src/hardware/mic-985xx/api.lo
+   CC       src/hardware/mooshimeter-dmm/protocol.lo
+   CC       src/hardware/mooshimeter-dmm/api.lo
+   CC       src/hardware/motech-lps-30x/protocol.lo
+   CC       src/hardware/motech-lps-30x/api.lo
+   CC       src/hardware/norma-dmm/protocol.lo
+   CC       src/hardware/norma-dmm/api.lo
+   CC       src/hardware/openbench-logic-sniffer/protocol.lo
+   CC       src/hardware/openbench-logic-sniffer/api.lo
+   CC       src/hardware/pce-322a/protocol.lo
+   CC       src/hardware/pce-322a/api.lo
+   CC       src/hardware/pipistrello-ols/protocol.lo
+   CC       src/hardware/pipistrello-ols/api.lo
+   CC       src/hardware/rdtech-dps/protocol.lo
+   CC       src/hardware/rdtech-dps/api.lo
+   CC       src/hardware/rdtech-um/protocol.lo
+   CC       src/hardware/rdtech-um/api.lo
+   CC       src/hardware/rigol-dg/protocol.lo
+   CC       src/hardware/rigol-dg/api.lo
+   CC       src/hardware/rigol-ds/protocol.lo
+   CC       src/hardware/rigol-ds/api.lo
+   CC       src/hardware/rohde-schwarz-sme-0x/protocol.lo
+   CC       src/hardware/rohde-schwarz-sme-0x/api.lo
+   CC       src/hardware/saleae-logic16/protocol.lo
+   CC       src/hardware/saleae-logic16/api.lo
+   CC       src/hardware/saleae-logic-pro/protocol.lo
+   CC       src/hardware/saleae-logic-pro/api.lo
+   CC       src/hardware/scpi-dmm/protocol.lo
+   CC       src/hardware/scpi-dmm/api.lo
+   CC       src/hardware/scpi-pps/protocol.lo
+   CC       src/hardware/scpi-pps/profiles.lo
+   CC       src/hardware/scpi-pps/api.lo
+   CC       src/hardware/serial-dmm/protocol.lo
+   CC       src/hardware/serial-dmm/api.lo
+   CC       src/hardware/serial-lcr/protocol.lo
+   CC       src/hardware/serial-lcr/api.lo
+   CC       src/hardware/siglent-sds/protocol.lo
+   CC       src/hardware/siglent-sds/api.lo
+   CC       src/hardware/sysclk-lwla/lwla.lo
+   CC       src/hardware/sysclk-lwla/lwla1016.lo
+   CC       src/hardware/sysclk-lwla/lwla1034.lo
+   CC       src/hardware/sysclk-lwla/protocol.lo
+   CC       src/hardware/sysclk-lwla/api.lo
+   CC       src/hardware/sysclk-sla5032/protocol.lo
+   CC       src/hardware/sysclk-sla5032/api.lo
+   CC       src/hardware/teleinfo/protocol.lo
+   CC       src/hardware/teleinfo/api.lo
+   CC       src/hardware/testo/protocol.lo
+   CC       src/hardware/testo/api.lo
+   CC       src/hardware/tondaj-sl-814/protocol.lo
+   CC       src/hardware/tondaj-sl-814/api.lo
+   CC       src/hardware/uni-t-dmm/protocol.lo
+   CC       src/hardware/uni-t-dmm/api.lo
+   CC       src/hardware/uni-t-ut181a/protocol.lo
+   CC       src/hardware/uni-t-ut181a/api.lo
+   CC       src/hardware/uni-t-ut32x/protocol.lo
+   CC       src/hardware/uni-t-ut32x/api.lo
+   CC       src/hardware/yokogawa-dlm/protocol.lo
+   CC       src/hardware/yokogawa-dlm/protocol_wrappers.lo
+   CC       src/hardware/yokogawa-dlm/api.lo
+   CC       src/hardware/zeroplus-logic-cube/analyzer.lo
+   CC       src/hardware/zeroplus-logic-cube/gl_usb.lo
+   CC       src/hardware/zeroplus-logic-cube/protocol.lo
+   CC       src/hardware/zeroplus-logic-cube/api.lo
+   CC       src/hardware/zketech-ebd-usb/protocol.lo
+   CC       src/hardware/zketech-ebd-usb/api.lo
+   CCLD     src/libdrivers.la
+ copying selected object files to avoid basename conflicts...
+   CC       src/driver_list_start.lo
+   CCLD     src/libdrivers_head.la
+   CC       src/driver_list_stop.lo
+   CCLD     src/libdrivers_tail.la
+   CCLD     src/libdrivers.o
+   GEN      src/libdrivers.lo
+   CCLD     libsigrok.la
+ copying selected object files to avoid basename conflicts...
+   GEN      doxy/xml/index.xml
+   GEN      bindings/cxx/enums.timestamp
+   CXX      bindings/cxx/classes.lo
+   CXXLD    bindings/cxx/libsigrokcxx.la
+   GEN      bindings/cxx/doxy/xml/index.xml
+   GEN      bindings/python/sigrok/core/doc_start.i
+   GEN      bindings/python/sigrok/core/doc_end.i
+   GEN      bindings/python/timestamp
+   GEN      bindings/java/org/sigrok/core/classes/doc.i
+   GEN      bindings/java/org/sigrok/core/classes/classes_wrap.cxx
+   GEN      bindings/java/sigrok-core.jar
+   GEN      bindings/java/libsigrok_java_core_classes.so
+ #+end_example
+
+ #+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
+ sudo make install
+ #+END_SRC
+
+ #+RESULTS:
+
+ #+begin_example
+ destdir=''; python3 ./bindings/python/setup.py VERSION='0.6.0' CC='g++ -std=c++17' CXX='g++ -std=c++17' CFLAGS='-g -O2 -Wall -Wextra -I/usr/include/python3.8 -I/usr/include/x86_64-linux-gnu/python3.8 -I/usr/include/pygobject-3.0 -I/usr/include/glibmm-2.4 -I/usr/lib/x86_64-linux-gnu/glibmm-2.4/include -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/sigc++-2.0 -I/usr/lib/x86_64-linux-gnu/sigc++-2.0/include' CXXFLAGS='-g -O2 -Wall -Wextra -I/usr/include/python3.8 -I/usr/include/x86_64-linux-gnu/python3.8 -I/usr/include/pygobject-3.0 -I/usr/include/glibmm-2.4 -I/usr/lib/x86_64-linux-gnu/glibmm-2.4/include -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/sigc++-2.0 -I/usr/lib/x86_64-linux-gnu/sigc++-2.0/include' LDADD='-lglibmm-2.4 -lgobject-2.0 -lglib-2.0 -lsigc-2.0' --quiet install ${destdir:+"--root=$destdir"} \
+	 --prefix "/usr/local" --exec-prefix "/usr/local"
+ /usr/bin/install -c -d /usr/local/lib/jni
+ /usr/bin/install -c bindings/java/libsigrok_java_core_classes.so /usr/local/lib/jni
+ /usr/bin/install -c -d /usr/local/share/java
+ /usr/bin/install -c bindings/java/sigrok-core.jar /usr/local/share/java
+  /usr/bin/mkdir -p '/usr/local/lib'
+  /bin/bash ./libtool --silent  --mode=install /usr/bin/install -c   libsigrok.la bindings/cxx/libsigrokcxx.la '/usr/local/lib'
+ libtool: warning: relinking 'bindings/cxx/libsigrokcxx.la'
+  /usr/bin/mkdir -p '/usr/local/include/libsigrokcxx'
+  /usr/bin/install -c -m 644 bindings/cxx/include/libsigrokcxx/libsigrokcxx.hpp '/usr/local/include/libsigrokcxx'
+  /usr/bin/mkdir -p '/usr/local/include/libsigrok'
+  /usr/bin/install -c -m 644 include/libsigrok/libsigrok.h include/libsigrok/proto.h '/usr/local/include/libsigrok'
+  /usr/bin/mkdir -p '/usr/local/share/mime/packages'
+  /usr/bin/install -c -m 644 contrib/vnd.sigrok.session.xml '/usr/local/share/mime/packages'
+  /usr/bin/mkdir -p '/usr/local/share/icons/hicolor/48x48/mimetypes'
+  /usr/bin/install -c -m 644 contrib/libsigrok.png '/usr/local/share/icons/hicolor/48x48/mimetypes'
+  /usr/bin/mkdir -p '/usr/local/share/icons/hicolor/scalable/mimetypes'
+  /usr/bin/install -c -m 644 contrib/libsigrok.svg '/usr/local/share/icons/hicolor/scalable/mimetypes'
+  /usr/bin/mkdir -p '/usr/local/include/libsigrokcxx'
+  /usr/bin/install -c -m 644 bindings/cxx/include/libsigrokcxx/enums.hpp '/usr/local/include/libsigrokcxx'
+  /usr/bin/mkdir -p '/usr/local/include/libsigrok'
+  /usr/bin/install -c -m 644 include/libsigrok/version.h '/usr/local/include/libsigrok'
+  /usr/bin/mkdir -p '/usr/local/lib/pkgconfig'
+  /usr/bin/install -c -m 644 libsigrok.pc bindings/cxx/libsigrokcxx.pc '/usr/local/lib/pkgconfig'
+ #+end_example
+
+ #+BEGIN_SRC bash :eval no-export :results output
+ pwd
+ date
+ make install
+ #+END_SRC
+
+
+ #+RESULTS:
+ #+begin_example
+ /home/hacklab/Documents/jj/Electronics/pc-admin/tmp/libsigrok
+ Tue 16 May 2023 05:45:24 PM EEST
+ /usr/bin/install -c -d /home/hacklab/.local/tst/lib/jni
+ /usr/bin/install -c bindings/java/libsigrok_java_core_classes.so /home/hacklab/.local/tst/lib/jni
+ /usr/bin/install -c -d /home/hacklab/.local/tst/share/java
+ /usr/bin/install -c bindings/java/sigrok-core.jar /home/hacklab/.local/tst/share/java
+  /usr/bin/mkdir -p '/home/hacklab/.local/tst/lib'
+  /bin/bash ./libtool --silent  --mode=install /usr/bin/install -c   libsigrok.la bindings/cxx/libsigrokcxx.la '/home/hacklab/.local/tst/lib'
+  /usr/bin/mkdir -p '/home/hacklab/.local/tst/include/libsigrokcxx'
+  /usr/bin/install -c -m 644 bindings/cxx/include/libsigrokcxx/libsigrokcxx.hpp '/home/hacklab/.local/tst/include/libsigrokcxx'
+  /usr/bin/mkdir -p '/home/hacklab/.local/tst/include/libsigrok'
+  /usr/bin/install -c -m 644 include/libsigrok/libsigrok.h include/libsigrok/proto.h '/home/hacklab/.local/tst/include/libsigrok'
+  /usr/bin/mkdir -p '/home/hacklab/.local/tst/share/mime/packages'
+  /usr/bin/install -c -m 644 contrib/vnd.sigrok.session.xml '/home/hacklab/.local/tst/share/mime/packages'
+  /usr/bin/mkdir -p '/home/hacklab/.local/tst/share/icons/hicolor/48x48/mimetypes'
+  /usr/bin/install -c -m 644 contrib/libsigrok.png '/home/hacklab/.local/tst/share/icons/hicolor/48x48/mimetypes'
+  /usr/bin/mkdir -p '/home/hacklab/.local/tst/share/icons/hicolor/scalable/mimetypes'
+  /usr/bin/install -c -m 644 contrib/libsigrok.svg '/home/hacklab/.local/tst/share/icons/hicolor/scalable/mimetypes'
+  /usr/bin/mkdir -p '/home/hacklab/.local/tst/include/libsigrokcxx'
+  /usr/bin/install -c -m 644 bindings/cxx/include/libsigrokcxx/enums.hpp '/home/hacklab/.local/tst/include/libsigrokcxx'
+  /usr/bin/mkdir -p '/home/hacklab/.local/tst/include/libsigrok'
+  /usr/bin/install -c -m 644 include/libsigrok/version.h '/home/hacklab/.local/tst/include/libsigrok'
+  /usr/bin/mkdir -p '/home/hacklab/.local/tst/lib/pkgconfig'
+  /usr/bin/install -c -m 644 libsigrok.pc bindings/cxx/libsigrokcxx.pc '/home/hacklab/.local/tst/lib/pkgconfig'
+ #+end_example
+
+**** testing it
+     :PROPERTIES:
+     :header-args+: :dir ~/Documents/anttih
+     :END:
+
+ #+BEGIN_SRC bash :eval no-export :results output
+ pwd
+ date
+ ls -ltr
+ #+END_SRC
+
+ #+RESULTS:
+ : /home/hacklab/Documents/anttih
+ : Tue 16 May 2023 06:43:47 PM EEST
+ : total 28
+ : -rw-rw-r-- 1 hacklab hacklab 14346 May 16 16:14 sigrokWrapper.py
+
+ : -rw-rw-r-- 1 hacklab hacklab    22 May 16 16:15 tst.py~
+ : drwxrwxr-x 2 hacklab hacklab  4096 May 16 16:16 __pycache__
+ : -rw-rw-r-- 1 hacklab hacklab   542 May 16 16:21 tst.py
+
+ #+BEGIN_SRC bash :eval no-export :results output
+ # export PYTHONPATH=$HOME/.local/tst/lib
+ # ls $PYTHONPATH
+ python3 tst.py 2>&1 ; echo $?
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ Create sigork wrapper using driverString='demo'
+ Device , model :Demo device, version:  - 13 channels: D0, D1, D2, D3, D4, D5, D6, D7, A0, A1, A2, A3, A4
+    config_keys=['CONTINUOUS', 'LIMIT_FRAMES', 'LIMIT_SAMPLES', 'LIMIT_MSEC', 'TRIGGER_MATCH', 'AVG_SAMPLES', 'AVERAGING', 'CAPTURE_RATIO', 'SAMPLERATE']
+ Channel-groups=['A0', 'A1', 'A2', 'A3', 'A4', 'Analog', 'Logic']
+   Channel -group A0: config_keys=['OFFSET', 'MEASURED_QUANTITY', 'AMPLITUDE', 'PATTERN_MODE']
+   Channel -group A1: config_keys=['OFFSET', 'MEASURED_QUANTITY', 'AMPLITUDE', 'PATTERN_MODE']
+   Channel -group A2: config_keys=['OFFSET', 'MEASURED_QUANTITY', 'AMPLITUDE', 'PATTERN_MODE']
+   Channel -group A3: config_keys=['OFFSET', 'MEASURED_QUANTITY', 'AMPLITUDE', 'PATTERN_MODE']
+   Channel -group A4: config_keys=['OFFSET', 'MEASURED_QUANTITY', 'AMPLITUDE', 'PATTERN_MODE']
+   Channel -group Analog: config_keys=['OFFSET', 'AMPLITUDE']
+   Channel -group Logic: config_keys=['PATTERN_MODE']
+ Channels=['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'A0', 'A1', 'A2', 'A3', 'A4']
+ 0
+ #+end_example
+
+#+BEGIN_SRC bash :eval no-export :results output
+sigrok-cli --driver=rdtech-dps:conn=/dev/ttyUSB0 --show
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Driver functions:
+    Power supply
+Scan options:
+    conn
+    serialcomm
+    modbusaddr
+rdtech-dps - RDTech DPS5020 v16 with 3 channels: V I P
+Supported configuration options:
+    continuous: on, off
+    limit_samples: 0 (current)
+    limit_time: 0 (current)
+    voltage: 4.990000 (current)
+    voltage_target: 0.000000, 50.000000, 0.010000
+    current: 0.000000 (current)
+    current_limit: 0.000000, 20.000000, 0.010000
+    enabled: on (current), off
+    regulation: CV (current)
+    ovp_active: on, off (current)
+    ovp_threshold: 510000.000000 (current)
+    ocp_active: on, off (current)
+    ocp_threshold: 202000.000000 (current)
+#+end_example
+
+ #+BEGIN_SRC bash :eval no-export :results output
+ python3 tst2.py 2>&1 ; echo $?
+ #+END_SRC
+
+ #+RESULTS:
+ : Create Sigork wrapper driver  using driverString='rdtech-dps:conn=/dev/ttyUSB0'
+ : dev RDTech, model :DPS5020, version: v16 - 3 channels: V, I, P enabled True
+ : dev RDTech, model :DPS5020, version: v16 - 3 channels: V, I, P enabled False
+ : 0
+
+ #+BEGIN_SRC bash :eval no-export :results output
+ python3 tst3.py 2>&1 ; echo $?
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ Using driverString='rdtech-dps:conn=/dev/ttyUSB0'
+ 2023-05-16 19:21:56.833877: voltage=0.0
+ 2023-05-16 19:21:57.491704: voltage=0.2
+ 2023-05-16 19:21:58.150969: voltage=0.4
+ 2023-05-16 19:21:58.608564: voltage=0.6
+ 2023-05-16 19:21:59.065825: voltage=0.8
+ 2023-05-16 19:21:59.523377: voltage=1.0
+ 2023-05-16 19:21:59.980906: voltage=1.2
+ 2023-05-16 19:22:00.438424: voltage=1.4
+ 2023-05-16 19:22:00.895921: voltage=1.6
+ 2023-05-16 19:22:01.353275: voltage=1.8
+ 2023-05-16 19:22:01.810815: voltage=2.0
+ 2023-05-16 19:22:02.268319: voltage=2.2
+ 2023-05-16 19:22:02.725704: voltage=2.4
+ 2023-05-16 19:22:03.183139: voltage=2.6
+ 2023-05-16 19:22:03.640742: voltage=2.8
+ 2023-05-16 19:22:04.098042: voltage=3.0
+ 2023-05-16 19:22:04.555583: voltage=3.2
+ 2023-05-16 19:22:05.012878: voltage=3.4
+ 2023-05-16 19:22:05.470342: voltage=3.6
+ 2023-05-16 19:22:05.927722: voltage=3.8
+ 2023-05-16 19:22:06.385254: voltage=4.0
+ 2023-05-16 19:22:06.842618: voltage=4.2
+ 2023-05-16 19:22:07.300160: voltage=4.4
+ 2023-05-16 19:22:07.757496: voltage=4.6
+ 2023-05-16 19:22:08.214922: voltage=4.8
+ 2023-05-16 19:22:08.672547: voltage=5.0
+ 0
+ #+end_example
+
+
+
+** Python
+
+#+BEGIN_SRC bash :eval no-export :results output
+pip uninstall numpy
+#+END_SRC
+
+#+RESULTS:
+
+
+#+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
+sudo apt-get install -y python3-numpy
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 3%Reading package lists... 3%Reading package lists... 4%Reading package lists... 4%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 6%Reading package lists... 28%Reading package lists... 28%Reading package lists... 39%Reading package lists... 39%Reading package lists... 51%Reading package lists... 51%Reading package lists... 52%Reading package lists... 52%Reading package lists... 52%Reading package lists... 52%Reading package lists... 52%Reading package lists... 52%Reading package lists... 56%Reading package lists... 58%Reading package lists... 58%Reading package lists... 60%Reading package lists... 60%Reading package lists... 64%Reading package lists... 64%Reading package lists... 69%Reading package lists... 69%Reading package lists... 69%Reading package lists... 69%Reading package lists... 71%Reading package lists... 71%Reading package lists... 74%Reading package lists... 74%Reading package lists... 76%Reading package lists... 76%Reading package lists... 76%Reading package lists... 76%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 77%Reading package lists... 82%Reading package lists... 82%Reading package lists... 83%Reading package lists... 83%Reading package lists... 87%Reading package lists... 87%Reading package lists... 92%Reading package lists... 92%Reading package lists... 92%Reading package lists... 92%Reading package lists... 94%Reading package lists... 94%Reading package lists... 96%Reading package lists... 96%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+Reading state information... 0%Reading state information... 0%Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  linux-headers-5.4.0-137 linux-headers-5.4.0-137-generic
+  linux-image-5.4.0-137-generic linux-modules-5.4.0-137-generic
+  linux-modules-extra-5.4.0-137-generic
+Use 'sudo apt autoremove' to remove them.
+Suggested packages:
+  gfortran python-numpy-doc python3-pytest python3-numpy-dbg
+The following NEW packages will be installed:
+  python3-numpy
+0 upgraded, 1 newly installed, 0 to remove and 158 not upgraded.
+Need to get 2,724 kB of archives.
+After this operation, 14.6 MB of additional disk space will be used.
+0% [Working]            Get:1 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 python3-numpy amd64 1:1.17.4-5ubuntu3.1 [2,724 kB]
+0% [1 python3-numpy 2,611 B/2,724 kB 0%]20% [1 python3-numpy 686 kB/2,724 kB 25%]44% [1 python3-numpy 1,510 kB/2,724 kB 55%]70% [1 python3-numpy 2,390 kB/2,724 kB 88%]79% [1 python3-numpy 2,684 kB/2,724 kB 99%]                                           100% [Working]              Fetched 2,724 kB in 3s (963 kB/s)
+Selecting previously unselected package python3-numpy.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 488357 files and directories currently installed.)
+Preparing to unpack .../python3-numpy_1%3a1.17.4-5ubuntu3.1_amd64.deb ...
+Unpacking python3-numpy (1:1.17.4-5ubuntu3.1) ...
+Setting up python3-numpy (1:1.17.4-5ubuntu3.1) ...
+#+end_example
 
 ** Other
 
@@ -2483,7 +4297,6 @@ Reading state information... 0%Reading state information... 0%Reading state 
  $ETOOL $*
  #+end_example
 
-
 ** Administer docker
 :PROPERTIES:
 :header-args+: :var  ETOOL_TAG="8"
@@ -2640,7 +4453,6 @@ Validate that shell variable ~TAG~ has the correct value
 : TAG=8 # changed on 2022-11-29-15:21:45
 : ETOOL="docker run --rm --user $(id -u):$(id -g) -e DISPLAY=unix:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v $ETOOL_DIR:/etool marcus2002/etool:$TAG"
 
-
 ** Other usefull admin commands
 
 *** hostname
@@ -2666,6 +4478,80 @@ Validate that shell variable ~TAG~ has the correct value
  : Codename:	una
 
 
+
+* Admin
+
+** autoremove
+
+#+BEGIN_SRC bash :eval no-export :results output  :dir /sudo::
+sudo apt autoremove -y
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+Reading state information... 0%Reading state information... 0%Reading state information... Done
+The following packages will be REMOVED:
+  linux-headers-5.4.0-137 linux-headers-5.4.0-137-generic
+  linux-image-5.4.0-137-generic linux-modules-5.4.0-137-generic
+  linux-modules-extra-5.4.0-137-generic sigrok-firmware-fx2lafw
+0 upgraded, 0 newly installed, 6 to remove and 158 not upgraded.
+After this operation, 380 MB disk space will be freed.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 488821 files and directories currently installed.)
+Removing linux-headers-5.4.0-137-generic (5.4.0-137.154) ...
+Removing linux-headers-5.4.0-137 (5.4.0-137.154) ...
+Removing linux-modules-extra-5.4.0-137-generic (5.4.0-137.154) ...
+Removing linux-image-5.4.0-137-generic (5.4.0-137.154) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+/etc/kernel/prerm.d/dkms:
+dkms: removing: nvidia-340 340.108 (5.4.0-137-generic) (x86_64)
+
+-------- Uninstall Beginning --------
+Module:  nvidia-340
+Version: 340.108
+Kernel:  5.4.0-137-generic (x86_64)
+-------------------------------------
+
+Status: Before uninstall, this module version was ACTIVE on this kernel.
+
+nvidia.ko:
+ - Uninstallation
+   - Deleting from: /lib/modules/5.4.0-137-generic/kernel/drivers/char/drm/
+ - Original module
+   - No original module was found for this module on this kernel.
+   - Use the dkms install command to reinstall any previous module version.
+
+
+nvidia_uvm.ko:
+ - Uninstallation
+   - Deleting from: /lib/modules/5.4.0-137-generic/kernel/drivers/video/
+ - Original module
+   - No original module was found for this module on this kernel.
+   - Use the dkms install command to reinstall any previous module version.
+
+depmod...
+
+DKMS: uninstall completed.
+/etc/kernel/postrm.d/initramfs-tools:
+update-initramfs: Deleting /boot/initrd.img-5.4.0-137-generic
+/etc/kernel/postrm.d/zz-update-grub:
+Sourcing file `/etc/default/grub'
+Sourcing file `/etc/default/grub.d/50_linuxmint.cfg'
+Sourcing file `/etc/default/grub.d/init-select.cfg'
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-5.4.0-144-generic
+Found initrd image: /boot/initrd.img-5.4.0-144-generic
+Found linux image: /boot/vmlinuz-5.4.0-139-generic
+Found initrd image: /boot/initrd.img-5.4.0-139-generic
+Found linux image: /boot/vmlinuz-5.4.0-91-generic
+Found initrd image: /boot/initrd.img-5.4.0-91-generic
+done
+Removing linux-modules-5.4.0-137-generic (5.4.0-137.154) ...
+Removing sigrok-firmware-fx2lafw (0.1.7-1) ...
+#+end_example
 
 
 * Issues
