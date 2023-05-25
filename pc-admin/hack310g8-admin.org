@@ -324,7 +324,6 @@ exists. Original version is saved into ~.ssh/config.old~.
  : >      IdentityFile /home/hacklab/mnt/.ssh/id_jukka358
 
 ** Setup git repo
-
 *** Clone repo ~github.com/HelsinkiHacklab/Electronics~
 
 #+BEGIN_SRC bash :eval no-export :results output
@@ -339,7 +338,6 @@ git config user.name "jukkaj"
 #+END_SRC
 
 #+RESULTS:
-
 
 *** Add remote ~git-hacklab~ git repo 
 
@@ -425,7 +423,6 @@ git remote -v
  : merge: origin/master - not something we can merge
  : STATUS=1
 
-
 *** Show git status
 
 Before pushing changes back repo expect git status to be clean.
@@ -455,7 +452,6 @@ no changes added to commit (use "git add" and/or "git commit -a")
 #+end_example
 
 
-
 *** Prepare for push operation
 
 Remote ~git-hacklab~ refers to ssh alias ~git-hacklab~, which must
@@ -471,13 +467,14 @@ lsblk
 #+RESULTS:
 #+begin_example
 NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
-loop0    7:0    0  63,2M  1 loop /snap/core20/1695
-loop1    7:1    0  72,8M  1 loop /snap/core22/310
-loop2    7:2    0  33,8M  1 loop /snap/lxi-tools/1577
-loop3    7:3    0  63,2M  1 loop /snap/core20/1623
-loop4    7:4    0 140,3M  1 loop /snap/lxi-tools/1517
-loop5    7:5    0  49,7M  1 loop /snap/snapd/17576
-loop6    7:6    0    48M  1 loop /snap/snapd/17336
+loop0    7:0    0  63,3M  1 loop /snap/core20/1879
+loop1    7:1    0  73,1M  1 loop /snap/core22/634
+loop2    7:2    0  53,2M  1 loop /snap/snapd/19122
+loop3    7:3    0    73M  1 loop /snap/core22/617
+loop4    7:4    0  33,8M  1 loop /snap/lxi-tools/1593
+loop5    7:5    0  33,8M  1 loop /snap/lxi-tools/1597
+loop6    7:6    0  49,9M  1 loop /snap/snapd/18357
+loop8    7:8    0  63,5M  1 loop /snap/core20/1891
 sda      8:0    0 931,5G  0 disk 
 ├─sda1   8:1    0   512M  0 part /boot/efi
 ├─sda2   8:2    0     1K  0 part 
@@ -485,7 +482,7 @@ sda      8:0    0 931,5G  0 disk
 sdb      8:16   0 931,5G  0 disk 
 └─sdb1   8:17   0 931,5G  0 part /data/SATA1
 sdc      8:32   1   476M  0 disk 
-└─sdc1   8:33   1   476M  0 part /media/hacklab/JJ
+└─sdc1   8:33   1   476M  0 part 
 sr0     11:0    1  1024M  0 rom  
 #+end_example
 
@@ -499,7 +496,8 @@ sudo umount /dev/sdc1
 *3nd* mount USB stick with valid permissions
 #+BEGIN_SRC bash :eval no-export :results output  :dir /sudo:: :exports code
 MOUNT_POINT=/home/hacklab/mnt
-sudo mount -o uid=hacklab,gid=hacklab,dmask=077,fmask=177 /dev/sdc1 $MOUNT_POINT
+# sudo mount -o uid=hacklab,gid=hacklab,dmask=077,fmask=177 /dev/sdc1 $MOUNT_POINT
+sudo mount -o uid=hacklab,gid=hacklab,dmask=0277,fmask=0277 /dev/sdc1 $MOUNT_POINT
 #+END_SRC
 
 #+RESULTS:
@@ -507,10 +505,15 @@ sudo mount -o uid=hacklab,gid=hacklab,dmask=077,fmask=177 /dev/sdc1 $MOUNT_POINT
 *4th* check identitity permoissions (expect ~-rw-------~ )
 #+BEGIN_SRC bash :eval no-export :results output :exports both 
 ls -ltr $GITHUB_IDENTITY
+ls -ltr $(dirname $GITHUB_IDENTITY)
 #+END_SRC
 
 #+RESULTS:
-: -rw------- 1 hacklab hacklab 464 Oct  7 10:13 /home/hacklab/mnt/.ssh/id_jukka358
+: -r-x------ 1 hacklab hacklab 464 Oct  7  2022 /home/hacklab/mnt/.ssh/id_jukka358
+: total 16
+: -r-x------ 1 hacklab hacklab 102 Oct  7  2022 id_jukka358.pub
+: -r-x------ 1 hacklab hacklab 464 Oct  7  2022 id_jukka358
+
 
 
 *** Push change to remote ~git-hacklab~ 
@@ -2127,9 +2130,6 @@ Reading state information... 0%Reading state information... 0%Reading state 
    #+end_example
 
 ** sigrok from source
-
-
-
 ***  sigrok-cli
 :PROPERTIES:
 :header-args+: :dir tmp/sigrok-cli
@@ -2348,7 +2348,6 @@ Libraries and features:
   - Host: x86_64-pc-linux-gnu, little-endian.
   - SCPI backends: TCP, RPC, serial, USBTMC.
 #+end_example
-
 
 
 *** libsigrok-
@@ -3948,8 +3947,6 @@ Supported configuration options:
  2023-05-16 19:22:08.672547: voltage=5.0
  0
  #+end_example
-
-
 
 ** Python
 
