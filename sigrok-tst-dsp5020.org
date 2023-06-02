@@ -1,5 +1,5 @@
 #+TITLE: Accessing DPS5020 Digital Power Supply using sigrok
-#+DATE: 2023-02-21
+#+DATE: 2023-06-02
 #+author: jj
 #+LATEX: \setlength{\parindent}{0pt}
 #+latex_compiler: pdflatex
@@ -424,7 +424,7 @@ and make it executable
 	      shift; 
 	      V=$1; shift
 	      echo $(date +$TS_FORMAT)  - set target voltage $V
-	      sigrok-cli  --driver=rdtech-dps:conn=/dev/ttyUSB0 --config voltage_target=$V --set
+	      sigrok-cli  --driver=rdtech-dps:conn=$TTY --config voltage_target=$V --set
 	      ;;
 
 	  ,*)  # error

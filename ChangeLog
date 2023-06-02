@@ -1,3 +1,7 @@
+2023-06-02  jj  <jj@eero>
+
+	* sigrok-tst-dsp5020.org (~dps5020.sh~: script created): conn=$TTY fixed
+
 2023-05-25  hacklab  <hacklab@hack310g8>
 
 	* pc-admin/hack310g8-admin.org: compile
