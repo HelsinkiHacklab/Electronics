@@ -6,7 +6,7 @@
 [[file:pics/20240306_095517.jpg]]
 
 
-** Käryimurin rakosuula pintaliitostyöpisteen pöydällä
+** Käryimurin rakosuulake pintaliitostyöpisteen pöydällä
 
 [[file:pics/20240306_095531.jpg]]
 
@@ -43,7 +43,7 @@
 - Emax varsi-imuripaketissa on muoviputket, joiden ohuempi pää menee
   32mm imuriletkun sisään. Putken paksunnos on sahattu pois, jotta
   putken saa työnnettyä imuriin riittävän syvälle pitämään imurissa
-  olevaa sulkulippaa auki asennossa. 
+  olevaa sulkulippaa auki asennossa.
 
 - Imurin rakosuulake menee hankalasti rakosuulakkeen
   päälle. Lämmittämällä imuriletkua varovasti lämpöpuhaltimella
