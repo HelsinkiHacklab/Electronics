@@ -1,0 +1,50 @@
+* Hacklab käryimuri
+
+** Käryimurin asennus pintaliitostyöpisteen pöydän alle
+
+
+[[file:pics/20240306_095517.jpg]]
+
+
+** Käryimurin rakosuula pintaliitostyöpisteen pöydällä
+
+[[file:pics/20240306_095531.jpg]]
+
+
+** Osat
+
+- Emax varsi-imuri 2in1 500W, Puuilo:
+  https://www.puuilo.fi/emax-varsi-imuri-2in1-500w
+- Tamforce imurinletku 32mm, Puuilo:
+  https://www.puuilo.fi/tamforce-imurinletku-32mm-1m
+- Gorenje Upo 716845 hiilisuodatin 158mm x 22mm, Kodinkone.net:
+  https://kodinkone.net/product/gorenje-upo-716845-hiilisuodatin-158mm/
+- 3D tulostettu sovitin hiilisuodattimen asentamiseksi varsi-imuriin:
+  [[file:pics/sovitin.png]]
+  - STL tiedosto: [[file:sovitin.stl]]
+  - Hacklab:in Prusa -tulostimella toimiva gcode tiedosto
+    [[file:sovitin_0.6n_0.35mm_PLA_MK3S_3h45m.gcode]]
+- DC jännitelähde Labin varastosta 48V
+- Nippusiteitä varsi-imurin kiinnittämiseksi pöydän jalkaan ja
+  pienempiä nippusiteitä imuriletkun kiinnitysten varmistamiseen.
+
+** Toiminta
+
+- Varsi-imuri moottori toimii myös tasavirralla. 30V-48V:n
+  jännitteellä imuteho riittää imemään käryjä mutta ei ole liian
+  suuri, jotta komponentit lähtisivät ilmavirran mukana imurin kitaan.
+
+- LAB:lla DC virtalähde on kytketty kiinteästi imuriin. Imuria voi
+  käyttää normaalisti verkkovirralla työpöydän putsaamiseen, jos DC
+  jännitettä varten on shuko/banaani sovitin labravirtajännittelle.
+
+** Kokoamisohjeita
+
+- Emax varsi-imuripaketissa on muoviputket, joiden ohuempi pää menee
+  32mm imuriletkun sisään. Putken paksunnos on sahattu pois, jotta
+  putken saa työnnettyä imuriin riittävän syvälle pitämään imurissa
+  olevaa sulkulippaa auki asennossa. 
+
+- Imurin rakosuulake menee hankalasti rakosuulakkeen
+  päälle. Lämmittämällä imuriletkua varovasti lämpöpuhaltimella
+  saattaa asennus helpottua.

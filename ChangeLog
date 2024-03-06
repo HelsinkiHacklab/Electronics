@@ -1,3 +1,7 @@
+2024-03-06  jj  <jj@eero>
+
+	* käryimuri/README.org (Hacklab käryimuri): dokumentoitu käryimuri
+
 2023-06-02  jj  <jj@eero>
 
 	* sigrok-tst-dsp5020.org (~dps5020.sh~: script created): conn=$TTY fixed
