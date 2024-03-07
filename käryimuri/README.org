@@ -1,4 +1,4 @@
-* Hacklab käryimuri
+* Hacklab käryimuri (imuriversio)
 
 ** Käryimurin asennus pintaliitostyöpisteen pöydän alle
 
