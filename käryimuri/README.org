@@ -50,6 +50,6 @@
   putken saa työnnettyä imuriin riittävän syvälle pitämään imurissa
   olevaa sulkulippaa auki asennossa.
 
-- Imurin rakosuulake menee hankalasti rakosuulakkeen
-  päälle. Lämmittämällä imuriletkua varovasti lämpöpuhaltimella
+- Imurin rakosuulake menee hankalasti imuriletkun
+  sisäään. Lämmittämällä imuriletkua varovasti lämpöpuhaltimella
   saattaa asennus helpottua.
