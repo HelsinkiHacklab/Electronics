@@ -36,9 +36,10 @@
   jännitteellä imuteho riittää imemään käryjä mutta ei ole liian
   suuri, jotta komponentit lähtisivät ilmavirran mukana imurin kitaan.
 
-- LAB:lla DC virtalähde on kytketty kiinteästi imuriin. Imuria voi
-  käyttää normaalisti verkkovirralla työpöydän putsaamiseen, jos DC
-  jännitettä varten on shuko/banaani sovitin labravirtajännittelle.
+- Imuria voi käyttää normaalisti verkkovirralla työpöydän
+  putsaamiseen, jos DC jännitettä varten on shuko/banaani sovitin
+  labravirtajännittelle. LAB:in asenuksessa DC virtalähde on kuitenkin
+  kytketty kiinteästi, joten imurointi ei ole mahdollista.
 
 ** Kokoamisohjeita
 
