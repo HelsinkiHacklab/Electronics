@@ -23,7 +23,9 @@
   [[file:pics/sovitin.png]]
   - STL tiedosto: [[file:sovitin.stl]]
   - Hacklab:in Prusa -tulostimella toimiva gcode tiedosto
-    [[file:sovitin_0.6n_0.35mm_PLA_MK3S_3h45m.gcode]]
+    [[file:sovitin_0.6n_0.35mm_PLA_MK3S_3h45m.gcode]] (tulostusaika
+    n. 3.5, ei optimoitu - saattaisi hyötyä esim. vaasimoodin
+    käytöstä)
 - DC jännitelähde Labin varastosta 48V
 - Nippusiteitä varsi-imurin kiinnittämiseksi pöydän jalkaan ja
   pienempiä nippusiteitä imuriletkun kiinnitysten varmistamiseen.
@@ -39,6 +41,9 @@
   jännitettä varten on shuko/banaani sovitin labravirtajännittelle.
 
 ** Kokoamisohjeita
+
+- 3D tulostettava sovitin ei joudu kovalle rasitukselle, joten PLA
+  materiaali soveltuu hyvin sen tekemiseen.
 
 - Emax varsi-imuripaketissa on muoviputket, joiden ohuempi pää menee
   32mm imuriletkun sisään. Putken paksunnos on sahattu pois, jotta
