@@ -8,8 +8,7 @@
 
 ** Käryimurin rakosuulake pintaliitostyöpisteen pöydällä
 
-[[file:pics/20240306_095531.jpg]]
-
+[[file:pics/IMG_1588.JPG]]
 
 ** Osat
 
@@ -26,6 +25,8 @@
     [[file:sovitin_0.6n_0.35mm_PLA_MK3S_3h45m.gcode]] (tulostusaika
     n. 3.5, ei optimoitu - saattaisi hyötyä esim. vaasimoodin
     käytöstä)
+- 3D tulostettu suutin imuriletkun päähän [[file:pics/käryimuri-suutin.png]]
+    - STL -tiedosto [[file:käryimurin-suutin.stl]]
 - DC jännitelähde Labin varastosta 48V
 - Nippusiteitä varsi-imurin kiinnittämiseksi pöydän jalkaan ja
   pienempiä nippusiteitä imuriletkun kiinnitysten varmistamiseen.
@@ -41,6 +42,11 @@
   labravirtajännittelle. LAB:in asenuksessa DC virtalähde on kuitenkin
   kytketty kiinteästi, joten imurointi ei ole mahdollista.
 
+- Imuripaketin mukana tulevan rakosuulakkeen voi työntää
+  käyryimurisuuttimen sisään, joten käryimurisuutinta ei tarvitse
+  irroittaa, jos imuria haluaa käyttää pölypoistoon "tavallisena"
+  imurina.
+
 ** Kokoamisohjeita
 
 - 3D tulostettava sovitin ei joudu kovalle rasitukselle, joten PLA
@@ -51,6 +57,10 @@
   putken saa työnnettyä imuriin riittävän syvälle pitämään imurissa
   olevaa sulkulippaa auki asennossa.
 
-- Imurin rakosuulake menee hankalasti imuriletkun
-  sisäään. Lämmittämällä imuriletkua varovasti lämpöpuhaltimella
-  saattaa asennus helpottua.
+
+
+** Muutokset
+
+|       Pvm | Tekijä | Muutos                  |
+|-----------+--------+-------------------------|
+| 14.3.2024 | JukkaJ | Lisätty käryimurisuutin |
